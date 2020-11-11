@@ -1,10 +1,10 @@
 from django.test import override_settings, TestCase, tag
 from edc_utils import get_utcnow
-from inte_prn.models.integrated_care_clinic_registration import (
+from mocca_prn.models.integrated_care_clinic_registration import (
     IntegratedCareClinicRegistration,
     IntegratedCareClinicRegistrationError,
 )
-from inte_sites.is_intervention_site import is_intervention_site
+from mocca_sites.is_intervention_site import is_intervention_site
 from tests.inte_test_case_mixin import InteTestCaseMixin
 
 

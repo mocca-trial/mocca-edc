@@ -9,9 +9,9 @@
 #     YES,
 # )
 # from edc_utils import get_utcnow
-# from inte_lists.models import ClinicServices, HealthServices
-# from inte_screening.constants import HIV_CLINIC
-# from inte_subject.forms import ReasonForVisitForm
+# from mocca_lists.models import ClinicServices, HealthServices
+# from mocca_screening.constants import HIV_CLINIC
+# from mocca_subject.forms import ReasonForVisitForm
 #
 # from ..inte_test_case_mixin import InteTestCaseMixin
 #

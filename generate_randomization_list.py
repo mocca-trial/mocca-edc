@@ -26,7 +26,7 @@ import os
 
 from django.conf import settings
 from edc_sites import get_site_id
-from inte_sites.sites import all_sites
+from mocca_sites.sites import all_sites
 
 
 def main(
@@ -72,7 +72,7 @@ if __name__ == "__main__":
 
     # point the settings module to a bare-bones settings file.
     settings_module = os.environ.setdefault(
-        "DJANGO_SETTINGS_MODULE", "inte_edc.settings.minimal"
+        "DJANGO_SETTINGS_MODULE", "mocca_edc.settings.minimal"
     )
     if not settings_module:
         raise EnvironmentError("`DJANGO_SETTINGS_MODULE` not set.")

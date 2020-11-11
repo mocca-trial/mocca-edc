@@ -7,9 +7,9 @@ from edc_constants.constants import (
     NOT_APPLICABLE,
 )
 from edc_utils.date import get_utcnow
-from inte_screening.constants import NCD_CLINIC
-from inte_screening.forms import SubjectScreeningForm
-from inte_screening.models import SubjectScreening
+from mocca_screening.constants import NCD_CLINIC
+from mocca_screening.forms import SubjectScreeningForm
+from mocca_screening.models import SubjectScreening
 
 
 class TestForms(TestCase):

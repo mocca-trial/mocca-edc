@@ -5,7 +5,7 @@ from edc_metadata import KEYED, REQUIRED
 from edc_metadata.models import CrfMetadata
 from edc_utils import get_utcnow
 from edc_visit_tracking.constants import UNSCHEDULED
-from inte_screening.constants import HIV_CLINIC
+from mocca_screening.constants import HIV_CLINIC
 from tests.inte_test_case_mixin import InteTestCaseMixin
 from model_bakery import baker
 
@@ -42,7 +42,7 @@ class TestMetadataRules(InteTestCaseMixin, TestCase):
         )
 
         baker.make(
-            "inte_subject.clinicalreviewbaseline",
+            "mocca_subject.clinicalreviewbaseline",
             subject_visit=subject_visit_baseline,
             hiv_test=POS,
             hiv_dx=YES,
@@ -50,7 +50,7 @@ class TestMetadataRules(InteTestCaseMixin, TestCase):
         )
 
         baker.make(
-            "inte_subject.hivinitialreview",
+            "mocca_subject.hivinitialreview",
             subject_visit=subject_visit_baseline,
             dx_ago="5y",
             arv_initiation_ago="4y",
@@ -66,7 +66,7 @@ class TestMetadataRules(InteTestCaseMixin, TestCase):
         )
 
         clinical_review = baker.make(
-            "inte_subject.clinicalreview",
+            "mocca_subject.clinicalreview",
             subject_visit=subject_visit,
             hiv_test=NOT_APPLICABLE,
             hiv_dx=NOT_APPLICABLE,
@@ -80,12 +80,12 @@ class TestMetadataRules(InteTestCaseMixin, TestCase):
         )
 
         models = self.get_metadata_models(subject_visit)
-        self.assertIn("inte_subject.hivreview", models)
-        self.assertNotIn("inte_subject.hivinitialreview", models)
-        self.assertNotIn("inte_subject.htninitialreview", models)
-        self.assertNotIn("inte_subject.dminitialreview", models)
-        self.assertNotIn("inte_subject.htnreview", models)
-        self.assertNotIn("inte_subject.dmreview", models)
+        self.assertIn("mocca_subject.hivreview", models)
+        self.assertNotIn("mocca_subject.hivinitialreview", models)
+        self.assertNotIn("mocca_subject.htninitialreview", models)
+        self.assertNotIn("mocca_subject.dminitialreview", models)
+        self.assertNotIn("mocca_subject.htnreview", models)
+        self.assertNotIn("mocca_subject.dmreview", models)
 
         clinical_review.htn_test = YES
         clinical_review.htn_test_date = subject_visit.report_datetime
@@ -95,9 +95,9 @@ class TestMetadataRules(InteTestCaseMixin, TestCase):
         self.assertEqual(NOT_APPLICABLE, clinical_review.hiv_test)
 
         models = self.get_metadata_models(subject_visit)
-        self.assertIn("inte_subject.hivreview", models)
-        self.assertIn("inte_subject.htninitialreview", models)
-        self.assertNotIn("inte_subject.hivinitialreview", models)
-        self.assertNotIn("inte_subject.dminitialreview", models)
-        self.assertNotIn("inte_subject.htnreview", models)
-        self.assertNotIn("inte_subject.dmreview", models)
+        self.assertIn("mocca_subject.hivreview", models)
+        self.assertIn("mocca_subject.htninitialreview", models)
+        self.assertNotIn("mocca_subject.hivinitialreview", models)
+        self.assertNotIn("mocca_subject.dminitialreview", models)
+        self.assertNotIn("mocca_subject.htnreview", models)
+        self.assertNotIn("mocca_subject.dmreview", models)

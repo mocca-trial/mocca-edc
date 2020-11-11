@@ -5,16 +5,16 @@ from edc_constants.constants import STUDY_DEFINED_TIMEPOINT
 from edc_utils import get_utcnow
 from edc_visit_schedule.constants import DAY1
 from edc_visit_tracking.constants import SCHEDULED
-from inte_lists.models import ClinicServices, HealthServices
-from inte_prn.icc_registered import (
+from mocca_lists.models import ClinicServices, HealthServices
+from mocca_prn.icc_registered import (
     InterventionSiteNotRegistered,
     is_icc_registered_site,
 )
-from inte_prn.models import IntegratedCareClinicRegistration
-from inte_screening.constants import HIV_CLINIC
-from inte_sites.is_intervention_site import NotInterventionSite
-from inte_subject.constants import INTEGRATED
-from inte_subject.forms.subject_visit_form import SubjectVisitFormValidator
+from mocca_prn.models import IntegratedCareClinicRegistration
+from mocca_screening.constants import HIV_CLINIC
+from mocca_sites.is_intervention_site import NotInterventionSite
+from mocca_subject.constants import INTEGRATED
+from mocca_subject.forms.subject_visit_form import SubjectVisitFormValidator
 from tests.inte_test_case_mixin import InteTestCaseMixin
 
 

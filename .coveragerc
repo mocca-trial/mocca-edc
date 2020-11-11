@@ -1,4 +1,4 @@
 [run]
-include = inte_*
-omit = inte_*/tests/*
+include = mocca_*
+omit = mocca_*/tests/*
 branch = 1

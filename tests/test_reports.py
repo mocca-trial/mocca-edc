@@ -26,7 +26,7 @@ class TestReports(InteTestCaseMixin, TestCase):
         request.user = self.user
         ae_classification = AeClassification.objects.all()[0]
         ae_initial = baker.make_recipe(
-            "inte_ae.aeinitial",
+            "mocca_ae.aeinitial",
             subject_identifier=self.subject_identifier,
             ae_classification=ae_classification,
         )

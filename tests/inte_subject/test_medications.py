@@ -3,9 +3,9 @@ from edc_appointment.constants import INCOMPLETE_APPT
 from edc_constants.constants import INCOMPLETE, NO, NOT_APPLICABLE, POS, YES
 from edc_utils import get_utcnow
 from edc_visit_tracking.constants import UNSCHEDULED
-from inte_screening.constants import HIV_CLINIC
-from inte_subject.diagnoses import Diagnoses
-from inte_subject.forms import MedicationsForm
+from mocca_screening.constants import HIV_CLINIC
+from mocca_subject.diagnoses import Diagnoses
+from mocca_subject.forms import MedicationsForm
 from tests.inte_test_case_mixin import InteTestCaseMixin
 from model_bakery import baker
 
@@ -25,14 +25,14 @@ class TestMedications(InteTestCaseMixin, TestCase):
             subject_consent=self.subject_consent,
         )
         baker.make(
-            "inte_subject.clinicalreviewbaseline",
+            "mocca_subject.clinicalreviewbaseline",
             subject_visit=self.subject_visit_baseline,
             hiv_test=YES,
             hiv_dx=YES,
             hiv_test_ago="5y",
         )
         baker.make(
-            "inte_subject.hivinitialreview",
+            "mocca_subject.hivinitialreview",
             subject_visit=self.subject_visit_baseline,
             dx_ago="5y",
             arv_initiation_ago="4y",
@@ -71,7 +71,7 @@ class TestMedications(InteTestCaseMixin, TestCase):
         )
 
         baker.make(
-            "inte_subject.clinicalreview",
+            "mocca_subject.clinicalreview",
             subject_visit=subject_visit,
             hiv_test=NOT_APPLICABLE,
             hiv_dx=NOT_APPLICABLE,
@@ -94,5 +94,5 @@ class TestMedications(InteTestCaseMixin, TestCase):
     @tag("med")
     def test_metadata_requires2(self):
         baker.make(
-            "inte_subject.medications", subject_visit=self.subject_visit_baseline,
+            "mocca_subject.medications", subject_visit=self.subject_visit_baseline,
         )

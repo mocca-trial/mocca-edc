@@ -7,10 +7,10 @@ from edc_subject_model_wrappers import (
     SubjectConsentModelWrapper,
     SubjectVisitModelWrapper,
 )
-from inte_consent.models import SubjectConsent
-from inte_dashboard.model_wrappers import SubjectScreeningModelWrapper
-from inte_screening.models import SubjectScreening
-from inte_subject.models import SubjectVisit
+from mocca_consent.models import SubjectConsent
+from mocca_dashboard.model_wrappers import SubjectScreeningModelWrapper
+from mocca_screening.models import SubjectScreening
+from mocca_subject.models import SubjectVisit
 
 from .inte_test_case_mixin import InteTestCaseMixin
 

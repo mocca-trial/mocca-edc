@@ -2,11 +2,8 @@
 
 
 
-inte-edc
---------
-
-
-Integrating HIV, Diabetes and Hypertension Services in Africa: A Cluster - Randomised Trial in Tanzania and Uganda: INTE Africa Trial
+mocca-edc
+---------
 
 
 Liverpool School of Tropical Medicine
@@ -28,7 +25,7 @@ You'll need mysql. Create the database
 
 .. code-block:: bash
 
-  mysql -Bse 'create database inte character set utf8;'
+  mysql -Bse 'create database mocca character set utf8;'
 
 
 Create a virtualenv, clone the main repo and checkout master
@@ -45,8 +42,8 @@ Clone the main repo and checkout master
 
   mkdir ~/app
   cd app
-  https://github.com/inte-africa-trial/inte-edc.git
-  cd ~/app/inte-edc
+  https://github.com/mocca-trial/mocca-edc.git
+  cd ~/app/mocca-edc
   git checkout master
 
 
@@ -54,7 +51,7 @@ Copy the test environment file
 
 .. code-block:: bash
 
-  cd ~/app/inte-edc
+  cd ~/app/mocca-edc
   git checkout master
   cp .env.tests .env
 
@@ -71,7 +68,7 @@ Continue with the installation
 
 .. code-block:: bash
 
-  cd ~/app/inte-edc
+  cd ~/app/mocca-edc
   git checkout master
   pip install .
   pip install -U -r requirements
@@ -84,7 +81,7 @@ Create a user and start up `runserver`
 
 .. code-block:: bash
 
-  cd ~/app/inte-edc
+  cd ~/app/mocca-edc
   git checkout master
   python manage.py createsuperuser
   python manage.py runserver
@@ -95,40 +92,19 @@ Login::
   localhost:8000
 
 
-Once logged in, go to you user account and update your group memberships. As a power user add yourself to the following
 
-* ACCOUNT_MANAGER
-* ADMINISTRATION
-* AE 
-* AE_REVIEW
-* CLINIC
-* DATA_MANAGER
-* DATA_QUERY
-* EVERYONE
-* EXPORT
-* LAB
-* LAB_VIEW
-* PHARMACY
-* PII
-* RANDO
-* REVIEW
-* SCREENING
-* TMG
-* UNBLINDING_REQUESTORS
-* UNBLINDING_REVIEWERS
+.. |pypi| image:: https://img.shields.io/pypi/v/mocca-edc.svg
+    :target: https://pypi.python.org/pypi/mocca-edc
 
-.. |pypi| image:: https://img.shields.io/pypi/v/inte-edc.svg
-    :target: https://pypi.python.org/pypi/inte-edc
+.. |travis| image:: https://travis-ci.com/mocca-trial/mocca-edc.svg?branch=develop
+    :target: https://travis-ci.com/mocca-trial/mocca-edc
 
-.. |travis| image:: https://travis-ci.com/inte-africa-trial/inte-edc.svg?branch=develop
-    :target: https://travis-ci.com/inte-africa-trial/inte-edc
+.. |codecov| image:: https://codecov.io/gh/mocca-trial/mocca-edc/branch/develop/graph/badge.svg
+  :target: https://codecov.io/gh/mocca-trial/mocca-edc
 
-.. |codecov| image:: https://codecov.io/gh/inte-africa-trial/inte-edc/branch/develop/graph/badge.svg
-  :target: https://codecov.io/gh/inte-africa-trial/inte-edc
+.. |downloads| image:: https://pepy.tech/badge/mocca-edc
+   :target: https://pepy.tech/project/mocca-edc
 
-.. |downloads| image:: https://pepy.tech/badge/inte-edc
-   :target: https://pepy.tech/project/inte-edc
-
-.. |pyup| image:: https://pyup.io/repos/github/inte-africa-trial/inte-edc/shield.svg
-    :target: https://pyup.io/repos/github/inte-africa-trial/inte-edc/
+.. |pyup| image:: https://pyup.io/repos/github/mocca-trial/mocca-edc/shield.svg
+    :target: https://pyup.io/repos/github/mocca-trial/mocca-edc/
     :alt: Updates
