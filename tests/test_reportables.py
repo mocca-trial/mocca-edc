@@ -8,7 +8,7 @@ from unittest import skip
 class TestReportables(TestCase):
     def test(self):
         try:
-            from inte_labs import reportables
+            from mocca_labs import reportables
         except ParserError:
             self.fail("ParserError unexpectedly raised.")
         self.assertIsNotNone(site_reportables.get("inte"))

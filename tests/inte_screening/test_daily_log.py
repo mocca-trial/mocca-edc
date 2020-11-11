@@ -1,10 +1,10 @@
 from django.contrib.sites.models import Site
 from django.test import override_settings, TestCase, tag
 from edc_utils import get_utcnow
-from inte_prn.models import IntegratedCareClinicRegistration
-from inte_screening.constants import SEQUENTIAL
-from inte_screening.forms import DailyClosingLogForm
-from inte_subject.constants import INTEGRATED
+from mocca_prn.models import IntegratedCareClinicRegistration
+from mocca_screening.constants import SEQUENTIAL
+from mocca_screening.forms import DailyClosingLogForm
+from mocca_subject.constants import INTEGRATED
 from tests.inte_test_case_mixin import InteTestCaseMixin
 
 

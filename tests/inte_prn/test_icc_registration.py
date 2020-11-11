@@ -1,7 +1,7 @@
 from django.test import TestCase, tag
 from django.test.utils import override_settings
 from edc_utils import get_utcnow
-from inte_prn.forms import IntegratedCareClinicRegistrationForm
+from mocca_prn.forms import IntegratedCareClinicRegistrationForm
 
 from ..inte_test_case_mixin import InteTestCaseMixin
 

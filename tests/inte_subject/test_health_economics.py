@@ -12,9 +12,9 @@ from edc_constants.constants import (
 from edc_metadata import REQUIRED
 from edc_metadata.models import CrfMetadata
 from edc_visit_tracking.constants import UNSCHEDULED
-from inte_lists.models import DrugPaySources
-from inte_prn.models import IntegratedCareClinicRegistration
-from inte_subject.forms import (
+from mocca_lists.models import DrugPaySources
+from mocca_prn.models import IntegratedCareClinicRegistration
+from mocca_subject.forms import (
     HealthEconomicsRevisedForm,
     HealthEconomicsRevisedFormValidator,
 )
@@ -34,7 +34,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             subject_consent=self.subject_consent,
         )
         baker.make(
-            "inte_subject.clinicalreviewbaseline",
+            "mocca_subject.clinicalreviewbaseline",
             subject_visit=self.subject_visit,
             hiv_dx=YES,
         )
@@ -175,7 +175,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
     @tag("he")
     @override_settings(SITE_ID=103)
     def test_form_validator_expenditure(self):
-        baker.make("inte_prn.integratedcareclinicregistration")
+        baker.make("mocca_prn.integratedcareclinicregistration")
         cleaned_data = {
             "subject_visit": self.subject_visit,
             "report_datetime": self.subject_visit.report_datetime,
@@ -533,7 +533,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             entry_status=REQUIRED,
         )
         self.assertNotIn(
-            "inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()]
+            "mocca_subject.healtheconomicsrevised", [o.model for o in crfs.all()]
         )
         self.subject_visit.save()
         crfs = CrfMetadata.objects.filter(
@@ -543,7 +543,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             entry_status=REQUIRED,
         )
         self.assertNotIn(
-            "inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()]
+            "mocca_subject.healtheconomicsrevised", [o.model for o in crfs.all()]
         )
 
     @tag("he")
@@ -565,7 +565,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             entry_status=REQUIRED,
         )
         self.assertIn(
-            "inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()]
+            "mocca_subject.healtheconomicsrevised", [o.model for o in crfs.all()]
         )
 
     @tag("he1")
@@ -580,7 +580,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             visit_code="1060",
         )
 
-        baker.make("inte_subject.healtheconomicsrevised", subject_visit=subject_visit)
+        baker.make("mocca_subject.healtheconomicsrevised", subject_visit=subject_visit)
 
         crfs = CrfMetadata.objects.filter(
             subject_identifier=subject_visit.subject_identifier,
@@ -589,7 +589,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             entry_status=REQUIRED,
         )
         self.assertNotIn(
-            "inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()]
+            "mocca_subject.healtheconomicsrevised", [o.model for o in crfs.all()]
         )
 
     @tag("he")

@@ -3,8 +3,8 @@ from edc_appointment.constants import INCOMPLETE_APPT
 from edc_constants.constants import NOT_APPLICABLE, POS, YES
 from edc_utils import get_utcnow
 from edc_visit_tracking.constants import UNSCHEDULED
-from inte_screening.constants import HIV_CLINIC
-from inte_subject.diagnoses import (
+from mocca_screening.constants import HIV_CLINIC
+from mocca_subject.diagnoses import (
     Diagnoses,
     InitialReviewRequired,
     ClinicalReviewBaselineRequired,
@@ -40,7 +40,7 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
         )
 
         clinical_review_baseline = baker.make(
-            "inte_subject.clinicalreviewbaseline",
+            "mocca_subject.clinicalreviewbaseline",
             subject_visit=subject_visit_baseline,
             hiv_test=YES,
             hiv_dx=YES,
@@ -107,7 +107,7 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
         )
 
         baker.make(
-            "inte_subject.clinicalreviewbaseline",
+            "mocca_subject.clinicalreviewbaseline",
             subject_visit=subject_visit_baseline,
             hiv_test=POS,
             hiv_dx=YES,
@@ -126,14 +126,14 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
         )
 
         clinical_review_baseline = baker.make(
-            "inte_subject.clinicalreviewbaseline",
+            "mocca_subject.clinicalreviewbaseline",
             subject_visit=subject_visit_baseline,
             hiv_test=POS,
             hiv_dx=YES,
             hiv_test_ago="5y",
         )
         baker.make(
-            "inte_subject.hivinitialreview",
+            "mocca_subject.hivinitialreview",
             subject_visit=subject_visit_baseline,
             dx_ago="5y",
             arv_initiation_ago="4y",
@@ -186,7 +186,7 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
         )
 
         baker.make(
-            "inte_subject.clinicalreviewbaseline",
+            "mocca_subject.clinicalreviewbaseline",
             subject_visit=subject_visit_baseline,
             hiv_test=POS,
             hiv_dx=YES,
@@ -194,7 +194,7 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
         )
 
         hiv_initial_review = baker.make(
-            "inte_subject.hivinitialreview",
+            "mocca_subject.hivinitialreview",
             subject_visit=subject_visit_baseline,
             dx_ago="5y",
             arv_initiation_ago="4y",
@@ -210,7 +210,7 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
         )
 
         baker.make(
-            "inte_subject.clinicalreview",
+            "mocca_subject.clinicalreview",
             subject_visit=subject_visit,
             hiv_test=NOT_APPLICABLE,
             hiv_dx=NOT_APPLICABLE,
@@ -221,7 +221,7 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
         )
 
         htn_initial_review = baker.make(
-            "inte_subject.htninitialreview",
+            "mocca_subject.htninitialreview",
             subject_visit=subject_visit,
             dx_ago=None,
             dx_date=subject_visit.report_datetime,
@@ -250,14 +250,14 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
         )
 
         baker.make(
-            "inte_subject.clinicalreviewbaseline",
+            "mocca_subject.clinicalreviewbaseline",
             subject_visit=subject_visit_baseline,
             hiv_test=POS,
             hiv_dx=YES,
             hiv_test_ago="5y",
         )
         baker.make(
-            "inte_subject.hivinitialreview",
+            "mocca_subject.hivinitialreview",
             subject_visit=subject_visit_baseline,
             dx_ago="5y",
             arv_initiation_ago="4y",
@@ -272,7 +272,7 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
         )
 
         baker.make(
-            "inte_subject.hivinitialreview",
+            "mocca_subject.hivinitialreview",
             subject_visit=subject_visit,
             dx_ago="5y",
             arv_initiation_ago="4y",

@@ -5,9 +5,9 @@ from django import forms
 from django.test import TestCase, tag
 from edc_constants.constants import MALE, MOBILE_NUMBER, YES, NO, NOT_APPLICABLE
 from edc_utils import get_utcnow
-from inte_consent.forms import SubjectConsentForm, SubjectConsentFormValidator
-from inte_consent.models import InteSubjectConsentError
-from inte_screening.constants import HIV_CLINIC, NCD_CLINIC
+from mocca_consent.forms import SubjectConsentForm, SubjectConsentFormValidator
+from mocca_consent.models import InteSubjectConsentError
+from mocca_screening.constants import HIV_CLINIC, NCD_CLINIC
 from pytz import timezone
 
 from ..inte_test_case_mixin import InteTestCaseMixin

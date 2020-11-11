@@ -1,13 +1,13 @@
 from django.test import TestCase, tag
 from edc_constants.constants import INCOMPLETE, NOT_APPLICABLE, NO, YES
 from edc_utils import get_utcnow
-from inte_screening.constants import (
+from mocca_screening.constants import (
     DIABETES_CLINIC,
     HIV_CLINIC,
     HYPERTENSION_CLINIC,
     NCD_CLINIC,
 )
-from inte_subject.forms import ClinicalReviewBaselineForm
+from mocca_subject.forms import ClinicalReviewBaselineForm
 from pytz import timezone
 
 from ..inte_test_case_mixin import InteTestCaseMixin

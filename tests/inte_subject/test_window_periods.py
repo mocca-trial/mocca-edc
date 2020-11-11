@@ -6,7 +6,7 @@ from edc_appointment.model_mixins import AppointmentWindowError
 from edc_utils import get_utcnow
 from edc_visit_schedule.constants import DAY1
 from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED
-from inte_screening.constants import HIV_CLINIC
+from mocca_screening.constants import HIV_CLINIC
 from tests.inte_test_case_mixin import InteTestCaseMixin
 
 

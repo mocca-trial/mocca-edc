@@ -3,7 +3,7 @@ from edc_appointment.constants import INCOMPLETE_APPT
 from edc_metadata import REQUIRED
 from edc_metadata.models import CrfMetadata
 from edc_utils import get_utcnow
-from inte_screening.constants import HIV_CLINIC
+from mocca_screening.constants import HIV_CLINIC
 from tests.inte_test_case_mixin import InteTestCaseMixin
 from model_bakery import baker
 
@@ -30,7 +30,7 @@ class TestFamilyHistory(InteTestCaseMixin, TestCase):
             visit_code_sequence=self.subject_visit.visit_code_sequence,
             entry_status=REQUIRED,
         )
-        self.assertNotIn("inte_subject.familyhistory", [o.model for o in crfs.all()])
+        self.assertNotIn("mocca_subject.familyhistory", [o.model for o in crfs.all()])
         self.subject_visit.save()
         crfs = CrfMetadata.objects.filter(
             subject_identifier=self.subject_visit.subject_identifier,
@@ -38,7 +38,7 @@ class TestFamilyHistory(InteTestCaseMixin, TestCase):
             visit_code_sequence=self.subject_visit.visit_code_sequence,
             entry_status=REQUIRED,
         )
-        self.assertNotIn("inte_subject.familyhistory", [o.model for o in crfs.all()])
+        self.assertNotIn("mocca_subject.familyhistory", [o.model for o in crfs.all()])
 
     @tag("fam")
     def test_required_at_next_visit(self):
@@ -58,7 +58,7 @@ class TestFamilyHistory(InteTestCaseMixin, TestCase):
             visit_code_sequence=subject_visit.visit_code_sequence,
             entry_status=REQUIRED,
         )
-        self.assertIn("inte_subject.familyhistory", [o.model for o in crfs.all()])
+        self.assertIn("mocca_subject.familyhistory", [o.model for o in crfs.all()])
 
     @tag("fam")
     def test_required_at_next_visit_if_not_completed_previously(self):
@@ -72,7 +72,7 @@ class TestFamilyHistory(InteTestCaseMixin, TestCase):
             visit_code=self.subject_visit.appointment.next.visit_code,
         )
 
-        baker.make("inte_subject.familyhistory", subject_visit=subject_visit)
+        baker.make("mocca_subject.familyhistory", subject_visit=subject_visit)
 
         subject_visit.appointment.appt_status = INCOMPLETE_APPT
         subject_visit.appointment.save()
@@ -89,4 +89,4 @@ class TestFamilyHistory(InteTestCaseMixin, TestCase):
             visit_code_sequence=subject_visit.visit_code_sequence,
             entry_status=REQUIRED,
         )
-        self.assertNotIn("inte_subject.familyhistory", [o.model for o in crfs.all()])
+        self.assertNotIn("mocca_subject.familyhistory", [o.model for o in crfs.all()])

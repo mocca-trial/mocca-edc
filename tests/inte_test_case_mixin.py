@@ -17,13 +17,13 @@ from edc_sites.tests.site_test_case_mixin import SiteTestCaseMixin
 from edc_utils.date import get_utcnow
 from edc_visit_schedule.constants import DAY1
 from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED
-from inte_auth.codenames_by_group import get_codenames_by_group
-from inte_consent.models import SubjectConsent
-from inte_screening.constants import HIV_CLINIC
-from inte_screening.forms import SubjectScreeningForm
-from inte_screening.models import SubjectScreening
-from inte_sites.sites import fqdn
-from inte_subject.models import SubjectVisit
+from mocca_auth.codenames_by_group import get_codenames_by_group
+from mocca_consent.models import SubjectConsent
+from mocca_screening.constants import HIV_CLINIC
+from mocca_screening.forms import SubjectScreeningForm
+from mocca_screening.models import SubjectScreening
+from mocca_sites.sites import fqdn
+from mocca_subject.models import SubjectVisit
 from model_bakery import baker
 
 
@@ -119,7 +119,7 @@ class InteTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
             consent_datetime=consent_datetime or get_utcnow(),
         )
         options.update(**kwargs)
-        return baker.make_recipe("inte_consent.subjectconsent", **options)
+        return baker.make_recipe("mocca_consent.subjectconsent", **options)
 
     def get_subject_visit(
         self,
