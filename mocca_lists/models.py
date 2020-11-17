@@ -1,6 +1,12 @@
 from edc_list_data.model_mixins import ListModelMixin
 
 
+class MoccaOriginalSites(ListModelMixin):
+    class Meta(ListModelMixin.Meta):
+        verbose_name = "MOCCA Original Site"
+        verbose_name_plural = "MOCCA Original Sites"
+
+
 class ArvDrugs(ListModelMixin):
     class Meta(ListModelMixin.Meta):
         verbose_name = "Arv Drugs"

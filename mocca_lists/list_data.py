@@ -21,6 +21,18 @@ from edc_offstudy.constants import (
 from mocca_subject.constants import INTEGRATED, NCD
 
 list_data = {
+    "mocca_lists.moccaoriginalsites": [
+        ("amana", "Amana"),
+        ("bunju", "Bunju"),
+        ("hindu_mandal", "Hindu Mandal"),
+        ("mkuranga", "Mkuranga"),
+        ("mwananyamala", "Mwananyamala"),
+        ("kisugu", "Kisugu"),
+        ("kiswa", "Kiswa"),
+        ("mulago", "Mulago"),
+        ("ndejje", "Ndejje"),
+        ("wakiso", "Wakiso"),
+    ],
     "mocca_lists.conditions": [
         (HYPERTENSION, "Patient has high blood pressure (Hypertension)"),
         (DIABETES, "Patient has high blood sugar (Diabetes)"),

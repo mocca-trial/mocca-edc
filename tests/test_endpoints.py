@@ -20,7 +20,7 @@ from mocca_sites.sites import fqdn
 from model_bakery import baker
 from unittest import skip
 
-from .inte_test_case_mixin import InteTestCaseMixin
+from .mocca_test_case_mixin import MoccaTestCaseMixin
 
 style = color_style()
 
@@ -44,7 +44,7 @@ def login(testcase, user=None, superuser=None, groups=None):
 
 @skip
 @override_settings(SIMPLE_HISTORY_PERMISSIONS_ENABLED=True)
-class AdminSiteTest(InteTestCaseMixin, TestCase):
+class AdminSiteTest(MoccaTestCaseMixin, TestCase):
     def setUp(self):
         self.user = User.objects.create_superuser("user_login", "u@example.com", "pass")
 

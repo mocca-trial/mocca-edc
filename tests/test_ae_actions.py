@@ -11,10 +11,10 @@ from edc_adverse_event.constants import (
 from edc_reportable.constants import GRADE4, GRADE5
 from model_bakery import baker
 
-from .inte_test_case_mixin import InteTestCaseMixin
+from .mocca_test_case_mixin import MoccaTestCaseMixin
 
 
-class TestActions(InteTestCaseMixin, TestCase):
+class TestActions(MoccaTestCaseMixin, TestCase):
     def test_ae_initial_creates_action(self):
         subject_screening = self.get_subject_screening()
         subject_consent = self.get_subject_consent(subject_screening)

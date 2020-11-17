@@ -4,11 +4,11 @@ from edc_metadata import REQUIRED
 from edc_metadata.models import CrfMetadata
 from edc_utils import get_utcnow
 from mocca_screening.constants import HIV_CLINIC
-from tests.inte_test_case_mixin import InteTestCaseMixin
+from tests.mocca_test_case_mixin import MoccaTestCaseMixin
 from model_bakery import baker
 
 
-class TestFamilyHistory(InteTestCaseMixin, TestCase):
+class TestFamilyHistory(MoccaTestCaseMixin, TestCase):
     def setUp(self):
         super().setUp()
         self.subject_screening = self.get_subject_screening(

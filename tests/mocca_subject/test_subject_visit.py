@@ -15,10 +15,10 @@ from mocca_screening.constants import HIV_CLINIC
 from mocca_sites.is_intervention_site import NotInterventionSite
 from mocca_subject.constants import INTEGRATED
 from mocca_subject.forms.subject_visit_form import SubjectVisitFormValidator
-from tests.inte_test_case_mixin import InteTestCaseMixin
+from tests.mocca_test_case_mixin import MoccaTestCaseMixin
 
 
-class TestSubjectVisit(InteTestCaseMixin, TestCase):
+class TestSubjectVisit(MoccaTestCaseMixin, TestCase):
     def setUp(self):
         super().setUp()
         self.subject_screening = self.get_subject_screening(

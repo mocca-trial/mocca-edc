@@ -5,11 +5,11 @@ from edc_constants.constants import INCOMPLETE
 from edc_utils import get_utcnow
 from mocca_screening.constants import HIV_CLINIC
 from mocca_subject.forms.indicators_form import IndicatorsFormValidator
-from tests.inte_test_case_mixin import InteTestCaseMixin
+from tests.mocca_test_case_mixin import MoccaTestCaseMixin
 from model_bakery import baker
 
 
-class TestIndicators(InteTestCaseMixin, TestCase):
+class TestIndicators(MoccaTestCaseMixin, TestCase):
     def setUp(self):
         super().setUp()
         self.subject_screening = self.get_subject_screening(

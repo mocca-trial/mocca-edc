@@ -1,7 +1,9 @@
 from django.core.validators import (
-    RegexValidator,
-    MinLengthValidator,
     MaxLengthValidator,
+    MaxValueValidator,
+    MinLengthValidator,
+    MinValueValidator,
+    RegexValidator,
 )
 from django.db import models
 from django_crypto_fields.fields import EncryptedCharField
@@ -10,12 +12,9 @@ from edc_model.models import BaseUuidModel
 from edc_screening.model_mixins import ScreeningModelMixin
 from edc_screening.screening_identifier import ScreeningIdentifier
 
-from ..choices import CLINIC_CHOICES, SELECTION_METHOD
 from ..eligibility import check_eligible_final
-
-
-class SubjectScreeningModelError(Exception):
-    pass
+from ..mocca_original_sites import get_mocca_site_limited_to
+from .mocca_register import MoccaRegister
 
 
 class ScreeningIdentifier(ScreeningIdentifier):
@@ -30,22 +29,29 @@ class SubjectScreening(
     screening_consent = models.CharField(
         verbose_name=(
             "Has the subject given his/her verbal consent "
-            "to be screened for the MOCCA Africa trial?"
+            "to be screened for the MOCCA Extension trial?"
         ),
         max_length=15,
         choices=YES_NO,
     )
 
-    selection_method = models.CharField(
-        verbose_name="How was the patient selected for screening?",
-        max_length=25,
-        choices=SELECTION_METHOD,
+    mocca_site = models.ForeignKey(
+        MoccaRegister,
+        verbose_name="Original MOCCA site",
+        on_delete=models.PROTECT,
+        limit_choices_to=get_mocca_site_limited_to,
     )
 
-    clinic_type = models.CharField(
-        verbose_name="From which type of clinic was the patient selected?",
+    mocca_participant = models.CharField(
+        verbose_name="Was the patient enrolled to the original MOCCA study?",
         max_length=25,
-        choices=CLINIC_CHOICES,
+        choices=YES_NO,
+    )
+
+    mocca_study_identifier = models.CharField(
+        verbose_name="Original MOCCA study identifier",
+        max_length=25,
+        help_text="Format must match original identifier. e.g. 12-3456 for UG, 123456 for TZ",
     )
 
     initials = EncryptedCharField(
@@ -54,34 +60,15 @@ class SubjectScreening(
             MinLengthValidator(2),
             MaxLengthValidator(3),
         ],
-        help_text="Use UPPERCASE letters only. May be 2 or 3 letters.",
+        help_text=(
+            "Use UPPERCASE letters only. May be 2 or 3 letters. "
+            "Use `F`irst`L`ast or `L`ast`F`irst depending on the country custom. "
+        ),
         blank=False,
     )
 
-    qualifying_condition = models.CharField(
-        verbose_name=(
-            "Does the patient have at least one of the following "
-            "conditions: HIV, Diabetes and/or Hypertension"
-        ),
-        max_length=15,
-        choices=YES_NO,
-    )
-
-    requires_acute_care = models.CharField(
-        verbose_name=(
-            "Does the patient require acute care including in-patient admission"
-        ),
-        max_length=25,
-        choices=YES_NO,
-    )
-
-    lives_nearby = models.CharField(
-        verbose_name=(
-            "Is the patient planning to remain in the catchment area "
-            "for at least 6 months"
-        ),
-        max_length=15,
-        choices=YES_NO,
+    birth_year = models.IntegerField(
+        validators=[MinValueValidator(1900), MaxValueValidator(2002)],
     )
 
     def save(self, *args, **kwargs):

@@ -1,35 +1,16 @@
-from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.core.exceptions import ValidationError
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from edc_randomization.site_randomizers import site_randomizers
-from edc_visit_schedule import OnScheduleError
 from edc_visit_schedule.site_visit_schedules import site_visit_schedules
-from mocca_screening.constants import (
-    DIABETES_CLINIC,
-    HIV_CLINIC,
-    HYPERTENSION_CLINIC,
-    NCD_CLINIC,
-)
 from mocca_screening.models import SubjectScreening
 from mocca_subject.models import SubjectVisit
 
 from .subject_consent import SubjectConsent
 
 
-class InteSubjectConsentError(Exception):
-    pass
-
-
 def get_onschedule_model_name(instance):
-    if instance.clinic_type == HIV_CLINIC:
-        onschedule_model_name = "mocca_prn.onschedulehiv"
-    elif instance.clinic_type in [NCD_CLINIC, DIABETES_CLINIC, HYPERTENSION_CLINIC]:
-        onschedule_model_name = "mocca_prn.onschedulencd"
-    else:
-        raise OnScheduleError(
-            f"Unknown clinic type specified on {instance._meta.verbose_name}. "
-            f"Got `{instance.clinic_type}`"
-        )
+    onschedule_model_name = "mocca_prn.onschedule"
     return onschedule_model_name
 
 
@@ -48,24 +29,9 @@ def subject_consent_on_post_save(sender, instance, raw, created, **kwargs):
             _, schedule = site_visit_schedules.get_by_onschedule_model(
                 get_onschedule_model_name(instance)
             )
-            try:
-                schedule.refresh_schedule(
-                    subject_identifier=instance.subject_identifier
-                )
-            except ObjectDoesNotExist as e:
-                raise InteSubjectConsentError(
-                    f"Clinic type cannot be changed. Got `{instance.clinic_type}`. ({e})"
-                )
+            schedule.refresh_schedule(subject_identifier=instance.subject_identifier)
         else:
-            subject_screening = SubjectScreening.objects.get(
-                screening_identifier=instance.screening_identifier
-            )
-
-            if subject_screening.clinic_type != instance.clinic_type:
-                raise InteSubjectConsentError(
-                    f"Clinic type reported on screening does not match consent."
-                    f"Expected {subject_screening.clinic_type}. Got {instance.clinic_type}"
-                )
+            subject_screening = SubjectScreening.objects.get()
             subject_screening.subject_identifier = instance.subject_identifier
             subject_screening.consented = True
             subject_screening.save_base(

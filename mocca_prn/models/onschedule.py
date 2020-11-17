@@ -3,7 +3,7 @@ from edc_model.models import BaseUuidModel, HistoricalRecords
 from edc_visit_schedule.model_mixins import OnScheduleModelMixin, CurrentSiteManager
 
 
-class OnScheduleNcd(OnScheduleModelMixin, BaseUuidModel):
+class OnSchedule(OnScheduleModelMixin, BaseUuidModel):
     """A model used by the system. Auto-completed by subject_consent.
     """
 

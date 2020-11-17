@@ -12,17 +12,7 @@ class SubjectConsentFormValidator(SubjectConsentFormValidatorMixin, FormValidato
     subject_screening_model = "mocca_screening.subjectscreening"
 
     def clean(self):
-        super().clean()
-        if self.cleaned_data.get("clinic_type") != self.subject_screening.clinic_type:
-            raise forms.ValidationError(
-                {
-                    "clinic_type": (
-                        f"Invalid clinic type. Expected "
-                        f"`{self.subject_screening.get_clinic_type_display()}` as reported "
-                        f"on the screening form."
-                    )
-                }
-            )
+        return super().clean()
 
 
 class SubjectConsentForm(

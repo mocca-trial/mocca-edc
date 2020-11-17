@@ -1,12 +1,7 @@
 from django import forms
-from django.contrib.sites.models import Site
-from django.core.exceptions import ObjectDoesNotExist
 from edc_constants.constants import FREE_OF_CHARGE, OTHER, YES, NO
 from edc_form_validators.form_validator import FormValidator
 from mocca_lists.models import DrugPaySources
-from mocca_prn.models import IntegratedCareClinicRegistration
-from mocca_sites.is_intervention_site import is_intervention_site
-from mocca_subject.diagnoses import Diagnoses
 
 from ..models import HealthEconomicsRevised
 from .mixins import (
@@ -22,8 +17,6 @@ class HealthEconomicsRevisedFormValidator(
 ):
     def clean(self):
         raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
-
-        self.require_icc_registration()
 
         self.clean_education()
 
@@ -61,19 +54,6 @@ class HealthEconomicsRevisedFormValidator(
         )
 
         self.required_if(YES, field="patient_club", field_required="patient_club_cost")
-
-    @staticmethod
-    def require_icc_registration():
-        if is_intervention_site():
-            try:
-                IntegratedCareClinicRegistration.objects.get(
-                    site_id=Site.objects.get_current()
-                )
-            except ObjectDoesNotExist:
-                raise forms.ValidationError(
-                    "This is an intervention site. Complete the "
-                    f"`{IntegratedCareClinicRegistration._meta.verbose_name}` form first."
-                )
 
     def clean_education(self):
         cond = (

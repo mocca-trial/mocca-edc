@@ -5,10 +5,10 @@ from mocca_prn.models.integrated_care_clinic_registration import (
     IntegratedCareClinicRegistrationError,
 )
 from mocca_sites.is_intervention_site import is_intervention_site
-from tests.inte_test_case_mixin import InteTestCaseMixin
+from tests.mocca_test_case_mixin import MoccaTestCaseMixin
 
 
-class TestIntervention(InteTestCaseMixin, TestCase):
+class TestIntervention(MoccaTestCaseMixin, TestCase):
     @tag("interv")
     @override_settings(SITE_ID=103)
     def test_is_intervention(self):

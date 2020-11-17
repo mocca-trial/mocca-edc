@@ -7,11 +7,6 @@ from edc_crf.modelform_mixins import CrfModelFormMixin as BaseCrfModelFormMixin
 from edc_model import models as edc_models
 from edc_model.models import InvalidFormat
 from edc_utils import age, convert_php_dateformat
-from mocca_prn.icc_registered import (
-    InterventionSiteNotRegistered,
-    is_icc_registered_site,
-)
-from mocca_sites.is_intervention_site import NotInterventionSite
 from mocca_visit_schedule.is_baseline import is_baseline
 
 from ..diagnoses import Diagnoses, InitialReviewRequired, MultipleInitialReviewsExist
@@ -128,36 +123,9 @@ class ClinicalReviewBaselineRequiredModelFormMixin:
 
 class ReviewFormValidatorMixin:
     def validate_care_delivery(self):
-        is_applicable, applicable_msg, not_applicable_msg = self.get_integration_info()
-        self.applicable_if_true(
-            is_applicable,
-            field_applicable="care_delivery",
-            applicable_msg=applicable_msg,
-            not_applicable_msg=not_applicable_msg,
-        )
         self.required_if(
             NO, field="care_delivery", field_required="care_delivery_other"
         )
-
-    def get_integration_info(self):
-        applicable = False
-        applicable_msg = None
-        not_applicable_msg = None
-        model_cls = django_apps.get_model("mocca_prn.integratedcareclinicregistration")
-        try:
-            is_icc_registered_site(report_datetime=self.report_datetime)
-        except NotInterventionSite:
-            not_applicable_msg = "This site was not selected for integrated care"
-        except InterventionSiteNotRegistered:
-            not_applicable_msg = (
-                "This site's integrated care clinic is NOT open. "
-                f"See facility form {model_cls._meta.verbose_name}."
-            )
-
-        else:
-            applicable = True
-            applicable_msg = "This site's integrated care clinic is open."
-        return applicable, applicable_msg, not_applicable_msg
 
 
 class CrfModelFormMixin(

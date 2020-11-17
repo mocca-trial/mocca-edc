@@ -1,7 +1,7 @@
+from edc_offstudy.constants import END_OF_STUDY_ACTION
 from edc_visit_schedule import site_visit_schedules
-from mocca_visit_schedule.schedule import SCHEDULE
+from mocca_visit_schedule.constants import SCHEDULE
 
-from ..constants import END_OF_STUDY_ACTION
 from .end_of_study import EndOfStudy
 
 

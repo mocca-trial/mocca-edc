@@ -21,10 +21,10 @@ from mocca_subject.forms import (
 from model_bakery import baker
 
 
-from ..inte_test_case_mixin import InteTestCaseMixin
+from ..mocca_test_case_mixin import MoccaTestCaseMixin
 
 
-class TestHealthEconomics(InteTestCaseMixin, TestCase):
+class TestHealthEconomics(MoccaTestCaseMixin, TestCase):
     def setUp(self):
         super().setUp()
         self.subject_screening = self.get_subject_screening()
