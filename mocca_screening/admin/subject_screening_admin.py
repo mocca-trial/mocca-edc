@@ -28,38 +28,19 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
     )
 
     fieldsets = (
+        [None, {"fields": ("screening_consent", "report_datetime")}],
         [
-            None,
+            "Original MOCCA information",
             {
                 "fields": (
-                    "screening_consent",
-                    "report_datetime",
-                    "clinic_type",
-                    "selection_method",
-                ),
+                    "mocca_site",
+                    "mocca_study_identifier",
+                    "initials",
+                    "gender",
+                    "birth_year",
+                )
             },
         ],
-        ["Demographics", {"fields": ("initials", "gender", "age_in_years")}],
-        [
-            "Criteria",
-            {
-                "fields": (
-                    "qualifying_condition",
-                    "lives_nearby",
-                    "requires_acute_care",
-                ),
-            },
-        ],
-        # [
-        #     "Additional Comments",
-        #     {
-        #         "fields": (
-        #             "unsuitable_for_study",
-        #             "reasons_unsuitable",
-        #             "unsuitable_agreed",
-        #         ),
-        #     },
-        # ],
         audit_fieldset_tuple,
     )
 
@@ -80,8 +61,6 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
         "consented",
         "refused",
         "eligible",
-        "clinic_type",
-        "qualifying_condition",
     )
 
     search_fields = (
@@ -92,13 +71,8 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
     )
 
     radio_fields = {
-        "clinic_type": admin.VERTICAL,
         "gender": admin.VERTICAL,
-        "qualifying_condition": admin.VERTICAL,
-        "lives_nearby": admin.VERTICAL,
-        "requires_acute_care": admin.VERTICAL,
         "screening_consent": admin.VERTICAL,
-        "selection_method": admin.VERTICAL,
         "unsuitable_agreed": admin.VERTICAL,
         "unsuitable_for_study": admin.VERTICAL,
     }

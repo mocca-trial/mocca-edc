@@ -10,14 +10,14 @@ from mocca_screening.constants import (
 from mocca_subject.forms import ClinicalReviewBaselineForm
 from pytz import timezone
 
-from ..inte_test_case_mixin import InteTestCaseMixin
+from ..mocca_test_case_mixin import MoccaTestCaseMixin
 
 
 def get_now():
     return get_utcnow().astimezone(timezone("Africa/Kampala"))
 
 
-class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
+class TestClinicalReviewBaseline(MoccaTestCaseMixin, TestCase):
     def setUp(self):
         super().setUp()
         # hiv clinic

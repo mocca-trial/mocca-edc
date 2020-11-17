@@ -6,11 +6,11 @@ from edc_visit_tracking.constants import UNSCHEDULED
 from mocca_screening.constants import HIV_CLINIC
 from mocca_subject.diagnoses import Diagnoses
 from mocca_subject.forms import MedicationsForm
-from tests.inte_test_case_mixin import InteTestCaseMixin
+from tests.mocca_test_case_mixin import MoccaTestCaseMixin
 from model_bakery import baker
 
 
-class TestMedications(InteTestCaseMixin, TestCase):
+class TestMedications(MoccaTestCaseMixin, TestCase):
     def setUp(self):
         super().setUp()
         self.subject_screening = self.get_subject_screening(

@@ -23,6 +23,7 @@ CLINIC_CHOICES = (
     (NCD_CLINIC, "NCD Clinic (Joint Diabetes/Hypertension)"),
     (DIABETES_CLINIC, "Diabetes Clinic"),
     (HYPERTENSION_CLINIC, "Hypertension Clinic"),
+    (INTEGRATED, "Integrated Clinic"),
 )
 
 REFUSAL_REASONS = (

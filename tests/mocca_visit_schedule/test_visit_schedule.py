@@ -4,10 +4,10 @@ from edc_visit_schedule.constants import DAY1
 from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED
 from mocca_screening.constants import HIV_CLINIC
 
-from ..inte_test_case_mixin import InteTestCaseMixin
+from ..mocca_test_case_mixin import MoccaTestCaseMixin
 
 
-class TestVisitSchedule(InteTestCaseMixin, TestCase):
+class TestVisitSchedule(MoccaTestCaseMixin, TestCase):
     def setUp(self):
         super().setUp()
         self.subject_screening = self.get_subject_screening(

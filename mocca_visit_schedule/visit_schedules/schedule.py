@@ -6,6 +6,7 @@ from edc_visit_schedule.constants import (
     MONTH12,
 )
 
+from ..constants import SCHEDULE
 from .crfs import (
     crfs_d1,
     crfs_6m,
@@ -21,8 +22,6 @@ from .requisitions import (
 )
 
 default_requisitions = None
-
-SCHEDULE = "schedule"
 
 
 class Visit(BaseVisit):
@@ -50,8 +49,8 @@ class Visit(BaseVisit):
 schedule = Schedule(
     name=SCHEDULE,
     verbose_name="Day 1 to Month 12",
-    onschedule_model="mocca_prn.onschedulehiv",
-    offschedule_model="mocca_prn.offschedulehiv",
+    onschedule_model="mocca_prn.onschedule",
+    offschedule_model="mocca_prn.offschedule",
     consent_model="mocca_consent.subjectconsent",
     appointment_model="edc_appointment.appointment",
     loss_to_followup_model="mocca_prn.losstofollowup",

@@ -1,4 +1,5 @@
 import string
+from pprint import pprint
 from random import choices
 
 from dateutil.relativedelta import relativedelta
@@ -19,7 +20,7 @@ from edc_visit_schedule.constants import DAY1
 from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED
 from mocca_auth.codenames_by_group import get_codenames_by_group
 from mocca_consent.models import SubjectConsent
-from mocca_screening.constants import HIV_CLINIC
+from mocca_screening.constants import INTEGRATED
 from mocca_screening.forms import SubjectScreeningForm
 from mocca_screening.models import SubjectScreening
 from mocca_sites.sites import fqdn
@@ -27,7 +28,7 @@ from mocca_subject.models import SubjectVisit
 from model_bakery import baker
 
 
-class InteTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
+class MoccaTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
     fqdn = fqdn
 
     default_sites = get_sites_by_country("uganda")
@@ -75,7 +76,6 @@ class InteTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
         data = {
             "screening_consent": YES,
             "age_in_years": 25,
-            "clinic_type": HIV_CLINIC,
             "gender": MALE,
             "hospital_identifier": "13343322",
             "initials": "".join(choices(string.ascii_uppercase, k=2)),
@@ -86,10 +86,16 @@ class InteTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
             "selection_method": RANDOM_SAMPLING,
             "unsuitable_agreed": NOT_APPLICABLE,
             "unsuitable_for_study": NO,
+            "clinic_type": INTEGRATED,
         }
         data.update(**kwargs)
         form = SubjectScreeningForm(data=data, instance=None)
-        form.save()
+        form.is_valid()
+        try:
+            form.save()
+        except ValueError as e:
+            pprint(form._errors)
+            raise
 
         subject_screening = SubjectScreening.objects.get(
             screening_identifier=form.instance.screening_identifier
@@ -115,7 +121,6 @@ class InteTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
             dob=get_utcnow().date()
             - relativedelta(years=subject_screening.age_in_years),
             site=Site.objects.get(name=site_name),
-            clinic_type=HIV_CLINIC,
             consent_datetime=consent_datetime or get_utcnow(),
         )
         options.update(**kwargs)

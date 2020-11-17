@@ -6,10 +6,10 @@ from inte_reports.ae_report import AeReport
 from model_bakery import baker
 from unittest import skip
 
-from .inte_test_case_mixin import InteTestCaseMixin
+from .mocca_test_case_mixin import MoccaTestCaseMixin
 
 
-class TestReports(InteTestCaseMixin, TestCase):
+class TestReports(MoccaTestCaseMixin, TestCase):
     def setUp(self):
         self.user = User.objects.create(
             username="erikvw", is_staff=True, is_active=True

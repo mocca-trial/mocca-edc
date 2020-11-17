@@ -17,6 +17,7 @@ from edc_search.model_mixins import SearchSlugManager
 from edc_sites.models import SiteModelMixin
 from edc_visit_tracking.managers import CurrentSiteManager
 from mocca_screening.choices import CLINIC_CHOICES
+from mocca_screening.constants import INTEGRATED
 
 from ..choices import IDENTITY_TYPE
 from .model_mixins import SearchSlugModelMixin
@@ -68,7 +69,8 @@ class SubjectConsent(
         verbose_name="From which type of clinic was the patient selected?",
         max_length=25,
         choices=CLINIC_CHOICES,
-        help_text="Should match that reported on the Screening form.",
+        default=INTEGRATED,
+        editable=False,
     )
 
     gender = models.CharField(

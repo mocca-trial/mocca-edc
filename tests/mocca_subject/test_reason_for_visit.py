@@ -13,10 +13,10 @@
 # from mocca_screening.constants import HIV_CLINIC
 # from mocca_subject.forms import ReasonForVisitForm
 #
-# from ..inte_test_case_mixin import InteTestCaseMixin
+# from ..mocca_test_case_mixin import MoccaTestCaseMixin
 #
 #
-# class TestReasonForVisit(InteTestCaseMixin, TestCase):
+# class TestReasonForVisit(MoccaTestCaseMixin, TestCase):
 #     def setUp(self):
 #         super().setUp()
 #         # hiv clinic

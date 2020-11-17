@@ -6,11 +6,11 @@ from edc_metadata.models import CrfMetadata
 from edc_utils import get_utcnow
 from edc_visit_tracking.constants import UNSCHEDULED
 from mocca_screening.constants import HIV_CLINIC
-from tests.inte_test_case_mixin import InteTestCaseMixin
+from tests.mocca_test_case_mixin import MoccaTestCaseMixin
 from model_bakery import baker
 
 
-class TestMetadataRules(InteTestCaseMixin, TestCase):
+class TestMetadataRules(MoccaTestCaseMixin, TestCase):
     def setUp(self):
         super().setUp()
         self.subject_screening = self.get_subject_screening(

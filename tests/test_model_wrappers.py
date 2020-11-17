@@ -12,7 +12,7 @@ from mocca_dashboard.model_wrappers import SubjectScreeningModelWrapper
 from mocca_screening.models import SubjectScreening
 from mocca_subject.models import SubjectVisit
 
-from .inte_test_case_mixin import InteTestCaseMixin
+from .mocca_test_case_mixin import MoccaTestCaseMixin
 
 
 class SubjectModelWrapperTestHelper(ModelWrapperTestHelper):
@@ -23,7 +23,7 @@ class ScreeningModelWrapperTestHelper(ModelWrapperTestHelper):
     dashboard_url = "/screening_listboard/"
 
 
-class TestModelWrappers(InteTestCaseMixin, TestCase):
+class TestModelWrappers(MoccaTestCaseMixin, TestCase):
     model_wrapper_helper_cls = SubjectModelWrapperTestHelper
 
     def setUp(self):

@@ -1,11 +1,5 @@
 from django import forms
-from edc_constants.constants import NO
 from edc_form_validators.form_validator import FormValidator
-from mocca_prn.icc_registered import (
-    InterventionSiteNotRegistered,
-    is_icc_registered_site,
-)
-from mocca_sites.is_intervention_site import NotInterventionSite
 
 from ..models import DmReview
 from .mixins import (

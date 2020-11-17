@@ -3,10 +3,10 @@ from edc_constants.constants import COMPLETE, SMOKER, NONSMOKER, NOT_APPLICABLE,
 from mocca_subject.forms import OtherBaselineDataForm
 from model_bakery import baker
 
-from ..inte_test_case_mixin import InteTestCaseMixin
+from ..mocca_test_case_mixin import MoccaTestCaseMixin
 
 
-class TestOtherBaselineData(InteTestCaseMixin, TestCase):
+class TestOtherBaselineData(MoccaTestCaseMixin, TestCase):
     def setUp(self):
         super().setUp()
         self.data = {

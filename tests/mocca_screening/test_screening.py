@@ -1,34 +1,53 @@
+from datetime import date
+
 from django.test import TestCase, tag
 from edc_constants.constants import (
     YES,
     NO,
-    RANDOM_SAMPLING,
     MALE,
     NOT_APPLICABLE,
 )
 from edc_utils.date import get_utcnow
-from mocca_screening.constants import NCD_CLINIC
+from mocca_lists.models import MoccaOriginalSites
+from mocca_screening.constants import INTEGRATED, NCD_CLINIC
 from mocca_screening.forms import SubjectScreeningForm
-from mocca_screening.models import SubjectScreening
+from mocca_screening.models import MoccaRegister, SubjectScreening
+
+from ..mocca_test_case_mixin import MoccaTestCaseMixin
 
 
-class TestForms(TestCase):
+class TestForms(MoccaTestCaseMixin, TestCase):
+    def setUp(self):
+
+        self.mocca_site = MoccaOriginalSites.objects.get(name="hindu_mandal")
+        MoccaRegister.objects.create(
+            mocca_screening_identifier="XXXXXX",
+            mocca_study_identifier="0700001",
+            initials="EW",
+            gender=MALE,
+            dob=date(2000, 6, 15),
+            age_in_years=20,
+            mocca_country="tanzania",
+            mocca_site=self.mocca_site,
+        )
+
     def get_data(self):
         return {
             "screening_consent": YES,
-            "selection_method": RANDOM_SAMPLING,
             "report_datetime": get_utcnow(),
+            "mocca_participant": YES,
+            "mocca_site": str(self.mocca_site.id),
+            "mocca_study_identifier": "0700001",
             "initials": "EW",
             "gender": MALE,
-            "age_in_years": 25,
-            "clinic_type": NCD_CLINIC,
-            "qualifying_condition": YES,
-            "lives_nearby": YES,
-            "requires_acute_care": NO,
+            "birth_year": 2000,
+            "age_in_years": 20,
+            "clinic_type": INTEGRATED,
             "unsuitable_for_study": NO,
             "unsuitable_agreed": NOT_APPLICABLE,
         }
 
+    @tag("123")
     def test_screening_ok(self):
 
         form = SubjectScreeningForm(data=self.get_data(), instance=None)

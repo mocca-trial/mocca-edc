@@ -4,12 +4,6 @@ from edc_form_validators import FormValidatorMixin
 from edc_sites.forms import SiteModelFormMixin
 from edc_visit_tracking.constants import MISSED_VISIT, SCHEDULED, UNSCHEDULED
 from edc_visit_tracking.form_validators import VisitFormValidator
-from mocca_prn.icc_registered import (
-    InterventionSiteNotRegistered,
-    is_icc_registered_site,
-)
-from mocca_prn.models import IntegratedCareClinicRegistration
-from mocca_sites.is_intervention_site import NotInterventionSite
 from mocca_subject.constants import INTEGRATED
 
 from ..models import SubjectVisit
@@ -56,28 +50,6 @@ class SubjectVisitFormValidator(VisitFormValidator):
         self.m2m_single_selection_if(NOT_APPLICABLE, m2m_field="clinic_services")
 
     def validate__health_services(self):
-        selections = self.get_m2m_selected("health_services")
-        if INTEGRATED in selections:
-            try:
-                is_icc_registered_site(
-                    report_datetime=self.cleaned_data.get("report_datetime")
-                )
-            except NotInterventionSite:
-                raise forms.ValidationError(
-                    {
-                        "health_services": "This site does not have an integrated care clinic."
-                    }
-                )
-            except InterventionSiteNotRegistered:
-                raise forms.ValidationError(
-                    {
-                        "health_services": (
-                            "Integrated Care Clinic not "
-                            "open at the time of this report. See facility form "
-                            f"`{IntegratedCareClinicRegistration._meta.verbose_name}`."
-                        )
-                    }
-                )
         self.m2m_single_selection_if(INTEGRATED, m2m_field="health_services")
 
         self.m2m_applicable_if_true(
