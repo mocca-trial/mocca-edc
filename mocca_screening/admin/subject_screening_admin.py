@@ -29,6 +29,7 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
 
     fieldsets = (
         [None, {"fields": ("screening_consent", "report_datetime")}],
+        ["Inclusion Criteria", {"fields": ("mocca_participant",)}],
         [
             "Original MOCCA information",
             {
@@ -38,6 +39,7 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
                     "initials",
                     "gender",
                     "birth_year",
+                    "age_in_years",
                 )
             },
         ],
@@ -71,6 +73,8 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
     )
 
     radio_fields = {
+        "mocca_participant": admin.VERTICAL,
+        "mocca_site": admin.VERTICAL,
         "gender": admin.VERTICAL,
         "screening_consent": admin.VERTICAL,
         "unsuitable_agreed": admin.VERTICAL,

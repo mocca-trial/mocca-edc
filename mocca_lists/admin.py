@@ -11,6 +11,7 @@ from .models import (
     DrugPaySources,
     HealthServices,
     HtnTreatments,
+    MoccaOriginalSites,
     NonAdherenceReasons,
     OffstudyReasons,
     ReasonsForTesting,
@@ -23,8 +24,13 @@ from .models import (
 )
 
 
+@admin.register(MoccaOriginalSites, site=mocca_lists_admin)
+class MoccaOriginalSitesAdmin(ListModelAdminMixin, admin.ModelAdmin):
+    pass
+
+
 @admin.register(TransportChoices, site=mocca_lists_admin)
-class TransportChoices(ListModelAdminMixin, admin.ModelAdmin):
+class TransportChoicesAdmin(ListModelAdminMixin, admin.ModelAdmin):
     pass
 
 

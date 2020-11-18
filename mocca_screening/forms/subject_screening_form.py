@@ -62,54 +62,67 @@ class SubjectScreeningFormValidator(FormValidator):
             )
 
     def validate_mocca_study_identifier_with_site(self):
-        """Raises an exception if given identifier is does not exist
-        for the selected site.
-        """
-        obj = None
+        mocca_register = None
+        mocca_register_cls = django_apps.get_model("mocca_screening.moccaregister")
         if self.cleaned_data.get("mocca_study_identifier") and self.cleaned_data.get(
             "mocca_site"
         ):
-            mocca_register_cls = django_apps.get_model("mocca_screening.moccaregister")
             try:
-                obj = mocca_register_cls.objects.get(
+                mocca_register = mocca_register_cls.objects.get(
                     mocca_study_identifier=self.cleaned_data.get(
                         "mocca_study_identifier"
                     ),
-                    mocca_site=self.cleaned_data.get("mocca_site"),
                 )
             except ObjectDoesNotExist:
                 raise forms.ValidationError(
                     {
                         "mocca_study_identifier": (
-                            "Invalid MOCCA study identifier for selected site."
+                            "Invalid MOCCA (original) study identifier."
                         )
                     }
                 )
-        return obj
+            else:
+                if mocca_register.mocca_site != self.cleaned_data.get("mocca_site"):
+                    raise forms.ValidationError(
+                        {
+                            "mocca_site": "Invalid MOCCA (original) site for given study identifier."
+                        }
+                    )
+        return mocca_register
 
     def validate_mocca_enrollment_data(self):
         """Raises an exception if either the birth year or initials
         do not match the register record for the given
         `mocca_study_identifier`.
         """
+        mocca_register = self.validate_mocca_study_identifier_with_site()
         if (
-            self.cleaned_data.get("mocca_study_identifier")
-            and self.cleaned_data.get("mocca_site")
+            mocca_register
             and self.cleaned_data.get("birth_year")
             and self.cleaned_data.get("initials")
         ):
-            mocca_register = self.validate_mocca_study_identifier_with_site()
-            if mocca_register.birth_year != self.cleaned_data.get("birth_year"):
+            for attrname in ["initials", "gender", "birth_year"]:
+                if getattr(mocca_register, attrname) != self.cleaned_data.get(attrname):
+                    label = attrname.replace("_", " ")
+                    raise forms.ValidationError(
+                        {
+                            attrname: (
+                                f"Invalid {label} for this MOCCA (original) study identifier."
+                            )
+                        }
+                    )
+
+        if (
+            self.cleaned_data.get("age_in_years")
+            and self.cleaned_data.get("birth_year")
+            and self.cleaned_data.get("report_datetime")
+        ):
+            expected_age = self.cleaned_data.get(
+                "report_datetime"
+            ).year - self.cleaned_data.get("birth_year")
+            if abs(expected_age - self.cleaned_data.get("age_in_years")) > 1:
                 raise forms.ValidationError(
-                    {
-                        "birth_year": (
-                            "Invalid birth year for this MOCCA study identifier."
-                        )
-                    }
-                )
-            if mocca_register.initials != self.cleaned_data.get("initials"):
-                raise forms.ValidationError(
-                    {"initials": "Invalid initials for this MOCCA study identifier."}
+                    {"age_in_years": "Does not make sense relative to birth year given"}
                 )
 
 

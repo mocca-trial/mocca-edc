@@ -35,5 +35,15 @@ sites = {
 }
 
 
+def get_mocca_sites_by_country(country=None):
+    return {k: v for k, v in sites.items() if v.country == country}
+
+
 def get_mocca_site_limited_to():
-    return {"mocca_country": get_current_country()}
+    return {
+        "name__in": [
+            site.name
+            for site in sites.values()
+            if site.country == get_current_country()
+        ]
+    }
