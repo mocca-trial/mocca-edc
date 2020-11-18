@@ -90,6 +90,7 @@ INSTALLED_APPS = [
     "edc_adverse_event.apps.AppConfig",
     "edc_auth.apps.AppConfig",
     "edc_crf.apps.AppConfig",
+    # "edc_call_manager.apps.AppConfig",
     "edc_consent.apps.AppConfig",
     "edc_lab.apps.AppConfig",
     "edc_visit_schedule.apps.AppConfig",
@@ -458,6 +459,8 @@ if SENTRY_ENABLED and SENTRY_DSN:
 #     if env("DJANGO_LOGGING_ENABLED"):
 #         from .logging.standard import LOGGING  # noqa
 
+MOCCA_REGISTER_FILE = os.path.join(ETC_DIR, "mocca_register.csv")
+
 
 # if running tests ...
 if "test" in sys.argv or "runtests" in sys.argv:
@@ -467,3 +470,4 @@ if "test" in sys.argv or "runtests" in sys.argv:
     MIGRATION_MODULES = DisableMigrations()
     PASSWORD_HASHERS = ("django.contrib.auth.hashers.MD5PasswordHasher",)
     DEFAULT_FILE_STORAGE = "inmemorystorage.InMemoryStorage"
+    MOCCA_REGISTER_FILE = os.path.join(TEST_DIR, "mocca_register.csv")

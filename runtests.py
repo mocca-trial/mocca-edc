@@ -20,6 +20,7 @@ DEFAULT_SETTINGS = DefaultTestSettings(
     BASE_DIR=base_dir,
     APP_NAME=app_name,
     SITE_ID=SiteID(default=101),
+    MOCCA_REGISTER_FILE=os.path.join(base_dir, "tests", "mocca_register.csv"),
     EDC_SITES_MODULE_NAME="mocca_sites.sites",
     SUBJECT_VISIT_MODEL="mocca_subject.subjectvisit",
     SUBJECT_VISIT_MISSED_MODEL="mocca_subject.subjectvisitmissed",

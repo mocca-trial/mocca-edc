@@ -11,6 +11,7 @@ from edc_constants.choices import YES_NO
 from edc_model.models import BaseUuidModel
 from edc_screening.model_mixins import ScreeningModelMixin
 from edc_screening.screening_identifier import ScreeningIdentifier
+from mocca_lists.models import MoccaOriginalSites
 
 from ..eligibility import check_eligible_final
 from ..mocca_original_sites import get_mocca_site_limited_to
@@ -36,7 +37,7 @@ class SubjectScreening(
     )
 
     mocca_site = models.ForeignKey(
-        MoccaRegister,
+        MoccaOriginalSites,
         verbose_name="Original MOCCA site",
         on_delete=models.PROTECT,
         limit_choices_to=get_mocca_site_limited_to,
@@ -51,6 +52,12 @@ class SubjectScreening(
     mocca_study_identifier = models.CharField(
         verbose_name="Original MOCCA study identifier",
         max_length=25,
+        validators=[
+            RegexValidator(
+                r"0[0-9]{1}\-0[0-9]{3}|[0-9]{6}",
+                "Invalid format. Expected 12-3456 for UG, 123456 for TZ",
+            )
+        ],
         help_text="Format must match original identifier. e.g. 12-3456 for UG, 123456 for TZ",
     )
 
@@ -69,6 +76,10 @@ class SubjectScreening(
 
     birth_year = models.IntegerField(
         validators=[MinValueValidator(1900), MaxValueValidator(2002)],
+    )
+
+    mocca_register = models.OneToOneField(
+        MoccaRegister, on_delete=models.PROTECT, null=True
     )
 
     def save(self, *args, **kwargs):

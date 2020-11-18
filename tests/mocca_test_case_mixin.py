@@ -22,6 +22,7 @@ from mocca_auth.codenames_by_group import get_codenames_by_group
 from mocca_consent.models import SubjectConsent
 from mocca_screening.constants import INTEGRATED
 from mocca_screening.forms import SubjectScreeningForm
+from mocca_screening.import_mocca_register import import_mocca_register
 from mocca_screening.models import SubjectScreening
 from mocca_sites.sites import fqdn
 from mocca_subject.models import SubjectVisit
@@ -52,6 +53,7 @@ class MoccaTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
         )
         if cls.import_randomization_list:
             RandomizationListImporter(verbose=False, name="default")
+        import_mocca_register()
 
     @classmethod
     def tearDownClass(cls):
