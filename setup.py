@@ -14,18 +14,18 @@ with open(os.path.join(os.path.dirname(__file__), "VERSION")) as f:
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
-    name="inte-edc",
+    name="mocca-edc",
     version=VERSION,
     author=u"Erik van Widenfelt",
     author_email="ew2789@gmail.com",
     packages=find_packages(),
     include_package_data=True,
-    url="https://github.com/inte-africa-trial/inte-edc",
+    url="https://github.com/mocca-trial/mocca-edc",
     license="GPL license, see LICENSE",
-    description="META Trial EDC (http://www.isrctn.com/ISRCTN76157257)",
+    description="MOCCA (ext) Trial EDC",
     long_description=README,
     zip_safe=False,
-    keywords="django inte africa EDC",
+    keywords="django MOCCA MOCCA RESPOND-AFRICA EDC",
     classifiers=[
         "Environment :: Web Environment",
         "Framework :: Django",

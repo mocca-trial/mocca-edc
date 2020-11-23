@@ -42,4 +42,4 @@ plugins:
     enabled: true
 exclude_patterns:
   - "tests/"
-  - "inte_*/tests/"
+  - "mocca_*/tests/"
