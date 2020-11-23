@@ -15,12 +15,12 @@ from edc_auth import TMG, EVERYONE, AUDITOR, CLINIC, PII, EXPORT, LAB
 from edc_dashboard.url_names import url_names
 from edc_sites import add_or_update_django_sites, get_sites_by_country
 from edc_utils import get_utcnow
-from inte_screening.models.subject_screening import SubjectScreening
-from inte_sites.sites import fqdn
+from mocca_screening.models.subject_screening import SubjectScreening
+from mocca_sites.sites import fqdn
 from model_bakery import baker
 from unittest import skip
 
-from .inte_test_case_mixin import InteTestCaseMixin
+from .mocca_test_case_mixin import MoccaTestCaseMixin
 
 style = color_style()
 
@@ -44,13 +44,13 @@ def login(testcase, user=None, superuser=None, groups=None):
 
 @skip
 @override_settings(SIMPLE_HISTORY_PERMISSIONS_ENABLED=True)
-class AdminSiteTest(InteTestCaseMixin, TestCase):
+class AdminSiteTest(MoccaTestCaseMixin, TestCase):
     def setUp(self):
         self.user = User.objects.create_superuser("user_login", "u@example.com", "pass")
 
     def test_ae(self):
         self.login(superuser=False, groups=[EVERYONE, AUDITOR])
-        response = self.client.get(reverse("inte_ae:home_url"))
+        response = self.client.get(reverse("mocca_ae:home_url"))
         self.assertEquals(response.status_code, 200)
         response = self.client.get(reverse("edc_adverse_event:ae_home_url"))
         self.assertEquals(response.status_code, 200)
@@ -192,7 +192,7 @@ class AdminSiteTest(InteTestCaseMixin, TestCase):
         page = add_screening_page.form.submit()
 
         # redirects back to listboard
-        self.assertRedirects(page, reverse(f"inte_dashboard:screening_listboard_url"))
+        self.assertRedirects(page, reverse(f"mocca_dashboard:screening_listboard_url"))
 
         # new screened subject is available
         obj = SubjectScreening.objects.all().last()
@@ -221,7 +221,7 @@ class AdminSiteTest(InteTestCaseMixin, TestCase):
         self.assertIn("Please correct the errors below", response)
 
         subject_consent = baker.make_recipe(
-            "inte_subject.subjectconsent",
+            "mocca_subject.subjectconsent",
             screening_identifier=subject_screening.screening_identifier,
             dob=(
                 get_utcnow() - relativedelta(years=subject_screening.age_in_years)
@@ -247,7 +247,7 @@ class AdminSiteTest(InteTestCaseMixin, TestCase):
         self.assertIn(subject_consent.subject_identifier, subject_listboard_page)
 
         href = reverse(
-            "inte_dashboard:subject_dashboard_url",
+            "mocca_dashboard:subject_dashboard_url",
             kwargs={"subject_identifier": subject_consent.subject_identifier},
         )
         subject_dashboard_page = subject_listboard_page.click(href=href)
@@ -298,7 +298,7 @@ class AdminSiteTest(InteTestCaseMixin, TestCase):
 
         subject_dashboard_page = self.client.get(
             reverse(
-                "inte_dashboard:subject_dashboard_url",
+                "mocca_dashboard:subject_dashboard_url",
                 kwargs=dict(
                     subject_identifier=subject_identifier,
                     appointment=str(appointments[0].id),

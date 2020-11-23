@@ -1,0 +1,12 @@
+country,site,screening_id,study_id,initials,birth_year,age_in_years,gender
+Tanzania,Amana,AR0001,60001,AMK,1980,38,Female
+Tanzania,Amana,AR0002,60002,MJM,1977,42,Female
+Tanzania,Amana,AR0003,60003,JAY,1978,40,Female
+Tanzania,Amana,AR0004,60004,IAI,1992,26,Female
+Tanzania,Amana,AR0006,60006,KAO,2018,54,Male
+Uganda,Kiswa,KB-0140--1,05-0124,GW,1936,82,Male
+Uganda,Kiswa,KB-0141--1,05-0125,NM,1960,58,Female
+Uganda,Kiswa,KB-0142--1,05-0126,AGR,1981,39,Male
+Uganda,Kiswa,KB-0143--1,05-0127,MH,1968,50,Male
+Uganda,Kiswa,KB-0144--1,05-0128,GM,1994,24,Female
+Uganda,Kiswa,KB-0151--1,05-0135,BN,1988,30,Male

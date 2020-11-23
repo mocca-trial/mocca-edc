@@ -30,14 +30,14 @@ from edc_auth.codenames import (
     get_rando,
     tmg,
 )
-from inte_auth.codenames import (
+from mocca_auth.codenames import (
     auditor,
     clinic,
     screening,
     unblinding_requestors,
     unblinding_reviewers,
 )
-from inte_auth.codenames_by_group import get_codenames_by_group
+from mocca_auth.codenames_by_group import get_codenames_by_group
 
 
 class TestPermissions(TestCase):
