@@ -6,22 +6,36 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('mocca_screening', '0013_auto_20201204_0613'),
+        ("mocca_screening", "0013_auto_20201204_0613"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='moccaregistercontact',
-            options={'ordering': ['report_datetime'], 'verbose_name': 'MOCCA Patient Register Contact', 'verbose_name_plural': 'MOCCA Patient Register Contacts'},
+            name="moccaregistercontact",
+            options={
+                "ordering": ["report_datetime"],
+                "verbose_name": "MOCCA Patient Register Contact",
+                "verbose_name_plural": "MOCCA Patient Register Contacts",
+            },
         ),
         migrations.AlterField(
-            model_name='historicalmoccaregister',
-            name='call',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], default='Yes', max_length=15, verbose_name='Call?'),
+            model_name="historicalmoccaregister",
+            name="call",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                default="Yes",
+                max_length=15,
+                verbose_name="Call?",
+            ),
         ),
         migrations.AlterField(
-            model_name='moccaregister',
-            name='call',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], default='Yes', max_length=15, verbose_name='Call?'),
+            model_name="moccaregister",
+            name="call",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                default="Yes",
+                max_length=15,
+                verbose_name="Call?",
+            ),
         ),
     ]
