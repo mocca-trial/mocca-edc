@@ -17,7 +17,7 @@ def import_mocca_orig(verbose=None, test=None, overwrite=None):
     if test:
         pass  # import_for_tests(model_cls)
     else:
-        path = os.path.join(os.path.expanduser(settings.BASE_DIR), "mocca_original.csv")
+        path = os.path.join(os.path.expanduser(settings.ETC_DIR), "mocca_original.csv")
         try:
             if not os.path.exists(path):
                 raise FileNotFoundError(path)
