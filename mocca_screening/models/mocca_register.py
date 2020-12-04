@@ -107,7 +107,9 @@ class MoccaRegister(SiteModelMixin, BaseUuidModel):
 
     contact_attempts = models.IntegerField(default=0,)
 
-    call = models.CharField(max_length=15, choices=YES_NO, default=YES)
+    call = models.CharField(
+        verbose_name="Call?", max_length=15, choices=YES_NO, default=YES
+    )
 
     date_last_called = models.DateField(null=True)
 
