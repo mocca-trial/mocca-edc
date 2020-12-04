@@ -56,7 +56,7 @@ def get_field_options(row):
     elif row["sex"] == "2":
         gender = FEMALE
     else:
-        gender = None
+        raise TypeError(f"Unknown gender. Got `{row['gender']}`")
 
     site = get_site_by_attr(
         "orig_site_id", int(row["site"]), sites=all_sites.get(country)

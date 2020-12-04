@@ -129,10 +129,6 @@ class MoccaRegister(SiteModelMixin, BaseUuidModel):
         "mocca_lists.MoccaOriginalSites",
     ]
 
-    def save(self, *args, **kwargs):
-        self.mocca_country = get_current_country()
-        super().save(*args, **kwargs)
-
     class Meta:
         verbose_name = "MOCCA Patient Register"
         verbose_name_plural = "MOCCA Patient Register"
