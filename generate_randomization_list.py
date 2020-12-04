@@ -16,7 +16,12 @@ Usage:
 
     python generate_randomization_list.py tests/site_assignments.csv
 
-
+To generate site_assignments.csv:
+    with open("site_assignments.csv", "a+") as f:
+        writer = csv.writer(f)
+        for country, sites in all_sites.items():
+            for site in sites:
+                writer.writerow([country, site.name, "integration", 1000])
 """
 import csv
 import sys
@@ -42,7 +47,7 @@ def main(
     Adds slots to  a dummy `randomisation` list file where all assignments are the same
     for each slot.
     """
-    assignment_map = assignment_map or ["intervention", "control"]
+    assignment_map = assignment_map or ["integration"]
     if assignment not in assignment_map:
         raise ValueError(f"Invalid assignment. Got {assignment}")
 

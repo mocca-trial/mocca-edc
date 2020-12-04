@@ -1,4 +1,7 @@
+import pdb
+
 from django.contrib import admin
+from django.contrib.admin.views.autocomplete import AutocompleteJsonView
 from django.template.loader import render_to_string
 from django.urls.base import reverse
 from django.urls.exceptions import NoReverseMatch
@@ -15,6 +18,19 @@ from ..forms import SubjectScreeningForm
 from ..models import SubjectScreening
 
 
+class MyAutocompleteJsonView(AutocompleteJsonView):
+    def get_queryset(self):
+        """Return queryset based on ModelAdmin.get_search_results()."""
+        pdb.set_trace()
+        qs = self.model_admin.get_queryset(self.request)
+        qs, search_use_distinct = self.model_admin.get_search_results(
+            self.request, qs, self.term
+        )
+        if search_use_distinct:
+            qs = qs.distinct()
+        return qs.filter(mocca_register__screening_identifier__isnull=True)
+
+
 @admin.register(SubjectScreening, site=mocca_screening_admin)
 class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin):
     form = SubjectScreeningForm
@@ -27,22 +43,12 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
         "exclusion criteria in order to proceed to the final screening stage"
     )
 
+    autocomplete_fields = ["mocca_register"]
+
     fieldsets = (
         [None, {"fields": ("screening_consent", "report_datetime")}],
         ["Inclusion Criteria", {"fields": ("mocca_participant",)}],
-        [
-            "Original MOCCA information",
-            {
-                "fields": (
-                    "mocca_site",
-                    "mocca_study_identifier",
-                    "initials",
-                    "gender",
-                    "birth_year",
-                    "age_in_years",
-                )
-            },
-        ],
+        ["Original MOCCA information", {"fields": ("mocca_register",)}],
         audit_fieldset_tuple,
     )
 
@@ -68,6 +74,8 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
     search_fields = (
         "screening_identifier",
         "subject_identifier",
+        "mocca_study_identifier",
+        "mocca_screening_identifier",
         "initials",
         "reasons_ineligible",
     )
@@ -80,6 +88,12 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
         "unsuitable_agreed": admin.VERTICAL,
         "unsuitable_for_study": admin.VERTICAL,
     }
+
+    def get_readonly_fields(self, request, obj=None):
+        fields = super().get_readonly_fields(request, obj=obj)
+        if obj and "mocca_register" not in fields:
+            fields.append("mocca_register")
+        return fields
 
     def post_url_on_delete_kwargs(self, request, obj):
         return {}
@@ -111,3 +125,31 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
         else:
             context = dict(title=_("Go to subject dashboard"), url=url, label=label)
         return render_to_string("dashboard_button.html", context=context)
+
+    # def formfield_for_foreignkey(self, db_field, request, **kwargs):
+    #     if db_field.name == "mocca_register":
+    #         kwargs["queryset"] = db_field.related_model.objects.filter(
+    #             screening_identifier__isnull=True
+    #         ).order_by("mocca_study_identifier")
+    #     return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    # def get_search_results(self, request, queryset, search_term):
+    #     queryset, use_distinct = super().get_search_results(
+    #         request, queryset, search_term
+    #     )
+    #     path = urlsplit(request.META.get("HTTP_REFERER")).path
+    #     query = urlsplit(request.META.get("HTTP_REFERER")).query
+    #     if "bloodresult" in path or "lumbarpuncturecsf" in path:
+    #         attrs = parse_qs(query)
+    #         try:
+    #             subject_visit = attrs.get("subject_visit")[0]
+    #         except IndexError:
+    #             pass
+    #         else:
+    #             queryset = queryset.filter(
+    #                 subject_visit__id=subject_visit, is_drawn=YES
+    #             )
+    #     return queryset, use_distinct
+
+    def autocomplete_view(self, request):
+        return AutocompleteJsonView.as_view(model_admin=self)(request)

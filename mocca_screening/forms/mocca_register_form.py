@@ -20,7 +20,7 @@ class MoccaRegisterFormValidator(FormValidator):
                 )
         if (
             self.cleaned_data.get("dob")
-            and self.cleaned_data.get("report_datetime")
+            and self.instance.report_datetime
             and self.get_age() < 18
         ):
             raise forms.ValidationError({"dob": "Must 18 or older"})
@@ -31,7 +31,7 @@ class MoccaRegisterFormValidator(FormValidator):
         if self.cleaned_data.get("dob") and self.cleaned_data.get("birth_year"):
             if self.cleaned_data.get("dob").year != self.cleaned_data.get("birth_year"):
                 raise forms.ValidationError(
-                    {"birth_year": "Must match year in date of birth"}
+                    {"birth_year": "Must match year in date of birth."}
                 )
         if (
             self.cleaned_data.get("dob")
@@ -50,13 +50,18 @@ class MoccaRegisterFormValidator(FormValidator):
     def get_age(self):
         return age(
             born=self.cleaned_data.get("dob"),
-            reference_dt=self.cleaned_data.get("report_datetime"),
+            reference_dt=self.instance.report_datetime,
         ).years
 
 
 class MoccaRegisterForm(FormValidatorMixin, forms.ModelForm):
 
     form_validator_cls = MoccaRegisterFormValidator
+
+    screening_identifier = forms.CharField(
+        label="Screening identifier",
+        widget=forms.TextInput(attrs={"readonly": "readonly"}),
+    )
 
     class Meta:
         model = MoccaRegister
