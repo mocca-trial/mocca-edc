@@ -34,6 +34,10 @@
                 </div>
                 <div class="list-group">
                     {% if perms.edc_dashboard.view_screening_listboard %}
+                        <a href="{% url 'mocca_screening_admin:mocca_screening_moccaregister_changelist' %}"
+                           class="list-group-item"><i
+                                class="fas fa-phone fa-lg fa-fw"></i>&nbsp;Call MOCCA-<i>orig</i> participants</a>                    {% endif %}
+                    {% if perms.edc_dashboard.view_screening_listboard %}
                         <a id="home_list_group_screening_listboard"
                            href="{% url screening_listboard_url|default:'screening_listboard_url_cannot_be_none' %}"
                            class="list-group-item"><i class="fas fa-user-plus fa-lg fa-fw"></i>&nbsp;Screening</a>

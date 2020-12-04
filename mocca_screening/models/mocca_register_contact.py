@@ -66,3 +66,4 @@ class MoccaRegisterContact(SiteModelMixin, BaseUuidModel):
     class Meta:
         verbose_name = "MOCCA Patient Register Contact"
         verbose_name_plural = "MOCCA Patient Register Contacts"
+        ordering = ["report_datetime"]
