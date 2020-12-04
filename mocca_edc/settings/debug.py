@@ -5,15 +5,14 @@ from .defaults import *  # noqa
 
 print(f"Settings file {__file__}")  # noqa
 
-SITE_ID = SiteID(default=103)
+SITE_ID = SiteID(default=220)
 EDC_SITES_UAT_DOMAIN = False
 DEBUG = True
 ALLOWED_HOSTS = [
-    "kojja.ug.mocca.clinicedc.org",  # 102 intervention
-    "bukulula.ug.mocca.clinicedc.org",  # 106 control
-    "bagamoyo.tz.mocca.clinicedc.org",  # 201
-    "bugamba.ug.mocca.clinicedc.org",  # 101
-    "kinoni.ug.mocca.clinicedc.org",  # 103
+    "amana.tz.mocca.clinicedc.org",  # 220
+    "bunju.tz.mocca.clinicedc.org",  # 250
+    "kisugu.ug.mocca.clinicedc.org",  # 119
+    "kiswa.ug.mocca.clinicedc.org",  # 120
     "localhost",
 ]
 # comment: comment out if using runserver and folders read from .env

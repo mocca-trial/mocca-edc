@@ -51,6 +51,7 @@ class SubjectScreening(
 
     mocca_study_identifier = models.CharField(
         verbose_name="Original MOCCA study identifier",
+        unique=True,
         max_length=25,
         validators=[
             RegexValidator(
@@ -79,10 +80,21 @@ class SubjectScreening(
     )
 
     mocca_register = models.OneToOneField(
-        MoccaRegister, on_delete=models.PROTECT, null=True
+        MoccaRegister,
+        on_delete=models.PROTECT,
+        null=True,
+        verbose_name="Select one from the MOCCA (original) register",
+        limit_choices_to={"screening_identifier__isnull": True},
     )
 
     def save(self, *args, **kwargs):
+        self.age_in_years = self.mocca_register.age_in_years
+        self.birth_year = self.mocca_register.birth_year
+        self.gender = self.mocca_register.gender
+        self.initials = self.mocca_register.initials
+        self.mocca_screening_identifier = self.mocca_register.mocca_screening_identifier
+        self.mocca_site = self.mocca_register.mocca_site
+        self.mocca_study_identifier = self.mocca_register.mocca_study_identifier
         check_eligible_final(self)
         super().save(*args, **kwargs)
 
