@@ -1,4 +1,5 @@
 from edc_constants.constants import (
+    NOT_APPLICABLE,
     OTHER,
     DIABETES,
     HIV,
@@ -52,4 +53,12 @@ SELECTION_METHOD = (
     (SYSTEMATIC, "Systematically selected"),
     (SEQUENTIAL, "Sequentially selected"),
     (PURPOSIVELY_SELECTED, "Purposively selected"),
+)
+
+RESPONDENT_CHOICES = (
+    ("patient", "Patient"),
+    ("family", "Family"),
+    ("friend", "friend"),
+    ("other", "other"),
+    (NOT_APPLICABLE, "Not applicable"),
 )
