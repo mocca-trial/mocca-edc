@@ -14,9 +14,8 @@ from django_crypto_fields.fields import (
     LastnameField,
 )
 from edc_constants.choices import ALIVE_DEAD_UNKNOWN, GENDER, YES_NO
-from edc_constants.constants import NO, UNKNOWN, YES
+from edc_constants.constants import UNKNOWN, YES
 from edc_model.models import BaseUuidModel, HistoricalRecords
-from edc_sites import get_current_country
 from edc_sites.models import CurrentSiteManager, SiteModelMixin
 from edc_utils import get_utcnow
 from mocca_lists.models import MoccaOriginalSites
