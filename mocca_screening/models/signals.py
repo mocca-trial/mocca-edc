@@ -1,6 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
+from edc_constants.constants import NO
 
 from .mocca_register_contact import MoccaRegisterContact
 from .subject_refusal import SubjectRefusal
@@ -18,7 +19,8 @@ def subject_screening_on_post_save(sender, instance, raw, created, **kwargs):
     """
     if not raw:
         instance.mocca_register.screening_identifier = instance.screening_identifier
-        instance.mocca_register.save(update_fields=["screening_identifier"])
+        instance.mocca_register.call = NO
+        instance.mocca_register.save(update_fields=["call", "screening_identifier"])
 
 
 @receiver(
@@ -34,6 +36,8 @@ def mocca_register_contact_on_post_save(sender, instance, raw, created, **kwargs
         last_obj = qs.last()
         instance.mocca_register.call = last_obj.call_again
         instance.mocca_register.date_last_called = last_obj.report_datetime.date()
+        if instance.mocca_register.screening_identifier:
+            instance.mocca_register.call = NO
         instance.mocca_register.save(
             update_fields=["call", "contact_attempts", "date_last_called"]
         )

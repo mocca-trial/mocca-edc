@@ -1,4 +1,5 @@
 from django.db import models
+from django_crypto_fields.fields import EncryptedCharField
 from edc_constants.choices import (
     ALIVE_DEAD_UNKNOWN_NA,
     YES_NO,
@@ -30,7 +31,7 @@ class MoccaRegisterContact(SiteModelMixin, BaseUuidModel):
 
     report_datetime = models.DateTimeField(default=get_utcnow)
 
-    answered = models.CharField(max_length=15, choices=YES_NO, default=NO)
+    answered = models.CharField(max_length=15, choices=YES_NO, null=True, blank=False)
 
     respondent = models.CharField(
         max_length=15, choices=RESPONDENT_CHOICES, default=NOT_APPLICABLE
@@ -43,6 +44,8 @@ class MoccaRegisterContact(SiteModelMixin, BaseUuidModel):
     willing_to_attend = models.CharField(
         max_length=15, choices=YES_NO_UNSURE_NA, default=NOT_APPLICABLE
     )
+
+    comment = EncryptedCharField(verbose_name="Note", null=True, blank=True)
 
     call_again = models.CharField(
         verbose_name="Try again?", max_length=15, choices=YES_NO
