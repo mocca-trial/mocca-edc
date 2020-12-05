@@ -26,4 +26,4 @@ class MoccaRegisterContactForm(FormValidatorMixin, forms.ModelForm):
             "call_again",
             "report_datetime",
         ]
-        labels = {"report_datetime": "Date"}
+        labels = {"report_datetime": "Date", "answered": "Did someone answer?"}

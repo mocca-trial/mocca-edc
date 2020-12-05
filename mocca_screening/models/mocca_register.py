@@ -14,13 +14,19 @@ from django_crypto_fields.fields import (
     LastnameField,
 )
 from edc_constants.choices import ALIVE_DEAD_UNKNOWN, GENDER, YES_NO
-from edc_constants.constants import UNKNOWN, YES
+from edc_constants.constants import NO, UNKNOWN, YES
 from edc_model.models import BaseUuidModel, HistoricalRecords
 from edc_sites.models import CurrentSiteManager, SiteModelMixin
 from edc_utils import get_utcnow
 from mocca_lists.models import MoccaOriginalSites
 
 from ..mocca_original_sites import get_mocca_site_limited_to
+
+TEL_CHOICES = (
+    ("tel_1", "Tel/Mobile(1)"),
+    ("tel_2", "Tel/Mobile(2)"),
+    ("tel_3", "Tel/Mobile(3)"),
+)
 
 
 class Manager(models.Manager):
@@ -115,12 +121,29 @@ class MoccaRegister(SiteModelMixin, BaseUuidModel):
 
     notes = EncryptedTextField(null=True, blank=True)
 
+    tel_one = EncryptedCharField("Tel/Mobile(1)", max_length=15, null=True)
+    tel_two = EncryptedCharField("Tel/Mobile(2)", max_length=15, null=True)
+    tel_three = EncryptedCharField("Tel/Mobile(3)", max_length=15, null=True)
+    best_tel = models.CharField(
+        verbose_name="Prefered Telephone / Mobile",
+        max_length=15,
+        choices=TEL_CHOICES,
+        null=True,
+        blank=True,
+        help_text="If any, select the best telephone/mobile from above",
+    )
+
     on_site = CurrentSiteManager()
     objects = Manager()
     history = HistoricalRecords()
 
     def __str__(self):
         return f"{self.mocca_study_identifier} {self.initials} {self.age_in_years} {self.gender}"
+
+    def save(self, *args, **kwargs):
+        if self.screening_identifier:
+            self.call = NO
+        super().save(*args, **kwargs)
 
     def natural_key(self):
         return (self.mocca_study_identifier,)

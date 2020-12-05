@@ -1,8 +1,10 @@
 from django.contrib import admin
-from django_audit_fields.admin import audit_fieldset_tuple
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django_audit_fields.admin import audit_fieldset_tuple, ModelAdminAuditFieldsMixin
+from edc_dashboard import url_names
 from edc_model_admin import (
     ModelAdminFormInstructionsMixin,
-    TabularInlineMixin,
     TemplatesModelAdminMixin,
 )
 from edc_model_admin.model_admin_simple_history import SimpleHistoryAdmin
@@ -15,19 +17,70 @@ from ..models import MoccaRegister, MoccaRegisterContact
 from .list_filters import ScreenedListFilter, ContactAttemptsListFilter, CallListFilter
 
 
-class MoccaRegisterContactInline(TabularInlineMixin, admin.TabularInline):
-
-    fields = [
-        "answered",
-        "respondent",
-        "survival_status",
-        "willing_to_attend",
-        "call_again",
-        "report_datetime",
-    ]
+class MoccaRegisterContactInlineMixin:
     model = MoccaRegisterContact
     form = MoccaRegisterContactForm
     extra = 0
+    readonly_fields = ["report_datetime"]
+
+
+class AddMoccaRegisterContactInline(
+    ModelAdminAuditFieldsMixin, MoccaRegisterContactInlineMixin, admin.StackedInline
+):
+    fieldsets = (
+        [None, {"fields": ("report_datetime",)}],
+        (
+            "Details of the call",
+            {
+                "fields": (
+                    "answered",
+                    "respondent",
+                    "survival_status",
+                    "willing_to_attend",
+                    "call_again",
+                    "comment",
+                ),
+            },
+        ),
+    )
+    verbose_name = "New Contact Attempt"
+    verbose_name_plural = "New Contact Attempts"
+
+    def has_change_permission(self, request, obj):
+        return True
+
+    def get_queryset(self, request):
+        return MoccaRegisterContact.objects.none()
+
+
+class ViewMoccaRegisterContactInline(
+    ModelAdminAuditFieldsMixin, MoccaRegisterContactInlineMixin, admin.StackedInline
+):
+
+    fieldsets = (
+        [None, {"fields": (("report_datetime", "answered"),)}],
+        (
+            "Details of the call",
+            {
+                "classes": ("collapse",),
+                "fields": (
+                    "respondent",
+                    "survival_status",
+                    "willing_to_attend",
+                    "call_again",
+                    "comment",
+                ),
+            },
+        ),
+    )
+    verbose_name = "Past Contact Attempt"
+    verbose_name_plural = "Past Contact Attempts"
+
+    def has_add_permission(self, request, obj):
+        return False
+
+    def has_change_permission(self, request, obj):
+        return False
 
 
 @admin.register(MoccaRegister, site=mocca_screening_admin)
@@ -36,9 +89,9 @@ class MoccaRegisterAdmin(
 ):
     form = MoccaRegisterForm
     show_object_tools = True
-    inlines = [MoccaRegisterContactInline]
+    inlines = [ViewMoccaRegisterContactInline, AddMoccaRegisterContactInline]
     ordering = ["mocca_study_identifier"]
-
+    screening_listboard_url_name = "screening_listboard_url"
     fieldsets = (
         [None, {"fields": ("screening_identifier",)}],
         [
@@ -58,7 +111,10 @@ class MoccaRegisterAdmin(
                 )
             },
         ],
-        ["Contact", {"fields": ("notes",)}],
+        [
+            "Contact",
+            {"fields": ("notes", ("tel_one", "tel_two", "tel_three"), "best_tel")},
+        ],
         audit_fieldset_tuple,
     )
 
@@ -67,7 +123,8 @@ class MoccaRegisterAdmin(
         "__str__",
         "contact_attempts",
         "date_last_called",
-        "screening_identifier",
+        "screening",
+        "user_modified",
     )
 
     list_filter = (
@@ -116,3 +173,28 @@ class MoccaRegisterAdmin(
                 name__in=[v.name for v in sites.values()]
             )
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def screening(self, obj=None, label=None):
+        if obj.screening_identifier:
+            url = reverse(
+                self.get_screening_listboard_url_name(),
+                kwargs=self.get_screening_listboard_url_kwargs(obj),
+            )
+            label = obj.screening_identifier
+        else:
+            url = reverse("mocca_screening_admin:mocca_screening_subjectscreening_add")
+            url = (
+                f"{url}?next={self.get_screening_listboard_url_name()}"
+                f"&mocca_register={str(obj.id)}"
+            )
+            label = "Add"
+        context = dict(
+            title="Go to subject's screening dashboard", url=url, label=label
+        )
+        return render_to_string("dashboard_button.html", context=context)
+
+    def get_screening_listboard_url_name(self):
+        return url_names.get(self.screening_listboard_url_name)
+
+    def get_screening_listboard_url_kwargs(self, obj):
+        return dict(screening_identifier=obj.screening_identifier)
