@@ -28,7 +28,7 @@ class SubjectVisitAdmin(VisitModelAdminMixin, ModelAdminMixin, SimpleHistoryAdmi
                     # "reason_unscheduled_other",
                     "clinic_services",
                     "clinic_services_other",
-                    "health_services",
+                    # "health_services",
                     "info_source",
                     "info_source_other",
                     "comments",
@@ -47,5 +47,5 @@ class SubjectVisitAdmin(VisitModelAdminMixin, ModelAdminMixin, SimpleHistoryAdmi
 
     filter_horizontal = [
         "clinic_services",
-        "health_services",
+        # "health_services",
     ]

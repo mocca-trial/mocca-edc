@@ -31,7 +31,9 @@ def subject_consent_on_post_save(sender, instance, raw, created, **kwargs):
             )
             schedule.refresh_schedule(subject_identifier=instance.subject_identifier)
         else:
-            subject_screening = SubjectScreening.objects.get()
+            subject_screening = SubjectScreening.objects.get(
+                screening_identifier=instance.screening_identifier
+            )
             subject_screening.subject_identifier = instance.subject_identifier
             subject_screening.consented = True
             subject_screening.save_base(

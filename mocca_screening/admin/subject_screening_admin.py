@@ -40,15 +40,33 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
 
     additional_instructions = (
         "Patients must meet ALL of the inclusion criteria and NONE of the "
-        "exclusion criteria in order to proceed to the final screening stage"
+        "exclusion criteria in order to proceed"
     )
 
     autocomplete_fields = ["mocca_register"]
 
     fieldsets = (
         [None, {"fields": ("screening_consent", "report_datetime")}],
-        ["Inclusion Criteria", {"fields": ("mocca_participant",)}],
-        ["Original MOCCA information", {"fields": ("mocca_register",)}],
+        [
+            "Original MOCCA information",
+            {"fields": ("mocca_participant", "mocca_register",)},
+        ],
+        [
+            "Care update",
+            {
+                "fields": (
+                    "care",
+                    "care_not_in_reason",
+                    "icc",
+                    "icc_not_in_reason",
+                    "icc_since_mocca",
+                    "icc_since_mocca_comment",
+                    "care_facility_location",
+                    "care_comment",
+                )
+            },
+        ],
+        ["Consent", {"fields": ("willing_to_consent",)}],
         audit_fieldset_tuple,
     )
 
@@ -56,6 +74,8 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
         "screening_identifier",
         "eligiblity_status",
         "demographics",
+        "icc",
+        "willing_to_consent",
         "reasons",
         "report_datetime",
         "user_created",
@@ -69,6 +89,8 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
         "consented",
         "refused",
         "eligible",
+        "icc",
+        "willing_to_consent",
     )
 
     search_fields = (
@@ -86,7 +108,12 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
         "gender": admin.VERTICAL,
         "screening_consent": admin.VERTICAL,
         "unsuitable_agreed": admin.VERTICAL,
-        "unsuitable_for_study": admin.VERTICAL,
+        "care": admin.VERTICAL,
+        "care_facility_location": admin.VERTICAL,
+        "icc": admin.VERTICAL,
+        "icc_not_in_reason": admin.VERTICAL,
+        "icc_since_mocca": admin.VERTICAL,
+        "willing_to_consent": admin.VERTICAL,
     }
 
     def get_readonly_fields(self, request, obj=None):
@@ -125,31 +152,6 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
         else:
             context = dict(title=_("Go to subject dashboard"), url=url, label=label)
         return render_to_string("dashboard_button.html", context=context)
-
-    # def formfield_for_foreignkey(self, db_field, request, **kwargs):
-    #     if db_field.name == "mocca_register":
-    #         kwargs["queryset"] = db_field.related_model.objects.filter(
-    #             screening_identifier__isnull=True
-    #         ).order_by("mocca_study_identifier")
-    #     return super().formfield_for_foreignkey(db_field, request, **kwargs)
-
-    # def get_search_results(self, request, queryset, search_term):
-    #     queryset, use_distinct = super().get_search_results(
-    #         request, queryset, search_term
-    #     )
-    #     path = urlsplit(request.META.get("HTTP_REFERER")).path
-    #     query = urlsplit(request.META.get("HTTP_REFERER")).query
-    #     if "bloodresult" in path or "lumbarpuncturecsf" in path:
-    #         attrs = parse_qs(query)
-    #         try:
-    #             subject_visit = attrs.get("subject_visit")[0]
-    #         except IndexError:
-    #             pass
-    #         else:
-    #             queryset = queryset.filter(
-    #                 subject_visit__id=subject_visit, is_drawn=YES
-    #             )
-    #     return queryset, use_distinct
 
     def autocomplete_view(self, request):
         return AutocompleteJsonView.as_view(model_admin=self)(request)
