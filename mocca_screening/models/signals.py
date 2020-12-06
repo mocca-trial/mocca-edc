@@ -36,10 +36,17 @@ def mocca_register_contact_on_post_save(sender, instance, raw, created, **kwargs
         last_obj = qs.last()
         instance.mocca_register.call = last_obj.call_again
         instance.mocca_register.date_last_called = last_obj.report_datetime.date()
+        if last_obj.next_appt_date:
+            instance.mocca_register.next_appt_date = last_obj.next_appt_date
         if instance.mocca_register.screening_identifier:
             instance.mocca_register.call = NO
         instance.mocca_register.save(
-            update_fields=["call", "contact_attempts", "date_last_called"]
+            update_fields=[
+                "call",
+                "contact_attempts",
+                "date_last_called",
+                "next_appt_date",
+            ]
         )
 
 

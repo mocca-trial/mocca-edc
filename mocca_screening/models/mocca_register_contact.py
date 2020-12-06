@@ -1,11 +1,11 @@
 from django.db import models
-from django_crypto_fields.fields import EncryptedCharField
+from django_crypto_fields.fields import EncryptedTextField
 from edc_constants.choices import (
     ALIVE_DEAD_UNKNOWN_NA,
     YES_NO,
     YES_NO_UNSURE_NA,
 )
-from edc_constants.constants import NO, NOT_APPLICABLE
+from edc_constants.constants import NOT_APPLICABLE
 from edc_model.models import BaseUuidModel, HistoricalRecords
 from edc_sites.models import CurrentSiteManager, SiteModelMixin
 from edc_utils import get_utcnow
@@ -38,18 +38,31 @@ class MoccaRegisterContact(SiteModelMixin, BaseUuidModel):
     )
 
     survival_status = models.CharField(
-        max_length=15, choices=ALIVE_DEAD_UNKNOWN_NA, default=NOT_APPLICABLE
+        max_length=15, choices=ALIVE_DEAD_UNKNOWN_NA, default=NOT_APPLICABLE,
     )
+
+    death_date = models.DateField(verbose_name="Date of death", null=True, blank=True)
 
     willing_to_attend = models.CharField(
         max_length=15, choices=YES_NO_UNSURE_NA, default=NOT_APPLICABLE
     )
 
-    comment = EncryptedCharField(verbose_name="Note", null=True, blank=True)
+    icc = models.CharField(
+        verbose_name="Does the patient currently receive regular integrated care",
+        max_length=25,
+        choices=YES_NO,
+        null=True,
+        blank=True,
+        help_text="Either at this facility or elsewhere",
+    )
+
+    next_appt_date = models.DateField(verbose_name="Next Appt.", null=True, blank=True)
 
     call_again = models.CharField(
-        verbose_name="Try again?", max_length=15, choices=YES_NO
+        verbose_name="Call again?", max_length=15, choices=YES_NO
     )
+
+    comment = EncryptedTextField(verbose_name="Note", null=True, blank=True)
 
     on_site = CurrentSiteManager()
     objects = Manager()

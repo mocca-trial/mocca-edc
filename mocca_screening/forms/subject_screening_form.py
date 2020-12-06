@@ -1,15 +1,49 @@
 from django import forms
 from django.apps import apps as django_apps
 from django.core.exceptions import ObjectDoesNotExist
-from edc_constants.constants import YES, NO
+from edc_constants.constants import UNKNOWN, YES, NO
 from edc_form_validators import FormValidator
 from edc_form_validators import FormValidatorMixin
 from edc_screening.modelform_mixins import AlreadyConsentedFormMixin
+from mocca_screening.constants import NO_INTERRUPTION
 
+from ..constants import SOME_INTERRUPTION
 from ..models import SubjectScreening
 
 
-class SubjectScreeningFormValidator(FormValidator):
+class CareFormValidatorMixin(FormValidator):
+    def validate_care_options(self):
+        self.required_if(NO, UNKNOWN, field="care", field_required="care_not_in_reason")
+        self.applicable_if(YES, field="care", field_applicable="icc")
+        self.applicable_if(NO, field="icc", field_applicable="icc_not_in_reason")
+        # self.applicable_if(YES, field="icc", field_applicable="icc_since_mocca")
+        self.required_if(
+            SOME_INTERRUPTION,
+            field="icc_since_mocca",
+            field_required="icc_since_mocca_comment",
+        )
+        if (
+            self.cleaned_data.get("icc_since_mocca") == NO
+            and self.cleaned_data.get("icc") == YES
+        ):
+            raise forms.ValidationError(
+                {
+                    "icc_since_mocca": "Invalid. Patient is currently receiving integrated care."
+                }
+            )
+        if (
+            self.cleaned_data.get("icc_since_mocca") == NO_INTERRUPTION
+            and self.cleaned_data.get("icc") != YES
+        ):
+            raise forms.ValidationError(
+                {
+                    "icc_since_mocca": "Invalid. Patient is NOT currently receiving integrated care."
+                }
+            )
+        self.applicable_if(YES, field="care", field_applicable="care_facility_location")
+
+
+class SubjectScreeningFormValidator(CareFormValidatorMixin, FormValidator):
     def clean(self):
         if (
             not self.cleaned_data.get("screening_consent")
@@ -60,6 +94,7 @@ class SubjectScreeningFormValidator(FormValidator):
                     )
                 }
             )
+        self.validate_care_options()
 
     def validate_mocca_study_identifier_with_site(self):
         mocca_register = None

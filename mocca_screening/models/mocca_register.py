@@ -111,15 +111,19 @@ class MoccaRegister(SiteModelMixin, BaseUuidModel):
         max_length=25, choices=ALIVE_DEAD_UNKNOWN, default=UNKNOWN
     )
 
-    contact_attempts = models.IntegerField(default=0,)
+    contact_attempts = models.IntegerField(default=0, help_text="auto-updated")
 
     call = models.CharField(
         verbose_name="Call?", max_length=15, choices=YES_NO, default=YES
     )
 
-    date_last_called = models.DateField(null=True)
+    date_last_called = models.DateField(null=True, help_text="auto-updated")
 
-    notes = EncryptedTextField(null=True, blank=True)
+    next_appt_date = models.DateField(
+        verbose_name="Appt", null=True, blank=True, help_text="auto-updated"
+    )
+
+    notes = EncryptedTextField(verbose_name="General notes", null=True, blank=True)
 
     tel_one = EncryptedCharField("Tel/Mobile(1)", max_length=15, null=True)
     tel_two = EncryptedCharField("Tel/Mobile(2)", max_length=15, null=True)
@@ -169,7 +173,4 @@ class MoccaRegister(SiteModelMixin, BaseUuidModel):
             UniqueConstraint(
                 fields=["mocca_study_identifier"], name="unique_mocca_study_identifier"
             ),
-            # UniqueConstraint(
-            #     fields=["first_name", "last_name"], name="unique_first_name__last_name"
-            # ),
         ]

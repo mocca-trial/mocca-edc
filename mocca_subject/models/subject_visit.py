@@ -57,11 +57,11 @@ class SubjectVisit(
 
     clinic_services_other = edc_models.OtherCharField()
 
-    health_services = models.ManyToManyField(
-        HealthServices,
-        verbose_name="Which health service(s) is the patient here for today?",
-        related_name="visit_health_services",
-    )
+    # health_services = models.ManyToManyField(
+    #     HealthServices,
+    #     verbose_name="Which health service(s) is the patient here for today?",
+    #     related_name="visit_health_services",
+    # )
 
     info_source = models.CharField(
         verbose_name="What is the main source of this information?",
