@@ -36,7 +36,10 @@ class AddMoccaRegisterContactInline(
                     "answered",
                     "respondent",
                     "survival_status",
+                    "death_date",
                     "willing_to_attend",
+                    "icc",
+                    "next_appt_date",
                     "call_again",
                     "comment",
                 ),
@@ -44,7 +47,7 @@ class AddMoccaRegisterContactInline(
         ),
     )
     verbose_name = "New Contact Attempt"
-    verbose_name_plural = "New Contact Attempts"
+    verbose_name_plural = "New Contact Attempt"
 
     def has_change_permission(self, request, obj):
         return True
@@ -66,7 +69,10 @@ class ViewMoccaRegisterContactInline(
                 "fields": (
                     "respondent",
                     "survival_status",
+                    "death_date",
                     "willing_to_attend",
+                    "icc",
+                    "next_appt_date",
                     "call_again",
                     "comment",
                 ),
@@ -89,7 +95,7 @@ class MoccaRegisterAdmin(
 ):
     form = MoccaRegisterForm
     show_object_tools = True
-    inlines = [ViewMoccaRegisterContactInline, AddMoccaRegisterContactInline]
+    inlines = [AddMoccaRegisterContactInline, ViewMoccaRegisterContactInline]
     ordering = ["mocca_study_identifier"]
     screening_listboard_url_name = "screening_listboard_url"
     fieldsets = (
@@ -123,6 +129,7 @@ class MoccaRegisterAdmin(
         "__str__",
         "contact_attempts",
         "date_last_called",
+        "next_appt_date",
         "screening",
         "user_modified",
     )
@@ -132,6 +139,7 @@ class MoccaRegisterAdmin(
         ContactAttemptsListFilter,
         CallListFilter,
         "date_last_called",
+        "next_appt_date",
         "gender",
         "created",
         "modified",
