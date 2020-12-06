@@ -16,12 +16,17 @@ from django_crypto_fields.fields import (
 from edc_constants.choices import ALIVE_DEAD_UNKNOWN, GENDER, YES_NO
 from edc_constants.constants import NO, UNKNOWN, YES
 from edc_model.models import BaseUuidModel, HistoricalRecords
-from edc_sites import get_current_country
 from edc_sites.models import CurrentSiteManager, SiteModelMixin
 from edc_utils import get_utcnow
 from mocca_lists.models import MoccaOriginalSites
 
 from ..mocca_original_sites import get_mocca_site_limited_to
+
+TEL_CHOICES = (
+    ("tel_1", "Tel/Mobile(1)"),
+    ("tel_2", "Tel/Mobile(2)"),
+    ("tel_3", "Tel/Mobile(3)"),
+)
 
 
 class Manager(models.Manager):
@@ -106,13 +111,31 @@ class MoccaRegister(SiteModelMixin, BaseUuidModel):
         max_length=25, choices=ALIVE_DEAD_UNKNOWN, default=UNKNOWN
     )
 
-    contact_attempts = models.IntegerField(default=0,)
+    contact_attempts = models.IntegerField(default=0, help_text="auto-updated")
 
-    call = models.CharField(max_length=15, choices=YES_NO, default=YES)
+    call = models.CharField(
+        verbose_name="Call?", max_length=15, choices=YES_NO, default=YES
+    )
 
-    date_last_called = models.DateField(null=True)
+    date_last_called = models.DateField(null=True, help_text="auto-updated")
 
-    notes = EncryptedTextField(null=True, blank=True)
+    next_appt_date = models.DateField(
+        verbose_name="Appt", null=True, blank=True, help_text="auto-updated"
+    )
+
+    notes = EncryptedTextField(verbose_name="General notes", null=True, blank=True)
+
+    tel_one = EncryptedCharField("Tel/Mobile(1)", max_length=15, null=True)
+    tel_two = EncryptedCharField("Tel/Mobile(2)", max_length=15, null=True)
+    tel_three = EncryptedCharField("Tel/Mobile(3)", max_length=15, null=True)
+    best_tel = models.CharField(
+        verbose_name="Prefered Telephone / Mobile",
+        max_length=15,
+        choices=TEL_CHOICES,
+        null=True,
+        blank=True,
+        help_text="If any, select the best telephone/mobile from above",
+    )
 
     on_site = CurrentSiteManager()
     objects = Manager()
@@ -121,6 +144,11 @@ class MoccaRegister(SiteModelMixin, BaseUuidModel):
     def __str__(self):
         return f"{self.mocca_study_identifier} {self.initials} {self.age_in_years} {self.gender}"
 
+    def save(self, *args, **kwargs):
+        if self.screening_identifier:
+            self.call = NO
+        super().save(*args, **kwargs)
+
     def natural_key(self):
         return (self.mocca_study_identifier,)
 
@@ -128,10 +156,6 @@ class MoccaRegister(SiteModelMixin, BaseUuidModel):
         "sites.Site",
         "mocca_lists.MoccaOriginalSites",
     ]
-
-    def save(self, *args, **kwargs):
-        self.mocca_country = get_current_country()
-        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "MOCCA Patient Register"
@@ -149,7 +173,4 @@ class MoccaRegister(SiteModelMixin, BaseUuidModel):
             UniqueConstraint(
                 fields=["mocca_study_identifier"], name="unique_mocca_study_identifier"
             ),
-            # UniqueConstraint(
-            #     fields=["first_name", "last_name"], name="unique_first_name__last_name"
-            # ),
         ]

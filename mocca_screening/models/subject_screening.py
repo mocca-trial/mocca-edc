@@ -7,23 +7,27 @@ from django.core.validators import (
 )
 from django.db import models
 from django_crypto_fields.fields import EncryptedCharField
-from edc_constants.choices import YES_NO
+from edc_constants.choices import YES_NO, YES_NO_NA
+from edc_constants.constants import NOT_APPLICABLE, YES
 from edc_model.models import BaseUuidModel
 from edc_screening.model_mixins import ScreeningModelMixin
-from edc_screening.screening_identifier import ScreeningIdentifier
+from edc_screening.screening_identifier import (
+    ScreeningIdentifier as BaseScreeningIdentifier,
+)
 from mocca_lists.models import MoccaOriginalSites
 
 from ..eligibility import check_eligible_final
 from ..mocca_original_sites import get_mocca_site_limited_to
 from .mocca_register import MoccaRegister
+from .model_mixins import CareModelMixin
 
 
-class ScreeningIdentifier(ScreeningIdentifier):
+class ScreeningIdentifier(BaseScreeningIdentifier):
     template = "S{random_string}"
 
 
 class SubjectScreening(
-    ScreeningModelMixin, BaseUuidModel,
+    CareModelMixin, ScreeningModelMixin, BaseUuidModel,
 ):
     identifier_cls = ScreeningIdentifier
 
@@ -47,10 +51,11 @@ class SubjectScreening(
         verbose_name="Was the patient enrolled to the original MOCCA study?",
         max_length=25,
         choices=YES_NO,
+        default=YES,
     )
 
     mocca_study_identifier = models.CharField(
-        verbose_name="Original MOCCA study identifier",
+        verbose_name="MOCCA (original) study identifier",
         unique=True,
         max_length=25,
         validators=[
@@ -83,8 +88,17 @@ class SubjectScreening(
         MoccaRegister,
         on_delete=models.PROTECT,
         null=True,
-        verbose_name="Select one from the MOCCA (original) register",
-        limit_choices_to={"screening_identifier__isnull": True},
+        verbose_name="MOCCA (original) register details",
+    )
+
+    willing_to_consent = models.CharField(
+        verbose_name=(
+            "Is the patient willing and able to participate in the `MOCCA extension` trial"
+        ),
+        max_length=25,
+        choices=YES_NO_NA,
+        default=NOT_APPLICABLE,
+        help_text="If Yes, begin the informed consent process.",
     )
 
     def save(self, *args, **kwargs):

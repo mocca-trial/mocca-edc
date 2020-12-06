@@ -15,15 +15,15 @@ def check_eligible_final(obj):
 
 def get_eligible_final(obj):
     """Returns True or False"""
+    eligible = False
     try:
         obj.mocca_register = get_mocca_register(obj)
     except ObjectDoesNotExist:
         obj.mocca_register = None
     if obj.unsuitable_for_study == YES:
         eligible = False
-    else:
-        if obj.mocca_register:
-            eligible = True
+    elif obj.mocca_register and obj.care == YES:
+        eligible = True
     return eligible
 
 
@@ -36,6 +36,10 @@ def get_reasons_ineligible(obj):
             reasons_ineligible.append("Subject unsuitable")
         if not obj.mocca_register:
             reasons_ineligible.append("Unable to link to MOCCA (original) participant")
+        if obj.care != YES:
+            reasons_ineligible.append("Not in care")
+        if obj.willing_to_consent != YES:
+            reasons_ineligible.append("Not willing to consent")
     return reasons_ineligible
 
 

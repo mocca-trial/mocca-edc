@@ -17,7 +17,7 @@ def import_mocca_orig(verbose=None, test=None, overwrite=None):
     if test:
         pass  # import_for_tests(model_cls)
     else:
-        path = os.path.join(os.path.expanduser(settings.BASE_DIR), "mocca_original.csv")
+        path = os.path.join(os.path.expanduser(settings.ETC_DIR), "mocca_original.csv")
         try:
             if not os.path.exists(path):
                 raise FileNotFoundError(path)
@@ -56,7 +56,7 @@ def get_field_options(row):
     elif row["sex"] == "2":
         gender = FEMALE
     else:
-        gender = None
+        raise TypeError(f"Unknown gender. Got `{row['gender']}`")
 
     site = get_site_by_attr(
         "orig_site_id", int(row["site"]), sites=all_sites.get(country)

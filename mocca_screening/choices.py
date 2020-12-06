@@ -1,4 +1,5 @@
 from edc_constants.constants import (
+    NO,
     NOT_APPLICABLE,
     OTHER,
     DIABETES,
@@ -6,15 +7,18 @@ from edc_constants.constants import (
     HYPERTENSION,
     PURPOSIVELY_SELECTED,
     RANDOM_SAMPLING,
+    UNKNOWN,
 )
 
 from .constants import (
+    DIABETES_CLINIC,
+    HIV_CLINIC,
+    HYPERTENSION_CLINIC,
     INTEGRATED,
     NCD,
     NCD_CLINIC,
-    HIV_CLINIC,
-    HYPERTENSION_CLINIC,
-    DIABETES_CLINIC,
+    NO_INTERRUPTION,
+    SOME_INTERRUPTION,
     SEQUENTIAL,
     SYSTEMATIC,
 )
@@ -60,5 +64,24 @@ RESPONDENT_CHOICES = (
     ("family", "Family"),
     ("friend", "friend"),
     ("other", "other"),
+    (NOT_APPLICABLE, "Not applicable"),
+)
+
+CARE_SINCE_MOCCA = (
+    (NO_INTERRUPTION, "Yes, without interruption"),
+    (SOME_INTERRUPTION, "Yes, with some interruption"),
+    (NO, "No, not since completing follow up with the MOCCA (original) trial."),
+    (UNKNOWN, "Unknown"),
+)
+
+NOT_ICC_REASONS = (
+    ("icc_not_available", "ICC not available (or closed) in this facility"),
+    ("moved", "Moved out of area"),
+    ("dont_want", "Personally chose not to continue with integrated care"),
+    (
+        "advised_to_vertical",
+        "Healthcare staff asked patient to return to vertical care",
+    ),
+    ("referred_out", "Referred to another facility without an ICC"),
     (NOT_APPLICABLE, "Not applicable"),
 )
