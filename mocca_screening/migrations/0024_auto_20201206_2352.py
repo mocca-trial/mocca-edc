@@ -8,58 +8,129 @@ import edc_model_fields.fields.other_charfield
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('mocca_screening', '0023_auto_20201206_2205'),
+        ("mocca_screening", "0023_auto_20201206_2205"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='historicalsubjectscreening',
-            name='icc',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No'), ('N/A', 'Not applicable')], default='N/A', help_text='Either at this facility or elsewhere', max_length=25, verbose_name='Does the patient <u>currently</u> receive integrated care'),
+            model_name="historicalsubjectscreening",
+            name="icc",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No"), ("N/A", "Not applicable")],
+                default="N/A",
+                help_text="Either at this facility or elsewhere",
+                max_length=25,
+                verbose_name="Does the patient <u>currently</u> receive integrated care",
+            ),
         ),
         migrations.AlterField(
-            model_name='historicalsubjectscreening',
-            name='icc_since_mocca',
-            field=models.CharField(choices=[('no_interruption', 'Yes, without interruption'), ('some_interruption', 'Yes, with some interruption'), ('No', 'No, not since completing follow up with the MOCCA (original) trial.'), ('unknown', 'Unknown')], max_length=25, verbose_name='Has the patient received integrated care since the leaving the MOCCA (orig) trial until now?'),
+            model_name="historicalsubjectscreening",
+            name="icc_since_mocca",
+            field=models.CharField(
+                choices=[
+                    ("no_interruption", "Yes, without interruption"),
+                    ("some_interruption", "Yes, with some interruption"),
+                    (
+                        "No",
+                        "No, not since completing follow up with the MOCCA (original) trial.",
+                    ),
+                    ("unknown", "Unknown"),
+                ],
+                max_length=25,
+                verbose_name="Has the patient received integrated care since the leaving the MOCCA (orig) trial until now?",
+            ),
         ),
         migrations.AlterField(
-            model_name='historicalsubjectscreening',
-            name='icc_since_mocca_comment',
-            field=edc_model_fields.fields.other_charfield.OtherCharField(blank=True, max_length=35, null=True, verbose_name='If some interruption in integrated care, please explain'),
+            model_name="historicalsubjectscreening",
+            name="icc_since_mocca_comment",
+            field=edc_model_fields.fields.other_charfield.OtherCharField(
+                blank=True,
+                max_length=35,
+                null=True,
+                verbose_name="If some interruption in integrated care, please explain",
+            ),
         ),
         migrations.AlterField(
-            model_name='historicalsubjectscreening',
-            name='mocca_register',
-            field=models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='mocca_screening.MoccaRegister', verbose_name='MOCCA (original) register details'),
+            model_name="historicalsubjectscreening",
+            name="mocca_register",
+            field=models.ForeignKey(
+                blank=True,
+                db_constraint=False,
+                null=True,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                related_name="+",
+                to="mocca_screening.MoccaRegister",
+                verbose_name="MOCCA (original) register details",
+            ),
         ),
         migrations.AlterField(
-            model_name='historicalsubjectscreening',
-            name='willing_to_consent',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No'), ('N/A', 'Not applicable')], default='N/A', help_text='If Yes, begin the informed consent process.', max_length=25, verbose_name='Is the patient willing and able to participate in the `MOCCA extension` trial'),
+            model_name="historicalsubjectscreening",
+            name="willing_to_consent",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No"), ("N/A", "Not applicable")],
+                default="N/A",
+                help_text="If Yes, begin the informed consent process.",
+                max_length=25,
+                verbose_name="Is the patient willing and able to participate in the `MOCCA extension` trial",
+            ),
         ),
         migrations.AlterField(
-            model_name='subjectscreening',
-            name='icc',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No'), ('N/A', 'Not applicable')], default='N/A', help_text='Either at this facility or elsewhere', max_length=25, verbose_name='Does the patient <u>currently</u> receive integrated care'),
+            model_name="subjectscreening",
+            name="icc",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No"), ("N/A", "Not applicable")],
+                default="N/A",
+                help_text="Either at this facility or elsewhere",
+                max_length=25,
+                verbose_name="Does the patient <u>currently</u> receive integrated care",
+            ),
         ),
         migrations.AlterField(
-            model_name='subjectscreening',
-            name='icc_since_mocca',
-            field=models.CharField(choices=[('no_interruption', 'Yes, without interruption'), ('some_interruption', 'Yes, with some interruption'), ('No', 'No, not since completing follow up with the MOCCA (original) trial.'), ('unknown', 'Unknown')], max_length=25, verbose_name='Has the patient received integrated care since the leaving the MOCCA (orig) trial until now?'),
+            model_name="subjectscreening",
+            name="icc_since_mocca",
+            field=models.CharField(
+                choices=[
+                    ("no_interruption", "Yes, without interruption"),
+                    ("some_interruption", "Yes, with some interruption"),
+                    (
+                        "No",
+                        "No, not since completing follow up with the MOCCA (original) trial.",
+                    ),
+                    ("unknown", "Unknown"),
+                ],
+                max_length=25,
+                verbose_name="Has the patient received integrated care since the leaving the MOCCA (orig) trial until now?",
+            ),
         ),
         migrations.AlterField(
-            model_name='subjectscreening',
-            name='icc_since_mocca_comment',
-            field=edc_model_fields.fields.other_charfield.OtherCharField(blank=True, max_length=35, null=True, verbose_name='If some interruption in integrated care, please explain'),
+            model_name="subjectscreening",
+            name="icc_since_mocca_comment",
+            field=edc_model_fields.fields.other_charfield.OtherCharField(
+                blank=True,
+                max_length=35,
+                null=True,
+                verbose_name="If some interruption in integrated care, please explain",
+            ),
         ),
         migrations.AlterField(
-            model_name='subjectscreening',
-            name='mocca_register',
-            field=models.OneToOneField(null=True, on_delete=django.db.models.deletion.PROTECT, to='mocca_screening.MoccaRegister', verbose_name='MOCCA (original) register details'),
+            model_name="subjectscreening",
+            name="mocca_register",
+            field=models.OneToOneField(
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                to="mocca_screening.MoccaRegister",
+                verbose_name="MOCCA (original) register details",
+            ),
         ),
         migrations.AlterField(
-            model_name='subjectscreening',
-            name='willing_to_consent',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No'), ('N/A', 'Not applicable')], default='N/A', help_text='If Yes, begin the informed consent process.', max_length=25, verbose_name='Is the patient willing and able to participate in the `MOCCA extension` trial'),
+            model_name="subjectscreening",
+            name="willing_to_consent",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No"), ("N/A", "Not applicable")],
+                default="N/A",
+                help_text="If Yes, begin the informed consent process.",
+                max_length=25,
+                verbose_name="Is the patient willing and able to participate in the `MOCCA extension` trial",
+            ),
         ),
     ]
