@@ -1,7 +1,4 @@
-import pdb
-
 from django.contrib import admin
-from django.contrib.admin.views.autocomplete import AutocompleteJsonView
 from django.template.loader import render_to_string
 from django.urls.base import reverse
 from django.urls.exceptions import NoReverseMatch
@@ -12,23 +9,12 @@ from edc_dashboard.url_names import url_names
 from edc_model_admin import SimpleHistoryAdmin
 from edc_model_admin.dashboard import ModelAdminSubjectDashboardMixin
 
+
 from ..admin_site import mocca_screening_admin
 from ..eligibility import format_reasons_ineligible
 from ..forms import SubjectScreeningForm
 from ..models import SubjectScreening
-
-
-class MyAutocompleteJsonView(AutocompleteJsonView):
-    def get_queryset(self):
-        """Return queryset based on ModelAdmin.get_search_results()."""
-        pdb.set_trace()
-        qs = self.model_admin.get_queryset(self.request)
-        qs, search_use_distinct = self.model_admin.get_search_results(
-            self.request, qs, self.term
-        )
-        if search_use_distinct:
-            qs = qs.distinct()
-        return qs.filter(mocca_register__screening_identifier__isnull=True)
+from .fieldsets import care_status_fieldset
 
 
 @admin.register(SubjectScreening, site=mocca_screening_admin)
@@ -43,30 +29,19 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
         "exclusion criteria in order to proceed"
     )
 
-    autocomplete_fields = ["mocca_register"]
+    # autocomplete_fields = ["mocca_register"]
 
     fieldsets = (
-        [None, {"fields": ("screening_consent", "report_datetime")}],
+        [None, {"fields": ("report_datetime",)}],
         [
             "Original MOCCA information",
-            {"fields": ("mocca_participant", "mocca_register",)},
+            {"fields": ("mocca_participant", "mocca_register", "screening_consent",)},
         ],
+        care_status_fieldset,
         [
-            "Care update",
-            {
-                "fields": (
-                    "care",
-                    "care_not_in_reason",
-                    "icc",
-                    "icc_not_in_reason",
-                    "icc_since_mocca",
-                    "icc_since_mocca_comment",
-                    "care_facility_location",
-                    "care_comment",
-                )
-            },
+            "Consent",
+            {"fields": ("willing_to_consent", "pregnant", "requires_acute_care",)},
         ],
-        ["Consent", {"fields": ("willing_to_consent",)}],
         audit_fieldset_tuple,
     )
 
@@ -114,6 +89,8 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
         "icc_not_in_reason": admin.VERTICAL,
         "icc_since_mocca": admin.VERTICAL,
         "willing_to_consent": admin.VERTICAL,
+        "pregnant": admin.VERTICAL,
+        "requires_acute_care": admin.VERTICAL,
     }
 
     def get_readonly_fields(self, request, obj=None):
@@ -153,5 +130,9 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
             context = dict(title=_("Go to subject dashboard"), url=url, label=label)
         return render_to_string("dashboard_button.html", context=context)
 
-    def autocomplete_view(self, request):
-        return AutocompleteJsonView.as_view(model_admin=self)(request)
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "mocca_register" and request.GET.get("mocca_register"):
+            kwargs["queryset"] = db_field.related_model.objects.filter(
+                pk=request.GET.get("mocca_register", 0)
+            )
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)

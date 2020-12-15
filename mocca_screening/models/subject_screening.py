@@ -8,7 +8,7 @@ from django.core.validators import (
 from django.db import models
 from django_crypto_fields.fields import EncryptedCharField
 from edc_constants.choices import YES_NO, YES_NO_NA
-from edc_constants.constants import NOT_APPLICABLE, YES
+from edc_constants.constants import NO, NOT_APPLICABLE, YES
 from edc_model.models import BaseUuidModel
 from edc_screening.model_mixins import ScreeningModelMixin
 from edc_screening.screening_identifier import (
@@ -20,6 +20,12 @@ from ..eligibility import check_eligible_final
 from ..mocca_original_sites import get_mocca_site_limited_to
 from .mocca_register import MoccaRegister
 from .model_mixins import CareModelMixin
+
+PREG_YES_NO_NA = (
+    (YES, "Yes"),
+    (NO, "No"),
+    (NOT_APPLICABLE, "Not Applicable"),
+)
 
 
 class ScreeningIdentifier(BaseScreeningIdentifier):
@@ -93,12 +99,28 @@ class SubjectScreening(
 
     willing_to_consent = models.CharField(
         verbose_name=(
-            "Is the patient willing and able to participate in the `MOCCA extension` trial"
+            "Has the patient expressed willingness to participate in the `MOCCA extension` trial"
         ),
         max_length=25,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
-        help_text="If Yes, begin the informed consent process.",
+        help_text="If No, complete refusal form.",
+    )
+
+    pregnant = models.CharField(
+        verbose_name="Is the patient pregnant?",
+        max_length=15,
+        choices=PREG_YES_NO_NA,
+        default=NOT_APPLICABLE,
+    )
+
+    requires_acute_care = models.CharField(
+        verbose_name=(
+            "Does the patient require acute care including in-patient admission"
+        ),
+        max_length=25,
+        choices=YES_NO_NA,
+        default=NOT_APPLICABLE,
     )
 
     def save(self, *args, **kwargs):
