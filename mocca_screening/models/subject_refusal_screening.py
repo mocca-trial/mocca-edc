@@ -5,25 +5,30 @@ from edc_search.model_mixins import SearchSlugManager
 from edc_sites.models import SiteModelMixin, CurrentSiteManager
 from edc_utils import get_utcnow
 
-from ..choices import REFUSAL_REASONS
+from ..choices import REFUSAL_REASONS_SCREENING
 
 
-class SubjectRefusalManager(SearchSlugManager, models.Manager):
-    def get_by_natural_key(self, screening_identifier):
-        return self.get(screening_identifier=screening_identifier)
+class Manager(SearchSlugManager, models.Manager):
+    def get_by_natural_key(self, mocca_register):
+        return self.get(mocca_register=mocca_register)
 
 
-class SubjectRefusal(SiteModelMixin, BaseUuidModel):
-    screening_identifier = models.CharField(max_length=50, unique=True)
+class SubjectRefusalScreening(SiteModelMixin, BaseUuidModel):
+    mocca_register = models.OneToOneField(
+        "mocca_screening.moccaregister",
+        on_delete=models.PROTECT,
+        null=True,
+        verbose_name="MOCCA (original) register details",
+    )
 
     report_datetime = models.DateTimeField(
         verbose_name="Report Date and Time", default=get_utcnow
     )
 
     reason = models.CharField(
-        verbose_name="Reason for refusal to join",
+        verbose_name="Reason for refusal to screen",
         max_length=25,
-        choices=REFUSAL_REASONS,
+        choices=REFUSAL_REASONS_SCREENING,
     )
 
     other_reason = OtherCharField()
@@ -34,20 +39,20 @@ class SubjectRefusal(SiteModelMixin, BaseUuidModel):
 
     on_site = CurrentSiteManager()
 
-    objects = SubjectRefusalManager()
+    objects = Manager()
 
     history = HistoricalRecords()
 
     def __str__(self):
-        return self.screening_identifier
+        return self.mocca_register
 
     def natural_key(self):
-        return (self.screening_identifier,)
+        return (self.mocca_register,)
 
     @staticmethod
     def get_search_slug_fields():
         return ["screening_identifier"]
 
     class Meta(BaseUuidModel.Meta):
-        verbose_name = "Refusal to Consent"
-        verbose_name_plural = "Refusal to Consent"
+        verbose_name = "Refusal to Screen"
+        verbose_name_plural = "Refusal to Screen"

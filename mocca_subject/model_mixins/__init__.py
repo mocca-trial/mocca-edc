@@ -2,6 +2,7 @@ from .clinical_review_model_mixins import (
     ClinicalReviewBaselineHivModelMixin,
     ClinicalReviewBaselineHtnModelMixin,
     ClinicalReviewBaselineDmModelMixin,
+    ClinicalReviewBaselineCholesterolModelMixin,
     ClinicalReviewModelMixin,
 )
 from .crf_model_mixin import CrfModelMixin
