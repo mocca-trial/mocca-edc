@@ -1,7 +1,7 @@
 from django.apps import apps as django_apps
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.safestring import mark_safe
-from edc_constants.constants import YES
+from edc_constants.constants import NO, NOT_APPLICABLE, YES
 from edc_utils.date import get_utcnow
 
 
@@ -22,7 +22,12 @@ def get_eligible_final(obj):
         obj.mocca_register = None
     if obj.unsuitable_for_study == YES:
         eligible = False
-    elif obj.mocca_register and obj.care == YES:
+    elif (
+        obj.mocca_register
+        and obj.care == YES
+        and obj.pregnant in [NO, NOT_APPLICABLE]
+        and obj.requires_acute_care == NO
+    ):
         eligible = True
     return eligible
 
@@ -38,6 +43,10 @@ def get_reasons_ineligible(obj):
             reasons_ineligible.append("Unable to link to MOCCA (original) participant")
         if obj.care != YES:
             reasons_ineligible.append("Not in care")
+        if obj.pregnant == YES:
+            reasons_ineligible.append("Pregnant (unconfirmed)")
+        if obj.requires_acute_care == YES:
+            reasons_ineligible.append("Requires acute care")
         if obj.willing_to_consent != YES:
             reasons_ineligible.append("Not willing to consent")
     return reasons_ineligible
