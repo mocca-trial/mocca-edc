@@ -38,9 +38,7 @@ class CareModelMixin(models.Model):
     )
 
     icc = models.CharField(
-        verbose_name=mark_safe(
-            "Does the patient <u>currently</u> receive integrated care"
-        ),
+        verbose_name="Does the patient currently receive integrated care",
         max_length=25,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,

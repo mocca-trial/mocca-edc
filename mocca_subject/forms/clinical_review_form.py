@@ -20,38 +20,23 @@ class ClinicalReviewFormValidator(
 
         diagnoses = self.get_diagnoses()
 
-        # htn
-        self.applicable_if_not_diagnosed(
-            diagnoses=diagnoses,
-            field_dx="htn_dx",
-            field_applicable="htn_test",
-            label="hypertension",
-        )
-        self.required_if(YES, field="htn_test", field_required="htn_test_date")
-        self.required_if(YES, field="htn_test", field_required="htn_reason")
-        self.applicable_if(YES, field="htn_test", field_applicable="htn_dx")
-
-        # diabetes
-        self.applicable_if_not_diagnosed(
-            diagnoses=diagnoses,
-            field_dx="dm_dx",
-            field_applicable="dm_test",
-            label="diabetes",
-        )
-        self.required_if(YES, field="dm_test", field_required="dm_test_date")
-        self.required_if(YES, field="dm_test", field_required="dm_reason")
-        self.applicable_if(YES, field="dm_test", field_applicable="dm_dx")
-
-        # hiv
-        self.applicable_if_not_diagnosed(
-            diagnoses=diagnoses,
-            field_dx="hiv_dx",
-            field_applicable="hiv_test",
-            label="HIV",
-        )
-        self.required_if(YES, field="hiv_test", field_required="hiv_test_date")
-        self.required_if(YES, field="hiv_test", field_required="hiv_reason")
-        self.applicable_if(YES, field="hiv_test", field_applicable="hiv_dx")
+        for cond, label in [
+            ("htn", "hypertension"),
+            ("dm", "diabetes"),
+            ("hiv", "HIV"),
+            ("chol", "High Cholesterol"),
+        ]:
+            self.applicable_if_not_diagnosed(
+                diagnoses=diagnoses,
+                field_dx=f"{cond}_dx",
+                field_applicable=f"{cond}_test",
+                label=label,
+            )
+            self.required_if(
+                YES, field=f"{cond}_test", field_required=f"{cond}_test_date"
+            )
+            self.required_if(YES, field=f"{cond}_test", field_required=f"{cond}_reason")
+            self.applicable_if(YES, field=f"{cond}_test", field_applicable=f"{cond}_dx")
 
         self.required_if(
             YES,

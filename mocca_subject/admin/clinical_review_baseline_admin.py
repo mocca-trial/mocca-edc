@@ -25,6 +25,10 @@ class ClinicalReviewBaselineAdmin(
             "Hypertension",
             {"fields": ("htn_test", "htn_test_ago", "htn_test_date", "htn_dx")},
         ),
+        (
+            "High Cholesterol",
+            {"fields": ("chol_test", "chol_test_ago", "chol_test_date", "chol_dx")},
+        ),
         ("Other", {"fields": ("health_insurance", "patient_club")}),
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,
@@ -32,6 +36,8 @@ class ClinicalReviewBaselineAdmin(
 
     radio_fields = {
         "crf_status": admin.VERTICAL,
+        "chol_dx": admin.VERTICAL,
+        "chol_test": admin.VERTICAL,
         "dm_dx": admin.VERTICAL,
         "dm_test": admin.VERTICAL,
         "health_insurance": admin.VERTICAL,

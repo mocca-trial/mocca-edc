@@ -6,6 +6,7 @@ from ..model_mixins import (
     ClinicalReviewBaselineHivModelMixin,
     ClinicalReviewBaselineHtnModelMixin,
     ClinicalReviewBaselineDmModelMixin,
+    ClinicalReviewBaselineCholesterolModelMixin,
     ClinicalReviewModelMixin,
     TreatmentPayMethodsModelMixin,
 )
@@ -20,6 +21,7 @@ class ClinicalReviewBaseline(
     ClinicalReviewBaselineHivModelMixin,
     ClinicalReviewBaselineHtnModelMixin,
     ClinicalReviewBaselineDmModelMixin,
+    ClinicalReviewBaselineCholesterolModelMixin,
     ClinicalReviewModelMixin,
     CrfModelMixin,
     edc_models.BaseUuidModel,

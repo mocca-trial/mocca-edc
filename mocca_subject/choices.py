@@ -35,6 +35,11 @@ DM_MANAGEMENT = (
     (DIET_LIFESTYLE, "Diet and lifestyle alone"),
 )
 
+CHOL_MANAGEMENT = (
+    (DRUGS, "Oral drugs"),
+    (DIET_LIFESTYLE, "Diet and lifestyle alone"),
+)
+
 EDUCATION = (
     ("no_formal_education", "No Formal Education"),
     ("primary", "Up to primary"),
