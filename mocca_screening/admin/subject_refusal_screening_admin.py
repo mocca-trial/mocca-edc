@@ -14,8 +14,6 @@ class SubjectRefusalScreeningAdmin(
 ):
     form = SubjectRefusalScreeningForm
 
-    autocomplete_fields = ["mocca_register"]
-
     fieldsets = (
         [
             None,
