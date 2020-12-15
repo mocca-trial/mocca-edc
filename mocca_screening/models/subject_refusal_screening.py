@@ -9,6 +9,8 @@ from ..choices import REFUSAL_REASONS_SCREENING
 
 
 class Manager(SearchSlugManager, models.Manager):
+    use_in_migrations = True
+
     def get_by_natural_key(self, mocca_register):
         return self.get(mocca_register=mocca_register)
 

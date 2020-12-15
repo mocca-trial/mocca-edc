@@ -157,7 +157,7 @@ class MoccaRegister(SiteModelMixin, BaseUuidModel):
         "mocca_lists.MoccaOriginalSites",
     ]
 
-    class Meta:
+    class Meta(BaseUuidModel.Meta):
         verbose_name = "MOCCA Patient Register"
         verbose_name_plural = "MOCCA Patient Register"
         ordering = ["mocca_country", "mocca_site"]
