@@ -143,14 +143,6 @@ list_data = {
         ),
         (OTHER, "Other, specify"),
     ],
-    "mocca_lists.healthservices": [
-        (INTEGRATED, "Integrated care"),
-        (HYPERTENSION, "Hypertension (vertical)"),
-        (DIABETES, "Diabetes  (vertical)"),
-        (HIV, "HIV  (vertical)"),
-        (NCD, "NCD care (Diabetes/Hypertension)  (vertical)"),
-        (NOT_APPLICABLE, "Not applicable"),
-    ],
     "mocca_lists.clinicservices": [
         (STUDY_DEFINED_TIMEPOINT, "Scheduled study visit (0,6m,12m)"),
         (ROUTINE_VISIT, "Routine clinic review by a clinician"),

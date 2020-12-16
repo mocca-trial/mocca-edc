@@ -37,12 +37,6 @@ class DmTreatments(ListModelMixin):
         verbose_name_plural = "Diabetes Treatments"
 
 
-class HealthServices(ListModelMixin):
-    class Meta(ListModelMixin.Meta):
-        verbose_name = "Health Services"
-        verbose_name_plural = "Health Services"
-
-
 class HtnTreatments(ListModelMixin):
     class Meta(ListModelMixin.Meta):
         verbose_name = "Hypertension Treatments"

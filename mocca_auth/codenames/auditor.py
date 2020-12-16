@@ -4,7 +4,6 @@ auditor += [
     "mocca_lists.view_arvregimens",
     "mocca_lists.view_clinicservices",
     "mocca_lists.view_conditions",
-    "mocca_lists.view_healthservices",
     "mocca_lists.view_offstudyreasons",
     "mocca_prn.view_endofstudy",
     "mocca_prn.view_historicalendofstudy",
