@@ -1,8 +1,11 @@
+import pdb
+
 from django.contrib import admin
 from django.core.exceptions import ObjectDoesNotExist
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django_audit_fields.admin import audit_fieldset_tuple, ModelAdminAuditFieldsMixin
+from edc_constants.constants import NO, YES
 from edc_dashboard import url_names
 from edc_model_admin import (
     ModelAdminFormInstructionsMixin,
@@ -127,7 +130,16 @@ class MoccaRegisterAdmin(
         ],
         [
             "Contact",
-            {"fields": ("notes", ("tel_one", "tel_two", "tel_three"), "best_tel")},
+            {
+                "fields": (
+                    "notes",
+                    "tel_one",
+                    "tel_two",
+                    "tel_three",
+                    "best_tel",
+                    "screen_now",
+                )
+            },
         ],
         audit_fieldset_tuple,
     )
@@ -207,7 +219,9 @@ class MoccaRegisterAdmin(
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     def screen(self, obj=None, label=None):
-        if obj.screening_identifier:
+        if obj.call == YES and obj.screen_now == NO:
+            return self.get_empty_value_display()
+        elif obj.screening_identifier:
             url = reverse(
                 url_names.get(self.screening_listboard_url_name),
                 kwargs=self.get_screening_listboard_url_kwargs(obj),
@@ -232,7 +246,9 @@ class MoccaRegisterAdmin(
         return dict(screening_identifier=obj.screening_identifier)
 
     def care_status(self, obj=None, label=None):
-        if self.get_subject_screening_obj(obj=obj, label=label):
+        if not self.called_once(obj) or self.get_subject_screening_obj(
+            obj=obj, label=label
+        ):
             return self.get_empty_value_display()
         try:
             care_status = CareStatus.objects.get(mocca_register=obj)
@@ -256,7 +272,9 @@ class MoccaRegisterAdmin(
     care_status.short_description = "Care"
 
     def refusal(self, obj=None, label=None):
-        if self.get_subject_screening_obj(obj=obj, label=label):
+        if not self.called_once(obj) or self.get_subject_screening_obj(
+            obj=obj, label=label
+        ):
             return self.get_empty_value_display()
         try:
             subject_refusal = SubjectRefusal.objects.get(
@@ -288,3 +306,6 @@ class MoccaRegisterAdmin(
             return SubjectScreening.objects.get(mocca_register=obj)
         except ObjectDoesNotExist:
             return None
+
+    def called_once(self, obj=None, label=None):
+        return MoccaRegisterContact.objects.filter(mocca_register=obj).exists()

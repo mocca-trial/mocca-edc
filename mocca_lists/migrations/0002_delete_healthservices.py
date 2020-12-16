@@ -6,12 +6,10 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('mocca_subject', '0004_remove_reasonforvisit_health_services'),
-        ('mocca_lists', '0001_initial'),
+        ("mocca_subject", "0004_remove_reasonforvisit_health_services"),
+        ("mocca_lists", "0001_initial"),
     ]
 
     operations = [
-        migrations.DeleteModel(
-            name='HealthServices',
-        ),
+        migrations.DeleteModel(name="HealthServices",),
     ]
