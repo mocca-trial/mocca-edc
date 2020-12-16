@@ -117,6 +117,13 @@ class MoccaRegister(SiteModelMixin, BaseUuidModel):
         verbose_name="Call?", max_length=15, choices=YES_NO, default=YES
     )
 
+    screen_now = models.CharField(
+        verbose_name="Patient is present. Screen now?",
+        max_length=15,
+        choices=YES_NO,
+        default=NO,
+    )
+
     date_last_called = models.DateField(null=True, help_text="auto-updated")
 
     next_appt_date = models.DateField(

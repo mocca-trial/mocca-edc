@@ -6,12 +6,9 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('mocca_subject', '0003_auto_20201215_0241'),
+        ("mocca_subject", "0003_auto_20201215_0241"),
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='reasonforvisit',
-            name='health_services',
-        ),
+        migrations.RemoveField(model_name="reasonforvisit", name="health_services",),
     ]
