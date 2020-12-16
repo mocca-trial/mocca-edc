@@ -8,7 +8,7 @@ from edc_sites.models import CurrentSiteManager as BaseCurrentSiteManager
 from edc_sites.models import SiteModelMixin
 from edc_visit_tracking.managers import VisitModelManager
 from edc_visit_tracking.model_mixins import VisitModelMixin
-from mocca_lists.models import ClinicServices, HealthServices
+from mocca_lists.models import ClinicServices
 
 from ..choices import INFO_SOURCE, VISIT_UNSCHEDULED_REASON, VISIT_REASON
 from .subject_visit_missed import SubjectVisitMissed
@@ -56,12 +56,6 @@ class SubjectVisit(
     )
 
     clinic_services_other = edc_models.OtherCharField()
-
-    # health_services = models.ManyToManyField(
-    #     HealthServices,
-    #     verbose_name="Which health service(s) is the patient here for today?",
-    #     related_name="visit_health_services",
-    # )
 
     info_source = models.CharField(
         verbose_name="What is the main source of this information?",

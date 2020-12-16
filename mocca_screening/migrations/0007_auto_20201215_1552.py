@@ -8,15 +8,15 @@ import mocca_screening.models.subject_refusal_screening
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('mocca_screening', '0006_auto_20201215_1543'),
+        ("mocca_screening", "0006_auto_20201215_1543"),
     ]
 
     operations = [
         migrations.AlterModelManagers(
-            name='subjectrefusalscreening',
+            name="subjectrefusalscreening",
             managers=[
-                ('on_site', edc_sites.models.CurrentSiteManager()),
-                ('objects', mocca_screening.models.subject_refusal_screening.Manager()),
+                ("on_site", edc_sites.models.CurrentSiteManager()),
+                ("objects", mocca_screening.models.subject_refusal_screening.Manager()),
             ],
         ),
     ]

@@ -6,7 +6,6 @@ clinic += [
     "mocca_lists.view_clinicservices",
     "mocca_lists.view_conditions",
     "mocca_lists.view_dmtreatments",
-    "mocca_lists.view_healthservices",
     "mocca_lists.view_htntreatments",
     "mocca_lists.view_offstudyreasons",
     "mocca_lists.view_rxmodificationreasons",

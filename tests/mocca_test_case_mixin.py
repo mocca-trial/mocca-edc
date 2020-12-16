@@ -1,3 +1,4 @@
+import pdb
 import string
 from pprint import pprint
 from random import choices
@@ -43,9 +44,9 @@ class MoccaTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        import_holidays(test=True)
         add_or_update_django_sites(sites=get_sites_by_country("uganda"))
         site_list_data.autodiscover()
+        import_holidays(test=True)
         fixer = ExportPermissionsFixer(warn_only=True)
         fixer.fix()
         GroupPermissionsUpdater(
