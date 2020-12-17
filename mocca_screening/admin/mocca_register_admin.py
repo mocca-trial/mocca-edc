@@ -238,6 +238,8 @@ class MoccaRegisterAdmin(
             )
             url = f"{url}?mocca_register={str(obj.id)}"
             label = obj.screening_identifier
+            fa_icon = "fas fa-share"
+            fa_icon_after = True
         else:
             add_url = reverse(
                 "mocca_screening_admin:mocca_screening_subjectscreening_add"
@@ -260,16 +262,27 @@ class MoccaRegisterAdmin(
                 )
                 url = f"{url}&{care_status_query_string}"
             label = "Add"
+            fa_icon = "fas fa-plus"
+            fa_icon_after = None
+
         context = dict(
-            title=f"{SubjectScreening._meta.verbose_name}", url=url, label=label
+            title=f"{SubjectScreening._meta.verbose_name}",
+            url=url,
+            label=label,
+            fa_icon=fa_icon,
+            fa_icon_after=fa_icon_after,
         )
-        return render_to_string("dashboard_button.html", context=context)
+        return render_to_string(self.button_template, context=context)
 
     def get_screening_listboard_url_name(self):
         return url_names.get(self.screening_listboard_url_name)
 
     def get_screening_listboard_url_kwargs(self, obj):
         return dict(screening_identifier=obj.screening_identifier)
+
+    @property
+    def button_template(self):
+        return "mocca_screening/bootstrap3/dashboard_button.html"
 
     def care_status(self, obj=None, label=None):
         if not self.called_once(obj) or self.get_subject_screening_obj(
@@ -285,15 +298,22 @@ class MoccaRegisterAdmin(
                 f"&mocca_register={str(obj.id)}"
             )
             label = "Add"
+            fa_icon = "fas fa-plus"
         else:
             url = reverse(
                 "mocca_screening_admin:mocca_screening_carestatus_change",
                 args=(care_status.id,),
             )
             url = f"{url}?next=mocca_screening_admin:mocca_screening_moccaregister_changelist"
-            label = "Change"
-        context = dict(title=f"{CareStatus._meta.verbose_name}", url=url, label=label)
-        return render_to_string("dashboard_button.html", context=context)
+            label = "Edit"
+            fa_icon = "fas fa-pen"
+        context = dict(
+            title=f"{CareStatus._meta.verbose_name}",
+            url=url,
+            label=label,
+            fa_icon=fa_icon,
+        )
+        return render_to_string(self.button_template, context=context)
 
     care_status.short_description = "Care Status"
 
@@ -315,17 +335,22 @@ class MoccaRegisterAdmin(
                 f"mocca_register={str(obj.id)}"
             )
             label = "Add"
+            fa_icon = "fas fa-plus"
         else:
             url = reverse(
                 "mocca_screening_admin:mocca_screening_subjectrefusalscreening_change",
                 args=(subject_refusal.id,),
             )
             url = f"{url}?next=mocca_screening_admin:mocca_screening_moccaregister_changelist"
-            label = "Change"
+            label = "Edit"
+            fa_icon = "fas fa-pen"
         context = dict(
-            title=f"{SubjectRefusalScreening._meta.verbose_name}", url=url, label=label,
+            title=f"{SubjectRefusalScreening._meta.verbose_name}",
+            url=url,
+            label=label,
+            fa_icon=fa_icon,
         )
-        return render_to_string("dashboard_button.html", context=context)
+        return render_to_string(self.button_template, context=context)
 
     def get_subject_screening_obj(self, obj=None, label=None):
         try:

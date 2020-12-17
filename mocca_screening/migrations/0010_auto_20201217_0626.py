@@ -6,18 +6,30 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('mocca_screening', '0009_auto_20201216_0454'),
+        ("mocca_screening", "0009_auto_20201216_0454"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='historicalmoccaregister',
-            name='screen_now',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], default='No', help_text="Only select 'yes' if the patient is present in the clinic now.", max_length=15, verbose_name='Patient is present. Screen now instead of calling?'),
+            model_name="historicalmoccaregister",
+            name="screen_now",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                default="No",
+                help_text="Only select 'yes' if the patient is present in the clinic now.",
+                max_length=15,
+                verbose_name="Patient is present. Screen now instead of calling?",
+            ),
         ),
         migrations.AlterField(
-            model_name='moccaregister',
-            name='screen_now',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], default='No', help_text="Only select 'yes' if the patient is present in the clinic now.", max_length=15, verbose_name='Patient is present. Screen now instead of calling?'),
+            model_name="moccaregister",
+            name="screen_now",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                default="No",
+                help_text="Only select 'yes' if the patient is present in the clinic now.",
+                max_length=15,
+                verbose_name="Patient is present. Screen now instead of calling?",
+            ),
         ),
     ]
