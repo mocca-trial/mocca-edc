@@ -10,13 +10,13 @@ from django_crypto_fields.fields import EncryptedCharField
 from edc_constants.choices import YES_NO, YES_NO_NA
 from edc_constants.constants import NO, NOT_APPLICABLE, YES
 from edc_model.models import BaseUuidModel
-from edc_screening.model_mixins import ScreeningModelMixin
+from edc_screening.model_mixins import EligibilityModelMixin, ScreeningModelMixin
 from edc_screening.screening_identifier import (
     ScreeningIdentifier as BaseScreeningIdentifier,
 )
 from mocca_lists.models import MoccaOriginalSites
 
-from ..eligibility import check_eligible_final
+from ..eligibility import MoccaScreeningEligibility
 from ..mocca_original_sites import get_mocca_site_limited_to
 from .mocca_register import MoccaRegister
 from .model_mixins import CareModelMixin
@@ -33,9 +33,11 @@ class ScreeningIdentifier(BaseScreeningIdentifier):
 
 
 class SubjectScreening(
-    CareModelMixin, ScreeningModelMixin, BaseUuidModel,
+    CareModelMixin, ScreeningModelMixin, EligibilityModelMixin, BaseUuidModel,
 ):
     identifier_cls = ScreeningIdentifier
+
+    eligibility_cls = MoccaScreeningEligibility
 
     screening_consent = models.CharField(
         verbose_name=(
@@ -131,7 +133,6 @@ class SubjectScreening(
         self.mocca_screening_identifier = self.mocca_register.mocca_screening_identifier
         self.mocca_site = self.mocca_register.mocca_site
         self.mocca_study_identifier = self.mocca_register.mocca_study_identifier
-        check_eligible_final(self)
         super().save(*args, **kwargs)
 
     class Meta:

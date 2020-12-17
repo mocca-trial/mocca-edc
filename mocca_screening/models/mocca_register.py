@@ -117,6 +117,14 @@ class MoccaRegister(SiteModelMixin, BaseUuidModel):
         verbose_name="Call?", max_length=15, choices=YES_NO, default=YES
     )
 
+    screen_now = models.CharField(
+        verbose_name="Patient is present. Screen now instead of calling?",
+        max_length=15,
+        choices=YES_NO,
+        default=NO,
+        help_text="Only select 'yes' if the patient is present in the clinic now.",
+    )
+
     date_last_called = models.DateField(null=True, help_text="auto-updated")
 
     next_appt_date = models.DateField(
@@ -157,7 +165,7 @@ class MoccaRegister(SiteModelMixin, BaseUuidModel):
         "mocca_lists.MoccaOriginalSites",
     ]
 
-    class Meta:
+    class Meta(BaseUuidModel.Meta):
         verbose_name = "MOCCA Patient Register"
         verbose_name_plural = "MOCCA Patient Register"
         ordering = ["mocca_country", "mocca_site"]

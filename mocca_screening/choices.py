@@ -32,30 +32,35 @@ CLINIC_CHOICES = (
 )
 
 REFUSAL_REASONS = (
-    ("unwilling_to_say", "I am unwilling to say"),
-    ("dont_have_time", "I don't have time"),
-    ("stigma", "I am worried about stigma"),
-    ("must_consult_spouse", "I need to consult my spouse"),
-    ("dont_want_medication", "I don't want to take any more medication"),
-    ("dont_want_to_join", "I don't want to take part"),
-    ("need_to_think_about_it", "I haven't had a chance to think about it"),
-    ("moving", "I am moving to another area"),
+    ("unwilling_to_say", "Unwilling to give any reason"),
+    ("worried_about_care", "Worried that he/she will not get the care needed"),
+    (
+        "mixing_and_stigme",
+        "Does not want to mix with patients with other conditions "
+        "because of concern around stigma",
+    ),
+    (
+        "mixing_and_infection",
+        "Does not want to mix with patients with other conditions because "
+        "of concerns around contracting infections",
+    ),
+    (
+        "happy_vertical_care",
+        "Patient is happy with the care being given in vertical clinics",
+    ),
+    (
+        "no_participant",
+        "No longer wishes to be a study participant but is happy to continue "
+        "receiving care in the integrated clinic",
+    ),
+    (
+        "receives_community_care",
+        "Patient is receiving HIV care in the community and does not wish "
+        "to return to facility-based care",
+    ),
     (OTHER, "Other, please specify"),
 )
-
-REFUSAL_REASONS_SCREENING = (
-    ("unwilling_to_say", "I am unwilling to say"),
-    ("dont_have_time", "I don't have time"),
-    ("stigma", "I am worried about stigma"),
-    ("must_consult_spouse", "I need to consult my spouse"),
-    ("dont_want_medication", "I don't want to take any more medication"),
-    ("dont_want_to_join", "I don't want to take part"),
-    ("need_to_think_about_it", "I haven't had a chance to think about it"),
-    ("moving", "I am moving to another area"),
-    (OTHER, "Other, please specify"),
-)
-
-
+REFUSAL_REASONS_SCREENING = REFUSAL_REASONS
 CLINIC_DAYS = (
     (INTEGRATED, "Integrated care day (HIV, Diabetes, Hypertension)"),
     (NCD, "NCD day (Diabetes + Hypertension)"),
@@ -95,5 +100,9 @@ NOT_ICC_REASONS = (
         "Healthcare staff asked patient to return to vertical care",
     ),
     ("referred_out", "Referred to another facility without an ICC"),
+    (
+        "receives_community_care",
+        "Patient is currently receiving their HIV care in the community",
+    ),
     (NOT_APPLICABLE, "Not applicable"),
 )
