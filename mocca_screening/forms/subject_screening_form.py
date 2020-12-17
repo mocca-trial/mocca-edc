@@ -1,7 +1,7 @@
 from django import forms
 from django.apps import apps as django_apps
 from django.core.exceptions import ObjectDoesNotExist
-from edc_constants.constants import YES, NO
+from edc_constants.constants import FEMALE, YES
 from edc_form_validators import FormValidator
 from edc_form_validators import FormValidatorMixin
 from edc_screening.modelform_mixins import AlreadyConsentedFormMixin
@@ -12,6 +12,18 @@ from .care_status_form import CareStatusFormValidatorMixin
 
 class SubjectScreeningFormValidator(CareStatusFormValidatorMixin, FormValidator):
     def clean(self):
+        self.validate_is_mocca_participant()
+        self.validate_consents_to_screen()
+        self.validate_care_options()
+        self.applicable_if(
+            YES, field="screening_consent", field_applicable="willing_to_consent"
+        )
+        self.validate_pregnancy()
+        self.applicable_if(
+            YES, field="willing_to_consent", field_applicable="requires_acute_care"
+        )
+
+    def validate_is_mocca_participant(self):
         if self.cleaned_data.get("mocca_participant") != YES:
             raise forms.ValidationError(
                 {
@@ -21,18 +33,7 @@ class SubjectScreeningFormValidator(CareStatusFormValidatorMixin, FormValidator)
                 }
             )
 
-        # self.validate_mocca_study_identifier_with_site()
-
-        # if (
-        #     self.cleaned_data.get("age_in_years")
-        #     and self.cleaned_data.get("age_in_years") < 18
-        # ):
-        #     raise forms.ValidationError(
-        #         {"age_in_years": "Participant must be at least 18 years old."}
-        #     )
-
-        # self.validate_mocca_enrollment_data()
-
+    def validate_consents_to_screen(self):
         if (
             not self.cleaned_data.get("screening_consent")
             or self.cleaned_data.get("screening_consent") != YES
@@ -45,12 +46,14 @@ class SubjectScreeningFormValidator(CareStatusFormValidatorMixin, FormValidator)
                 }
             )
 
-        self.validate_care_options()
-
-        self.applicable_if(YES, field="willing_to_consent", field_applicable="pregnant")
-
-        self.applicable_if(
-            YES, field="willing_to_consent", field_applicable="requires_acute_care"
+    def validate_pregnancy(self):
+        if self.cleaned_data.get("mocca_register"):
+            gender = self.cleaned_data.get("mocca_register").gender
+        else:
+            gender = self.instance.mocca_register.gender
+        self.applicable_if_true(
+            self.cleaned_data.get("willing_to_consent") == YES and gender == FEMALE,
+            field_applicable="pregnant",
         )
 
     def validate_mocca_study_identifier_with_site(self):
@@ -130,19 +133,3 @@ class SubjectScreeningForm(
     class Meta:
         model = SubjectScreening
         fields = "__all__"
-        # fields = [
-        #     "screening_consent",
-        #     "report_datetime",
-        #     "mocca_participant",
-        #     "mocca_site",
-        #     "mocca_study_identifier",
-        #     "initials",
-        #     "gender",
-        #     "birth_year",
-        #     "age_in_years",
-        #     "pregnant",
-        #     "requires_acute_care",
-        #     "unsuitable_for_study",
-        #     "reasons_unsuitable",
-        #     "unsuitable_agreed",
-        # ]

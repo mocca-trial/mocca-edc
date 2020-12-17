@@ -9,9 +9,9 @@ from ..constants import NO_INTERRUPTION, SOME_INTERRUPTION
 class CareStatusFormValidatorMixin(FormValidator):
     def validate_care_options(self):
         self.required_if(NO, UNKNOWN, field="care", field_required="care_not_in_reason")
+        self.applicable_if(YES, field="care", field_applicable="care_facility_location")
         self.applicable_if(YES, field="care", field_applicable="icc")
         self.applicable_if(NO, field="icc", field_applicable="icc_not_in_reason")
-        # self.applicable_if(YES, field="icc", field_applicable="icc_since_mocca")
         self.required_if(
             SOME_INTERRUPTION,
             field="icc_since_mocca",
@@ -35,7 +35,6 @@ class CareStatusFormValidatorMixin(FormValidator):
                     "icc_since_mocca": "Invalid. Patient is NOT currently receiving integrated care."
                 }
             )
-        self.applicable_if(YES, field="care", field_applicable="care_facility_location")
 
 
 class CareStatusFormValidator(CareStatusFormValidatorMixin):
@@ -44,10 +43,6 @@ class CareStatusFormValidator(CareStatusFormValidatorMixin):
 
 class CareStatusForm(FormValidatorMixin, forms.ModelForm):
     form_validator_cls = CareStatusFormValidator
-
-    def clean(self):
-        cleaned_data = super().clean()
-        return cleaned_data
 
     class Meta:
         model = CareStatus
