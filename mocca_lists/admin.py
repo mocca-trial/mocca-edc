@@ -9,7 +9,6 @@ from .models import (
     Conditions,
     DmTreatments,
     DrugPaySources,
-    HealthServices,
     HtnTreatments,
     MoccaOriginalSites,
     NonAdherenceReasons,
@@ -86,11 +85,6 @@ class VisitReasonsAdmin(ListModelAdminMixin, admin.ModelAdmin):
 
 @admin.register(DmTreatments, site=mocca_lists_admin)
 class DmTreatmentsAdmin(ListModelAdminMixin, admin.ModelAdmin):
-    pass
-
-
-@admin.register(HealthServices, site=mocca_lists_admin)
-class HealthServicesAdmin(ListModelAdminMixin, admin.ModelAdmin):
     pass
 
 

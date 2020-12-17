@@ -2,18 +2,12 @@ from django.db import models
 from edc_constants.choices import YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
-from mocca_lists.models import HealthServices, ClinicServices
+from mocca_lists.models import ClinicServices
 
 from ..model_mixins import CrfModelMixin
 
 
 class ReasonForVisit(CrfModelMixin, edc_models.BaseUuidModel):
-
-    health_services = models.ManyToManyField(
-        HealthServices,
-        related_name="health_services",
-        verbose_name="Which health service(s) is the patient here for today?",
-    )
 
     clinic_services = models.ManyToManyField(
         ClinicServices,

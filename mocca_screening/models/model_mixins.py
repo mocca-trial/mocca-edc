@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils.safestring import mark_safe
 from edc_constants.choices import YES_NO_NA, YES_NO_UNKNOWN
 from edc_constants.constants import NOT_APPLICABLE
 from edc_model_fields.fields import OtherCharField

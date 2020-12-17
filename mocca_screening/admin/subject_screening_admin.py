@@ -8,10 +8,9 @@ from django_audit_fields.admin import audit_fieldset_tuple
 from edc_dashboard.url_names import url_names
 from edc_model_admin import SimpleHistoryAdmin
 from edc_model_admin.dashboard import ModelAdminSubjectDashboardMixin
-
+from edc_screening import format_reasons_ineligible
 
 from ..admin_site import mocca_screening_admin
-from ..eligibility import format_reasons_ineligible
 from ..forms import SubjectScreeningForm
 from ..models import SubjectScreening
 from .fieldsets import care_status_fieldset
@@ -28,8 +27,6 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
         "Patients must meet ALL of the inclusion criteria and NONE of the "
         "exclusion criteria in order to proceed"
     )
-
-    # autocomplete_fields = ["mocca_register"]
 
     fieldsets = (
         [None, {"fields": ("report_datetime",)}],

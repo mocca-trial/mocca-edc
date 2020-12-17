@@ -1,8 +1,11 @@
+import pdb
+
 from django.contrib import admin
 from django.core.exceptions import ObjectDoesNotExist
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django_audit_fields.admin import audit_fieldset_tuple, ModelAdminAuditFieldsMixin
+from edc_constants.constants import NO, YES
 from edc_dashboard import url_names
 from edc_model_admin import (
     ModelAdminFormInstructionsMixin,
@@ -10,6 +13,7 @@ from edc_model_admin import (
 )
 from edc_model_admin.model_admin_simple_history import SimpleHistoryAdmin
 from edc_sites import get_current_country
+from mocca_screening.models.model_mixins import CareModelMixin
 
 from ..admin_site import mocca_screening_admin
 from ..forms import MoccaRegisterForm, MoccaRegisterContactForm
@@ -30,6 +34,14 @@ class MoccaRegisterContactInlineMixin:
     form = MoccaRegisterContactForm
     extra = 0
     readonly_fields = ["report_datetime"]
+    radio_fields = {
+        "answered": admin.VERTICAL,
+        "respondent": admin.VERTICAL,
+        "survival_status": admin.VERTICAL,
+        "willing_to_attend": admin.VERTICAL,
+        "icc": admin.VERTICAL,
+        "call_again": admin.VERTICAL,
+    }
 
 
 class AddMoccaRegisterContactInline(
@@ -106,6 +118,7 @@ class MoccaRegisterAdmin(
     inlines = [AddMoccaRegisterContactInline, ViewMoccaRegisterContactInline]
     ordering = ["mocca_study_identifier"]
     screening_listboard_url_name = "screening_listboard_url"
+    list_per_page = 15
     fieldsets = (
         [None, {"fields": ("screening_identifier",)}],
         [
@@ -127,24 +140,32 @@ class MoccaRegisterAdmin(
         ],
         [
             "Contact",
-            {"fields": ("notes", ("tel_one", "tel_two", "tel_three"), "best_tel")},
+            {
+                "fields": (
+                    "notes",
+                    "tel_one",
+                    "tel_two",
+                    "tel_three",
+                    "best_tel",
+                    "screen_now",
+                )
+            },
         ],
         audit_fieldset_tuple,
     )
 
     list_display = (
         "mocca_patient",
-        "call",
-        "screen",
+        "call_now",
         "care_status",
         "refusal",
-        "calls",
+        "screen",
         "date_last_called",
         "next_appt_date",
         "user_modified",
     )
 
-    list_display_links = ("mocca_patient", "call")
+    list_display_links = ("mocca_patient", "call_now")
 
     list_filter = (
         ScreenedListFilter,
@@ -161,6 +182,7 @@ class MoccaRegisterAdmin(
         "gender": admin.VERTICAL,
         "mocca_site": admin.VERTICAL,
         "call": admin.VERTICAL,
+        "screen_now": admin.VERTICAL,
     }
 
     search_fields = (
@@ -168,19 +190,19 @@ class MoccaRegisterAdmin(
         "initials",
         "mocca_screening_identifier",
         "screening_identifier",
+        "user_modified",
+        "user_created",
     )
 
-    def calls(self, obj):
-        return obj.contact_attempts
+    def call_now(self, obj):
+        return f"{obj.call} ({obj.contact_attempts})"
 
-    calls.admin_order_field = "contact_attempts"
+    call_now.admin_order_field = "call"
 
     def mocca_patient(self, obj):
         return str(obj)
 
     mocca_patient.admin_order_field = "mocca_study_identifier"
-
-    calls.admin_order_field = "contact_attempts"
 
     def get_readonly_fields(self, request, obj=None):
         readonly_fields = super().get_readonly_fields(request, obj=None)
@@ -207,18 +229,36 @@ class MoccaRegisterAdmin(
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     def screen(self, obj=None, label=None):
-        if obj.screening_identifier:
+        if obj.call == YES and obj.screen_now == NO:
+            return self.get_empty_value_display()
+        elif obj.screening_identifier:
             url = reverse(
                 url_names.get(self.screening_listboard_url_name),
                 kwargs=self.get_screening_listboard_url_kwargs(obj),
             )
+            url = f"{url}?mocca_register={str(obj.id)}"
             label = obj.screening_identifier
         else:
-            url = reverse("mocca_screening_admin:mocca_screening_subjectscreening_add")
+            add_url = reverse(
+                "mocca_screening_admin:mocca_screening_subjectscreening_add"
+            )
             url = (
-                f"{url}?next={self.get_screening_listboard_url_name()}"
+                f"{add_url}?"
+                "next=mocca_screening_admin:mocca_screening_moccaregister_changelist"
                 f"&mocca_register={str(obj.id)}"
             )
+            try:
+                care_status = CareStatus.objects.get(mocca_register=obj)
+            except ObjectDoesNotExist:
+                pass
+            else:
+                care_status_query_string = "&".join(
+                    [
+                        f"{f}={getattr(care_status, f) or ''}"
+                        for f in [f.name for f in CareModelMixin._meta.fields]
+                    ]
+                )
+                url = f"{url}&{care_status_query_string}"
             label = "Add"
         context = dict(
             title=f"{SubjectScreening._meta.verbose_name}", url=url, label=label
@@ -232,7 +272,9 @@ class MoccaRegisterAdmin(
         return dict(screening_identifier=obj.screening_identifier)
 
     def care_status(self, obj=None, label=None):
-        if self.get_subject_screening_obj(obj=obj, label=label):
+        if not self.called_once(obj) or self.get_subject_screening_obj(
+            obj=obj, label=label
+        ):
             return self.get_empty_value_display()
         try:
             care_status = CareStatus.objects.get(mocca_register=obj)
@@ -253,10 +295,12 @@ class MoccaRegisterAdmin(
         context = dict(title=f"{CareStatus._meta.verbose_name}", url=url, label=label)
         return render_to_string("dashboard_button.html", context=context)
 
-    care_status.short_description = "Care"
+    care_status.short_description = "Care Status"
 
     def refusal(self, obj=None, label=None):
-        if self.get_subject_screening_obj(obj=obj, label=label):
+        if not self.called_once(obj) or self.get_subject_screening_obj(
+            obj=obj, label=label
+        ):
             return self.get_empty_value_display()
         try:
             subject_refusal = SubjectRefusal.objects.get(
@@ -288,3 +332,6 @@ class MoccaRegisterAdmin(
             return SubjectScreening.objects.get(mocca_register=obj)
         except ObjectDoesNotExist:
             return None
+
+    def called_once(self, obj=None, label=None):
+        return MoccaRegisterContact.objects.filter(mocca_register=obj).exists()
