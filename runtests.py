@@ -25,7 +25,7 @@ DEFAULT_SETTINGS = DefaultTestSettings(
     SUBJECT_VISIT_MODEL="mocca_subject.subjectvisit",
     SUBJECT_VISIT_MISSED_MODEL="mocca_subject.subjectvisitmissed",
     SUBJECT_CONSENT_MODEL="mocca_consent.subjectconsent",
-    SUBJECT_REQUISITION_MODEL=f"mocca_subject.subjectrequisition",
+    SUBJECT_REQUISITION_MODEL="mocca_subject.subjectrequisition",
     EDC_PROTOCOL_STUDY_OPEN_DATETIME=get_datetime_from_env(2019, 6, 30, 0, 0, 0, "UTC"),
     EDC_PROTOCOL_STUDY_CLOSE_DATETIME=get_datetime_from_env(
         2024, 12, 31, 23, 59, 59, "UTC"
@@ -145,7 +145,7 @@ def main():
     django.setup()
     tags = [t.split("=")[1] for t in sys.argv if t.startswith("--tag")]
     failfast = True if [t for t in sys.argv if t == "--failfast"] else False
-    failures = DiscoverRunner(failfast=failfast, tags=tags).run_tests([f"tests"])
+    failures = DiscoverRunner(failfast=failfast, tags=tags).run_tests(["tests"])
     sys.exit(bool(failures))
 
 
