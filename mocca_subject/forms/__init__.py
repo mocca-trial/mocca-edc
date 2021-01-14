@@ -28,6 +28,7 @@ from .indicators_form import IndicatorsForm
 from .medications_form import MedicationsForm
 from .next_appointment_form import NextAppointmentForm
 from .other_baseline_data_form import OtherBaselineDataForm
+from .patient_health_form import PatientHealthForm
 from .subject_requisition_form import SubjectRequisitionForm
 from .subject_visit_form import SubjectVisitForm
 from .subject_visit_missed_form import SubjectVisitMissedForm

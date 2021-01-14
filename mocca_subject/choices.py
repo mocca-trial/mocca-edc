@@ -9,9 +9,13 @@ from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED, MISSED_VISIT
 from .constants import (
     DIET_LIFESTYLE,
     DRUGS,
-    INSULIN,
-    SITTING,
     GTE_3HRS,
+    INSULIN,
+    MORE_THAN_HALF,
+    NEARLY_EVERYDAY,
+    NOT_AT_ALL,
+    SEVERAL_DAYS,
+    SITTING,
     THIS_CLINIC,
 )
 
@@ -133,6 +137,12 @@ PAYEE_CHOICES = (
     (NOT_APPLICABLE, "Not applicable"),
 )
 
+PHQ_CHOICES = (
+    (NOT_AT_ALL, "Not at all"),
+    (SEVERAL_DAYS, "Several days"),
+    (MORE_THAN_HALF, "More than half the days"),
+    (NEARLY_EVERYDAY, "Nearly everyday"),
+)
 
 PHYSICAL_ACTIVITY = (
     ("retired", "Retired"),

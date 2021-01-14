@@ -49,6 +49,7 @@ crfs_d1 = FormsCollection(
     Crf(show_order=155, model="mocca_subject.drugrefillhiv", required=False),
     Crf(show_order=160, model="mocca_subject.otherbaselinedata"),
     Crf(show_order=165, model="mocca_subject.complicationsbaseline"),
+    Crf(show_order=169, model="mocca_subject.patienthealth"),
     Crf(show_order=170, model="mocca_subject.nextappointment"),
     name="day1",
 )
