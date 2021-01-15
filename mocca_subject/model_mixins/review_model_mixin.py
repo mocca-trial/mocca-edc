@@ -2,6 +2,7 @@ from django.db import models
 from edc_constants.choices import YES_NO, YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE, YES
 from edc_model import models as edc_models
+from mocca_subject.choices import DIAGNOSIS_LOCATIONS
 from mocca_subject.diagnoses import Diagnoses
 
 
@@ -39,6 +40,14 @@ class InitialReviewModelMixin(models.Model):
         default=YES,
         editable=False,
     )
+
+    dx_location = models.CharField(
+        verbose_name="Where was the diagnosis made?",
+        max_length=25,
+        choices=DIAGNOSIS_LOCATIONS,
+    )
+
+    dx_location_other = edc_models.OtherCharField()
 
     def save(self, *args, **kwargs):
         diagnoses = Diagnoses(

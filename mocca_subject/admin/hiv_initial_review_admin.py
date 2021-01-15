@@ -24,6 +24,8 @@ class HivInitialReviewAdmin(
                 "fields": (
                     "dx_ago",
                     "dx_date",
+                    "dx_location",
+                    "dx_location_other",
                     "receives_care",
                     "clinic",
                     "clinic_other",
@@ -59,4 +61,5 @@ class HivInitialReviewAdmin(
         "has_vl": admin.VERTICAL,
         "receives_care": admin.VERTICAL,
         "vl_quantifier": admin.VERTICAL,
+        "dx_location": admin.VERTICAL,
     }

@@ -1,4 +1,4 @@
-from edc_constants.constants import NEVER, NO, NOT_APPLICABLE, OTHER
+from edc_constants.constants import NEVER, NO, NOT_APPLICABLE, OTHER, UNKNOWN
 from edc_reportable import (
     MILLIGRAMS_PER_DECILITER,
     MILLIMOLES_PER_LITER,
@@ -175,8 +175,8 @@ TRANSPORT_CHOICES = (
 )
 
 VISIT_UNSCHEDULED_REASON = (
-    ("routine_non_study", "Routine appointment (non-study)"),
-    ("patient_unwell_outpatient", "Patient unwell"),
+    ("routine_non_study", "Routine scheduled (non-study)"),
+    ("patient_unwell_outpatient", "Patient unwell / unscheduled"),
     ("drug_refill", "Drug refill only"),
     (OTHER, "Other"),
     (NOT_APPLICABLE, "Not applicable"),
@@ -184,6 +184,16 @@ VISIT_UNSCHEDULED_REASON = (
 
 VISIT_REASON = (
     (SCHEDULED, "Scheduled visit (study)"),
-    (UNSCHEDULED, "Routine / Unscheduled visit (non-study)"),
+    (UNSCHEDULED, "Routine or unscheduled visit"),
     (MISSED_VISIT, "Missed visit"),
+)
+
+DIAGNOSIS_LOCATIONS = (
+    ("hospital", "Hospital"),
+    ("gov_clinic", "Government clinic"),
+    ("private_clinic", "Private clinic"),
+    ("private_doctor", "Private doctor"),
+    ("mocca_clinic", "MOCCA study clinic"),
+    (UNKNOWN, "Don't recall"),
+    (OTHER, "Other, specify"),
 )

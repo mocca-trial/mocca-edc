@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import format_html
 from django_audit_fields.admin import audit_fieldset_tuple
 from edc_crf.admin import crf_status_fieldset_tuple
 from edc_form_label.form_label_modeladmin_mixin import FormLabelModelAdminMixin
@@ -21,6 +22,10 @@ class PatientHealthAdmin(
         (
             "PHQ-9",
             {
+                "description": format_html(
+                    "<h3>Over the last 2 weeks, how often have you been bothered "
+                    "by any of the following?</h3>"
+                ),
                 "fields": (
                     "ph9interst",
                     "ph9feel",
@@ -32,7 +37,7 @@ class PatientHealthAdmin(
                     "ph9moving",
                     "phpthough",
                     "ph9functio",
-                )
+                ),
             },
         ),
         crf_status_fieldset_tuple,
@@ -40,14 +45,15 @@ class PatientHealthAdmin(
     )
 
     radio_fields = {
-        "ph9interst": admin.VERTICAL,
-        "ph9feel": admin.VERTICAL,
-        "ph9troubl": admin.VERTICAL,
-        "ph9tired": admin.VERTICAL,
+        "crf_status": admin.VERTICAL,
         "ph9appetit": admin.VERTICAL,
         "ph9badabt": admin.VERTICAL,
         "ph9concen": admin.VERTICAL,
-        "ph9moving": admin.VERTICAL,
-        "phpthough": admin.VERTICAL,
+        "ph9feel": admin.VERTICAL,
         "ph9functio": admin.VERTICAL,
+        "ph9interst": admin.VERTICAL,
+        "ph9moving": admin.VERTICAL,
+        "ph9tired": admin.VERTICAL,
+        "ph9troubl": admin.VERTICAL,
+        "phpthough": admin.VERTICAL,
     }

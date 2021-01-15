@@ -21,7 +21,16 @@ class DmInitialReviewAdmin(
         (None, {"fields": ("subject_visit", "report_datetime")}),
         (
             "Diagnosis and Treatment",
-            {"fields": ("dx_ago", "dx_date", "managed_by", "med_start_ago",)},
+            {
+                "fields": (
+                    "dx_ago",
+                    "dx_date",
+                    "dx_location",
+                    "dx_location_other",
+                    "managed_by",
+                    "med_start_ago",
+                )
+            },
         ),
         (
             "Blood Sugar Measurement",
@@ -46,4 +55,5 @@ class DmInitialReviewAdmin(
         "glucose_performed": admin.VERTICAL,
         "glucose_fasted": admin.VERTICAL,
         "glucose_units": admin.VERTICAL,
+        "dx_location": admin.VERTICAL,
     }
