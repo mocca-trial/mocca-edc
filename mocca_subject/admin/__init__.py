@@ -23,6 +23,7 @@ from .indicators_admin import IndicatorsAdmin
 from .medications_admin import MedicationsAdmin
 from .next_appointment_admin import NextAppointmentAdmin
 from .other_baseline_data_admin import OtherBaselineDataAdmin
+from .patient_health_admin import PatientHealthAdmin
 from .subject_requisition_admin import SubjectRequisitionAdmin
 from .subject_visit_admin import SubjectVisitAdmin
 from .subject_visit_missed_admin import SubjectVisitMissedAdmin
