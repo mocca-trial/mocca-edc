@@ -7,38 +7,64 @@ import edc_model.models.validators.date
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('mocca_ae', '0001_initial'),
+        ("mocca_ae", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='deathreport',
-            name='death_date',
-            field=models.DateField(null=True, validators=[edc_model.models.validators.date.date_not_future], verbose_name='Date of Death'),
+            model_name="deathreport",
+            name="death_date",
+            field=models.DateField(
+                null=True,
+                validators=[edc_model.models.validators.date.date_not_future],
+                verbose_name="Date of Death",
+            ),
         ),
         migrations.AddField(
-            model_name='historicaldeathreport',
-            name='death_date',
-            field=models.DateField(null=True, validators=[edc_model.models.validators.date.date_not_future], verbose_name='Date of Death'),
+            model_name="historicaldeathreport",
+            name="death_date",
+            field=models.DateField(
+                null=True,
+                validators=[edc_model.models.validators.date.date_not_future],
+                verbose_name="Date of Death",
+            ),
         ),
         migrations.AlterField(
-            model_name='deathreport',
-            name='death_as_inpatient',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], max_length=5, null=True, verbose_name='Death as inpatient'),
+            model_name="deathreport",
+            name="death_as_inpatient",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                max_length=5,
+                null=True,
+                verbose_name="Death as inpatient",
+            ),
         ),
         migrations.AlterField(
-            model_name='deathreport',
-            name='death_datetime',
-            field=models.DateTimeField(null=True, validators=[edc_model.models.validators.date.datetime_not_future], verbose_name='Date and Time of Death'),
+            model_name="deathreport",
+            name="death_datetime",
+            field=models.DateTimeField(
+                null=True,
+                validators=[edc_model.models.validators.date.datetime_not_future],
+                verbose_name="Date and Time of Death",
+            ),
         ),
         migrations.AlterField(
-            model_name='historicaldeathreport',
-            name='death_as_inpatient',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], max_length=5, null=True, verbose_name='Death as inpatient'),
+            model_name="historicaldeathreport",
+            name="death_as_inpatient",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                max_length=5,
+                null=True,
+                verbose_name="Death as inpatient",
+            ),
         ),
         migrations.AlterField(
-            model_name='historicaldeathreport',
-            name='death_datetime',
-            field=models.DateTimeField(null=True, validators=[edc_model.models.validators.date.datetime_not_future], verbose_name='Date and Time of Death'),
+            model_name="historicaldeathreport",
+            name="death_datetime",
+            field=models.DateTimeField(
+                null=True,
+                validators=[edc_model.models.validators.date.datetime_not_future],
+                verbose_name="Date and Time of Death",
+            ),
         ),
     ]
