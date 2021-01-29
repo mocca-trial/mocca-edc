@@ -7,9 +7,15 @@ from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import Group
 from django.contrib.sites.models import Site
 from edc_appointment.tests.appointment_test_case_mixin import AppointmentTestCaseMixin
-from edc_auth.fix_export_permissions import ExportPermissionsFixer
 from edc_auth.group_permissions_updater import GroupPermissionsUpdater
-from edc_constants.constants import YES, NOT_APPLICABLE, RANDOM_SAMPLING, MALE, NO
+from edc_constants.constants import (
+    FEMALE,
+    MALE,
+    NO,
+    NOT_APPLICABLE,
+    RANDOM_SAMPLING,
+    YES,
+)
 from edc_facility.import_holidays import import_holidays
 from edc_facility.models import Holiday
 from edc_list_data.site_list_data import site_list_data
@@ -21,10 +27,12 @@ from edc_visit_schedule.constants import DAY1
 from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED
 from mocca_auth.codenames_by_group import get_codenames_by_group
 from mocca_consent.models import SubjectConsent
-from mocca_screening.constants import INTEGRATED
+from mocca_lists.models import MoccaOriginalSites
+from mocca_screening.constants import INTEGRATED, NO_INTERRUPTION
 from mocca_screening.forms import SubjectScreeningForm
 from mocca_screening.import_mocca_register import import_mocca_register
-from mocca_screening.models import SubjectScreening
+from mocca_screening.mocca_original_sites import get_mocca_site_limited_to
+from mocca_screening.models import MoccaRegister, SubjectScreening
 from mocca_sites.sites import fqdn
 from mocca_subject.models import SubjectVisit
 from model_bakery import baker
@@ -47,8 +55,8 @@ class MoccaTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
         add_or_update_django_sites(sites=get_sites_by_country("uganda"))
         site_list_data.autodiscover()
         import_holidays(test=True)
-        fixer = ExportPermissionsFixer(warn_only=True)
-        fixer.fix()
+        # fixer = ExportPermissionsFixer(warn_only=True)
+        # fixer.fix()
         GroupPermissionsUpdater(
             codenames_by_group=get_codenames_by_group(), verbose=True
         )
@@ -76,20 +84,36 @@ class MoccaTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
     def get_subject_screening(
         self, report_datetime=None, eligibility_datetime=None, **kwargs
     ):
+        mocca_register = MoccaRegister.objects.all()[0]
+        pdb.set_trace()
         data = {
-            "screening_consent": YES,
-            "age_in_years": 25,
-            "gender": MALE,
+            "age_in_years": 38,
+            "birth_year": 1983,
+            "care": YES,
+            "care_facility_location": YES,
+            "clinic_type": INTEGRATED,
+            "consent_ability": YES,
+            "gender": FEMALE,
             "hospital_identifier": "13343322",
+            "icc": YES,
+            "icc_not_in_reason": NOT_APPLICABLE,
+            "icc_since_mocca": NO_INTERRUPTION,
             "initials": "".join(choices(string.ascii_uppercase, k=2)),
             "lives_nearby": YES,
+            "mocca_participant": YES,
+            "mocca_register": mocca_register,
+            # "mocca_site": str(mocca_register.site_id),
+            "mocca_study_identifier": mocca_register.mocca_study_identifier,
+            "pregnant": NO,
             "qualifying_condition": YES,
             "report_datetime": report_datetime or get_utcnow(),
             "requires_acute_care": NO,
+            "screening_consent": YES,
             "selection_method": RANDOM_SAMPLING,
+            # subject_identifier": None,
             "unsuitable_agreed": NOT_APPLICABLE,
             "unsuitable_for_study": NO,
-            "clinic_type": INTEGRATED,
+            "willing_to_consent": YES,
         }
         data.update(**kwargs)
         form = SubjectScreeningForm(data=data, instance=None)
@@ -159,7 +183,10 @@ class MoccaTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
         )
 
     def get_next_subject_visit(
-        self, subject_visit=None, reason=None, appt_datetime=None,
+        self,
+        subject_visit=None,
+        reason=None,
+        appt_datetime=None,
     ):
         visit_code = (
             subject_visit.appointment.visit_code

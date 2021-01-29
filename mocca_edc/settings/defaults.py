@@ -1,10 +1,10 @@
-import environ
 import os
 import sys
+from pathlib import Path
 
+import environ
 from edc_appointment.constants import SCHEDULED_APPT, UNSCHEDULED_APPT
 from edc_utils import get_datetime_from_env
-from pathlib import Path
 
 
 class DisableMigrations:
@@ -218,7 +218,7 @@ if env.str("DJANGO_CACHE") == "redis":
 elif env.str("DJANGO_CACHE") == "memcached":
     CACHES = {
         "default": {
-            "BACKEND": "django.core.cache.backends.memcached.MemcachedCache",
+            "BACKEND": "django.core.cache.backends.memcached.PyLibMCCache",
             "LOCATION": "unix:/tmp/memcached.sock",
         }
     }
@@ -328,6 +328,7 @@ SUBJECT_REQUISITION_MODEL = env.str("EDC_SUBJECT_REQUISITION_MODEL")
 SUBJECT_VISIT_MODEL = env.str("EDC_SUBJECT_VISIT_MODEL")
 SUBJECT_VISIT_MISSED_MODEL = env.str("EDC_SUBJECT_VISIT_MISSED_MODEL")
 SUBJECT_VISIT_MISSED_REASONS_MODEL = env.str("EDC_SUBJECT_VISIT_MISSED_REASONS_MODEL")
+LIST_MODEL_APP_LABEL = env.str("LIST_MODEL_APP_LABEL")
 
 EDC_NAVBAR_DEFAULT = env("EDC_NAVBAR_DEFAULT")
 
