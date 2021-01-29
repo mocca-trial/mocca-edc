@@ -2,9 +2,9 @@ from edc_constants.constants import NEVER, NO, NOT_APPLICABLE, OTHER, UNKNOWN
 from edc_reportable import (
     MILLIGRAMS_PER_DECILITER,
     MILLIMOLES_PER_LITER,
-    MILLIMOLES_PER_LITER_DISPLAY,
+    MILLIMOLES_PER_LITER_DISPLAY
 )
-from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED, MISSED_VISIT
+from edc_visit_tracking.constants import MISSED_VISIT, SCHEDULED, UNSCHEDULED
 
 from .constants import (
     DIET_LIFESTYLE,
@@ -16,7 +16,7 @@ from .constants import (
     NOT_AT_ALL,
     SEVERAL_DAYS,
     SITTING,
-    THIS_CLINIC,
+    THIS_CLINIC
 )
 
 ALCOHOL_CONSUMPTION = (
@@ -120,11 +120,12 @@ GLUCOSE_UNITS = (
 )
 
 INFO_SOURCE = (
-    ("hospital_notes", "Hospital notes"),
-    ("outpatient_cards", "Outpatient cards"),
     ("patient", "Patient"),
+    ("patient_representative", "Patient Representative"),
     ("patient_and_outpatient", "Patient, hospital notes and/or outpatient card"),
     ("collateral_history", "Collateral History from relative/guardian"),
+    ("hospital_notes", "Hospital notes"),
+    ("outpatient_cards", "Outpatient cards"),
     (NOT_APPLICABLE, "Not applicable"),
     (OTHER, "Other"),
 )

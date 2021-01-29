@@ -14,6 +14,7 @@ from edc_screening.model_mixins import EligibilityModelMixin, ScreeningModelMixi
 from edc_screening.screening_identifier import (
     ScreeningIdentifier as BaseScreeningIdentifier,
 )
+from edc_utils import get_utcnow
 from mocca_lists.models import MoccaOriginalSites
 
 from ..eligibility import MoccaScreeningEligibility
@@ -33,7 +34,10 @@ class ScreeningIdentifier(BaseScreeningIdentifier):
 
 
 class SubjectScreening(
-    CareModelMixin, ScreeningModelMixin, EligibilityModelMixin, BaseUuidModel,
+    CareModelMixin,
+    ScreeningModelMixin,
+    EligibilityModelMixin,
+    BaseUuidModel,
 ):
     identifier_cls = ScreeningIdentifier
 
@@ -133,6 +137,8 @@ class SubjectScreening(
         self.mocca_screening_identifier = self.mocca_register.mocca_screening_identifier
         self.mocca_site = self.mocca_register.mocca_site
         self.mocca_study_identifier = self.mocca_register.mocca_study_identifier
+        # if not self.id:
+        self.eligibility_datetime = get_utcnow()
         super().save(*args, **kwargs)
 
     class Meta:
