@@ -67,7 +67,7 @@ TEST_DIR = os.path.join(BASE_DIR, APP_NAME, "tests")
 LOGIN_REDIRECT_URL = env.str("DJANGO_LOGIN_REDIRECT_URL")
 
 SENTRY_ENABLED = env("SENTRY_ENABLED")
-EDC_LIST_MODEL_APP_LABEL
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
