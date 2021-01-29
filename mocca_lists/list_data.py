@@ -55,7 +55,10 @@ list_data = {
         (WITHDRAWAL, "Patient withdrew consent to participate further"),
         (LATE_EXCLUSION, "Patient fulfilled late exclusion criteria*"),
         (TRANSFERRED, "Patient has been transferred to another health centre"),
-        (OTHER, "Other reason (specify below)",),
+        (
+            OTHER,
+            "Other reason (specify below)",
+        ),
     ],
     "mocca_lists.htntreatments": [
         ("aldactone", "Aldactone (Spironolactone)"),
@@ -143,7 +146,7 @@ list_data = {
         (OTHER, "Other, specify"),
     ],
     "mocca_lists.clinicservices": [
-        (STUDY_DEFINED_TIMEPOINT, "Scheduled study visit (0,6m,12m)"),
+        (STUDY_DEFINED_TIMEPOINT, "Scheduled study visit"),
         (ROUTINE_VISIT, "Routine clinic review by a clinician"),
         (REFILL, "Drug refill"),
         (UNWELL_VISIT, "Feeling unwell"),
