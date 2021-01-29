@@ -15,10 +15,9 @@ from edc_constants.constants import (
 )
 from edc_offstudy.constants import (
     LATE_EXCLUSION,
-    TRANSFERRED,
     WITHDRAWAL,
 )
-from mocca_subject.constants import INTEGRATED, NCD
+from edc_transfer.constants import TRANSFERRED
 
 list_data = {
     "mocca_lists.moccaoriginalsites": [

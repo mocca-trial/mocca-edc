@@ -51,18 +51,18 @@ class AdminSiteTest(MoccaTestCaseMixin, TestCase):
     def test_ae(self):
         self.login(superuser=False, groups=[EVERYONE, AUDITOR])
         response = self.client.get(reverse("mocca_ae:home_url"))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         response = self.client.get(reverse("edc_adverse_event:ae_home_url"))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         response = self.client.get(reverse("edc_adverse_event:tmg_home_url"))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         response = self.client.get(reverse("edc_data_manager:home_url"))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_home_everyone(self):
         self.login(superuser=False, groups=[EVERYONE])
         response = self.client.get(reverse("home_url"))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "Screening")
         self.assertNotContains(response, "Subjects")
         self.assertNotContains(response, "Specimens")
@@ -79,7 +79,7 @@ class AdminSiteTest(MoccaTestCaseMixin, TestCase):
     def test_home_auditor(self):
         self.login(superuser=False, groups=[EVERYONE, AUDITOR])
         response = self.client.get(reverse("home_url"))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Screening")
         self.assertContains(response, "Subjects")
         self.assertContains(response, "Specimens")

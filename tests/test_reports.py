@@ -1,10 +1,11 @@
+from unittest import skip
+
 from django.contrib.auth.models import User
 from django.test import TestCase, tag
 from django.test.client import RequestFactory
 from edc_adverse_event.models import AeClassification
-from inte_reports.ae_report import AeReport
+from mocca_reports.ae_report import AeReport
 from model_bakery import baker
-from unittest import skip
 
 from .mocca_test_case_mixin import MoccaTestCaseMixin
 
