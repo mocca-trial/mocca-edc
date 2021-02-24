@@ -1,9 +1,9 @@
 from django.core.validators import (
-    RegexValidator,
-    MinLengthValidator,
     MaxLengthValidator,
     MaxValueValidator,
+    MinLengthValidator,
     MinValueValidator,
+    RegexValidator,
 )
 from django.db import models
 from django.db.models import Index, UniqueConstraint
@@ -18,6 +18,7 @@ from edc_constants.constants import NO, UNKNOWN, YES
 from edc_model.models import BaseUuidModel, HistoricalRecords
 from edc_sites.models import CurrentSiteManager, SiteModelMixin
 from edc_utils import get_utcnow
+
 from mocca_lists.models import MoccaOriginalSites
 
 from ..mocca_original_sites import get_mocca_site_limited_to
@@ -45,7 +46,9 @@ class MoccaRegister(SiteModelMixin, BaseUuidModel):
     report_datetime = models.DateTimeField(default=get_utcnow)
 
     screening_identifier = models.CharField(
-        verbose_name="MOCCA (ext) screening identifier", max_length=15, null=True,
+        verbose_name="MOCCA (ext) screening identifier",
+        max_length=15,
+        null=True,
     )
 
     mocca_screening_identifier = models.CharField(
@@ -113,9 +116,7 @@ class MoccaRegister(SiteModelMixin, BaseUuidModel):
 
     contact_attempts = models.IntegerField(default=0, help_text="auto-updated")
 
-    call = models.CharField(
-        verbose_name="Call?", max_length=15, choices=YES_NO, default=YES
-    )
+    call = models.CharField(verbose_name="Call?", max_length=15, choices=YES_NO, default=YES)
 
     screen_now = models.CharField(
         verbose_name="Patient is present. Screen now instead of calling?",
@@ -150,7 +151,9 @@ class MoccaRegister(SiteModelMixin, BaseUuidModel):
     history = HistoricalRecords()
 
     def __str__(self):
-        return f"{self.mocca_study_identifier} {self.initials} {self.age_in_years} {self.gender}"
+        return (
+            f"{self.mocca_study_identifier} {self.initials} {self.age_in_years} {self.gender}"
+        )
 
     def save(self, *args, **kwargs):
         if self.screening_identifier:

@@ -31,7 +31,9 @@ class Migration(migrations.Migration):
             new_name="care_not_in_reason",
         ),
         migrations.RenameField(
-            model_name="historicalsubjectscreening", old_name="in_icc", new_name="icc",
+            model_name="historicalsubjectscreening",
+            old_name="in_icc",
+            new_name="icc",
         ),
         migrations.RenameField(
             model_name="historicalsubjectscreening",
@@ -49,10 +51,14 @@ class Migration(migrations.Migration):
             new_name="icc_since_mocca_comment",
         ),
         migrations.RenameField(
-            model_name="moccaregistercontact", old_name="in_icc", new_name="icc",
+            model_name="moccaregistercontact",
+            old_name="in_icc",
+            new_name="icc",
         ),
         migrations.RenameField(
-            model_name="subjectscreening", old_name="in_care", new_name="care",
+            model_name="subjectscreening",
+            old_name="in_care",
+            new_name="care",
         ),
         migrations.RenameField(
             model_name="subjectscreening",
@@ -65,7 +71,9 @@ class Migration(migrations.Migration):
             new_name="care_not_in_reason",
         ),
         migrations.RenameField(
-            model_name="subjectscreening", old_name="in_icc", new_name="icc",
+            model_name="subjectscreening",
+            old_name="in_icc",
+            new_name="icc",
         ),
         migrations.RenameField(
             model_name="subjectscreening",
@@ -83,9 +91,13 @@ class Migration(migrations.Migration):
             new_name="icc_since_mocca_comment",
         ),
         migrations.RemoveField(
-            model_name="historicalsubjectscreening", name="comment",
+            model_name="historicalsubjectscreening",
+            name="comment",
         ),
-        migrations.RemoveField(model_name="subjectscreening", name="comment",),
+        migrations.RemoveField(
+            model_name="subjectscreening",
+            name="comment",
+        ),
         migrations.AddField(
             model_name="historicalsubjectscreening",
             name="care_comment",

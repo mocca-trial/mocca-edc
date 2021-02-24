@@ -8,8 +8,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand, CommandError
 from edc_constants.constants import FEMALE, MALE
 from edc_sites import get_site_by_attr
-from mocca_sites.sites import all_sites
 from tqdm import tqdm
+
+from mocca_sites.sites import all_sites
 
 
 def import_mocca_orig(verbose=None, test=None, overwrite=None):
@@ -58,9 +59,7 @@ def get_field_options(row):
     else:
         raise TypeError(f"Unknown gender. Got `{row['gender']}`")
 
-    site = get_site_by_attr(
-        "orig_site_id", int(row["site"]), sites=all_sites.get(country)
-    )
+    site = get_site_by_attr("orig_site_id", int(row["site"]), sites=all_sites.get(country))
     model_cls = django_apps.get_model("mocca_lists.MoccaOriginalSites")
     mocca_site_obj = model_cls.objects.get(name=site.name)
 

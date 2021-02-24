@@ -15,6 +15,7 @@ from edc_screening.screening_identifier import (
     ScreeningIdentifier as BaseScreeningIdentifier,
 )
 from edc_utils import get_utcnow
+
 from mocca_lists.models import MoccaOriginalSites
 
 from ..eligibility import MoccaScreeningEligibility
@@ -43,6 +44,8 @@ class SubjectScreening(
 
     eligibility_cls = MoccaScreeningEligibility
 
+    subject_identifier = models.CharField(max_length=50, null=True, blank=True)
+
     screening_consent = models.CharField(
         verbose_name=(
             "Has the subject given his/her verbal consent "
@@ -70,12 +73,12 @@ class SubjectScreening(
         verbose_name="MOCCA (original) study identifier",
         unique=True,
         max_length=25,
-        validators=[
-            RegexValidator(
-                r"0[0-9]{1}\-0[0-9]{3}|[0-9]{6}",
-                "Invalid format. Expected 12-3456 for UG, 123456 for TZ",
-            )
-        ],
+        # validators=[
+        #     RegexValidator(
+        #         r"0[0-9]{1}\-0[0-9]{3}|[0-9]{6}",
+        #         "Invalid format. Expected 12-3456 for UG, 123456 for TZ",
+        #     )
+        # ],
         help_text="Format must match original identifier. e.g. 12-3456 for UG, 123456 for TZ",
     )
 
@@ -105,7 +108,8 @@ class SubjectScreening(
 
     willing_to_consent = models.CharField(
         verbose_name=(
-            "Has the patient expressed willingness to participate in the `MOCCA extension` trial"
+            "Has the patient expressed willingness to participate "
+            "in the `MOCCA extension` trial"
         ),
         max_length=25,
         choices=YES_NO_NA,
@@ -121,9 +125,7 @@ class SubjectScreening(
     )
 
     requires_acute_care = models.CharField(
-        verbose_name=(
-            "Does the patient require acute care including in-patient admission"
-        ),
+        verbose_name="Does the patient require acute care including in-patient admission",
         max_length=25,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
