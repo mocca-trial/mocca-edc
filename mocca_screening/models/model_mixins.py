@@ -8,7 +8,9 @@ from ..choices import CARE_SINCE_MOCCA, NOT_ICC_REASONS
 
 class CareModelMixin(models.Model):
     care = models.CharField(
-        verbose_name="Is the patient in care?", choices=YES_NO_UNKNOWN, max_length=25,
+        verbose_name="Is the patient in care?",
+        choices=YES_NO_UNKNOWN,
+        max_length=25,
     )
 
     care_not_in_reason = models.CharField(

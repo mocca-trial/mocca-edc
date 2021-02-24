@@ -1,10 +1,10 @@
 from edc_constants.constants import (
-    NO,
-    NOT_APPLICABLE,
-    OTHER,
     DIABETES,
     HIV,
     HYPERTENSION,
+    NO,
+    NOT_APPLICABLE,
+    OTHER,
     PURPOSIVELY_SELECTED,
     RANDOM_SAMPLING,
     UNKNOWN,
@@ -18,8 +18,8 @@ from .constants import (
     NCD,
     NCD_CLINIC,
     NO_INTERRUPTION,
-    SOME_INTERRUPTION,
     SEQUENTIAL,
+    SOME_INTERRUPTION,
     SYSTEMATIC,
 )
 

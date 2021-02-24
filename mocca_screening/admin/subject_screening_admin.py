@@ -32,12 +32,24 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
         [None, {"fields": ("report_datetime",)}],
         [
             "Original MOCCA information",
-            {"fields": ("mocca_participant", "mocca_register", "screening_consent",)},
+            {
+                "fields": (
+                    "mocca_participant",
+                    "mocca_register",
+                    "screening_consent",
+                )
+            },
         ],
         care_status_fieldset,
         [
             "Consent",
-            {"fields": ("willing_to_consent", "pregnant", "requires_acute_care",)},
+            {
+                "fields": (
+                    "willing_to_consent",
+                    "pregnant",
+                    "requires_acute_care",
+                )
+            },
         ],
         audit_fieldset_tuple,
     )
