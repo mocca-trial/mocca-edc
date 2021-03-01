@@ -11,16 +11,14 @@ from .modeladmin_mixins import CrfModelAdminMixin
 
 
 @admin.register(DmInitialReview, site=mocca_subject_admin)
-class DmInitialReviewAdmin(
-    CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
-):
+class DmInitialReviewAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin):
 
     form = DmInitialReviewForm
 
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
         (
-            "Diagnosis and Treatment",
+            "Diagnosis, Treatment ans Monitoring",
             {
                 "fields": (
                     "dx_ago",
@@ -32,19 +30,6 @@ class DmInitialReviewAdmin(
                 )
             },
         ),
-        (
-            "Blood Sugar Measurement",
-            {
-                "fields": (
-                    "glucose_performed",
-                    "glucose_fasted",
-                    "glucose_date",
-                    "glucose",
-                    "glucose_quantifier",
-                    "glucose_units",
-                ),
-            },
-        ),
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,
     )
@@ -52,8 +37,12 @@ class DmInitialReviewAdmin(
     radio_fields = {
         "crf_status": admin.VERTICAL,
         "managed_by": admin.VERTICAL,
-        "glucose_performed": admin.VERTICAL,
-        "glucose_fasted": admin.VERTICAL,
-        "glucose_units": admin.VERTICAL,
         "dx_location": admin.VERTICAL,
     }
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj=obj, **kwargs)
+        form = self.replace_label_text(
+            form, "ncd_condition_label", self.model.ncd_condition_label
+        )
+        return form

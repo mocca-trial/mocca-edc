@@ -1,41 +1,41 @@
-import pdb
-import string
+from datetime import datetime
 from pprint import pprint
-from random import choices
+from typing import Optional
 
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import Group
 from django.contrib.sites.models import Site
 from edc_appointment.tests.appointment_test_case_mixin import AppointmentTestCaseMixin
 from edc_auth.group_permissions_updater import GroupPermissionsUpdater
-from edc_constants.constants import (
-    FEMALE,
-    MALE,
-    NO,
-    NOT_APPLICABLE,
-    RANDOM_SAMPLING,
-    YES,
-)
+from edc_constants.constants import FEMALE, NO, NOT_APPLICABLE, YES
 from edc_facility.import_holidays import import_holidays
-from edc_facility.models import Holiday
 from edc_list_data.site_list_data import site_list_data
 from edc_randomization.randomization_list_importer import RandomizationListImporter
-from edc_sites import add_or_update_django_sites, get_sites_by_country
+from edc_sites import (
+    add_or_update_django_sites,
+    get_current_country,
+    get_sites_by_country,
+)
 from edc_sites.tests.site_test_case_mixin import SiteTestCaseMixin
 from edc_utils.date import get_utcnow
 from edc_visit_schedule.constants import DAY1
 from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED
+from edc_visit_tracking.stubs import SubjectVisitModelStub
+from model_bakery import baker
+
 from mocca_auth.codenames_by_group import get_codenames_by_group
 from mocca_consent.models import SubjectConsent
-from mocca_lists.models import MoccaOriginalSites
-from mocca_screening.constants import INTEGRATED, NO_INTERRUPTION
+from mocca_screening.constants import NO_INTERRUPTION
 from mocca_screening.forms import SubjectScreeningForm
 from mocca_screening.import_mocca_register import import_mocca_register
-from mocca_screening.mocca_original_sites import get_mocca_site_limited_to
+from mocca_screening.mocca_original_sites import get_mocca_sites_by_country
 from mocca_screening.models import MoccaRegister, SubjectScreening
 from mocca_sites.sites import fqdn
 from mocca_subject.models import SubjectVisit
-from model_bakery import baker
+
+
+def age_in_years(birth_year: int) -> int:
+    return datetime.now().year - birth_year
 
 
 class MoccaTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
@@ -49,25 +49,18 @@ class MoccaTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
 
     subject_visit_model_cls = SubjectVisit
 
+    mocca_sites = []
+
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    def setUpTestData(cls):
         add_or_update_django_sites(sites=get_sites_by_country("uganda"))
         site_list_data.autodiscover()
         import_holidays(test=True)
-        # fixer = ExportPermissionsFixer(warn_only=True)
-        # fixer.fix()
-        GroupPermissionsUpdater(
-            codenames_by_group=get_codenames_by_group(), verbose=True
-        )
+        GroupPermissionsUpdater(codenames_by_group=get_codenames_by_group(), verbose=True)
         if cls.import_randomization_list:
-            RandomizationListImporter(verbose=False, name="default")
+            RandomizationListImporter(verbose=False, name="default", sid_count_for_tests=2)
+        cls.mocca_sites = get_mocca_sites_by_country(country=get_current_country())
         import_mocca_register()
-
-    @classmethod
-    def tearDownClass(cls):
-        super().tearDownClass()
-        Holiday.objects.all().delete()
 
     def login(self, user=None, superuser=None, groups=None):
         user = self.user if user is None else user
@@ -81,41 +74,53 @@ class MoccaTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
                 user.groups.add(group)
         return self.client.force_login(user or self.user)
 
-    def get_subject_screening(
-        self, report_datetime=None, eligibility_datetime=None, **kwargs
-    ):
-        mocca_register = MoccaRegister.objects.all()[0]
-        pdb.set_trace()
-        data = {
-            "age_in_years": 38,
-            "birth_year": 1983,
-            "care": YES,
-            "care_facility_location": YES,
-            "clinic_type": INTEGRATED,
-            "consent_ability": YES,
-            "gender": FEMALE,
-            "hospital_identifier": "13343322",
-            "icc": YES,
-            "icc_not_in_reason": NOT_APPLICABLE,
-            "icc_since_mocca": NO_INTERRUPTION,
-            "initials": "".join(choices(string.ascii_uppercase, k=2)),
-            "lives_nearby": YES,
+    def get_mocca_register(self, gender: str) -> MoccaRegister:
+        mocca_study_identifiers = SubjectScreening.objects.values_list(
+            "mocca_study_identifier", flat=True
+        )
+        return MoccaRegister.objects.filter(
+            gender=gender or FEMALE, mocca_site__name__in=self.mocca_sites
+        ).exclude(mocca_study_identifier__in=mocca_study_identifiers)[0]
+
+    def get_subject_screening_form_data(
+        self, mocca_register: Optional[MoccaRegister] = None, gender: Optional[str] = None
+    ) -> dict:
+        if not mocca_register:
+            mocca_register = self.get_mocca_register(gender)
+
+        return {
+            "screening_consent": YES,
+            "report_datetime": get_utcnow(),
             "mocca_participant": YES,
             "mocca_register": mocca_register,
-            # "mocca_site": str(mocca_register.site_id),
+            "mocca_site": str(mocca_register.mocca_site.id),
             "mocca_study_identifier": mocca_register.mocca_study_identifier,
-            "pregnant": NO,
-            "qualifying_condition": YES,
-            "report_datetime": report_datetime or get_utcnow(),
-            "requires_acute_care": NO,
-            "screening_consent": YES,
-            "selection_method": RANDOM_SAMPLING,
-            # subject_identifier": None,
-            "unsuitable_agreed": NOT_APPLICABLE,
+            "initials": mocca_register.initials,
+            "gender": mocca_register.gender,
+            "birth_year": mocca_register.birth_year,
+            "age_in_years": age_in_years(mocca_register.birth_year),
+            "care": YES,
+            "care_facility_location": YES,
+            "icc_since_mocca": NO_INTERRUPTION,
+            "icc": YES,
+            "icc_not_in_reason": NOT_APPLICABLE,
             "unsuitable_for_study": NO,
+            "unsuitable_agreed": NOT_APPLICABLE,
+            "consent_ability": YES,
             "willing_to_consent": YES,
+            "pregnant": NO if mocca_register.gender == FEMALE else NOT_APPLICABLE,
+            "requires_acute_care": NO,
         }
-        data.update(**kwargs)
+
+    def get_subject_screening(
+        self,
+        report_datetime: Optional[datetime] = None,
+        eligibility_datetime: Optional[datetime] = None,
+        gender: Optional[str] = None,
+        **kwargs
+    ) -> SubjectScreening:
+        data = self.get_subject_screening_form_data(gender=gender)
+        data.update(report_datetime=report_datetime or get_utcnow(), **kwargs)
         form = SubjectScreeningForm(data=data, instance=None)
         form.is_valid()
         try:
@@ -136,18 +141,15 @@ class MoccaTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
 
         return subject_screening
 
-    def get_subject_consent(
-        self, subject_screening, consent_datetime=None, site_name=None, **kwargs
-    ):
-        site_name = site_name or "kinoni"
+    @staticmethod
+    def get_subject_consent(subject_screening, consent_datetime=None, **kwargs):
         options = dict(
             user_created="erikvw",
             user_modified="erikvw",
             screening_identifier=subject_screening.screening_identifier,
             initials=subject_screening.initials,
-            dob=get_utcnow().date()
-            - relativedelta(years=subject_screening.age_in_years),
-            site=Site.objects.get(name=site_name),
+            dob=get_utcnow().date() - relativedelta(years=subject_screening.age_in_years),
+            site=subject_screening.site,
             consent_datetime=consent_datetime or get_utcnow(),
         )
         options.update(**kwargs)
@@ -166,9 +168,7 @@ class MoccaTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
         reason = reason or SCHEDULED
         if not appointment:
             subject_screening = subject_screening or self.get_subject_screening()
-            subject_consent = subject_consent or self.get_subject_consent(
-                subject_screening
-            )
+            subject_consent = subject_consent or self.get_subject_consent(subject_screening)
             appointment = self.get_appointment(
                 subject_identifier=subject_consent.subject_identifier,
                 visit_code=visit_code or DAY1,
@@ -184,10 +184,10 @@ class MoccaTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
 
     def get_next_subject_visit(
         self,
-        subject_visit=None,
+        subject_visit: SubjectVisitModelStub = None,
         reason=None,
         appt_datetime=None,
-    ):
+    ) -> SubjectVisitModelStub:
         visit_code = (
             subject_visit.appointment.visit_code
             if reason == UNSCHEDULED
@@ -195,9 +195,7 @@ class MoccaTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
         )
         # visit_code_sequence will increment in get_subject_visit
         visit_code_sequence = (
-            subject_visit.appointment.visit_code_sequence
-            if reason == UNSCHEDULED
-            else 0
+            subject_visit.appointment.visit_code_sequence if reason == UNSCHEDULED else 0
         )
         return self.get_subject_visit(
             visit_code=visit_code,

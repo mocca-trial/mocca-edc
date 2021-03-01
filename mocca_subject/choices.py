@@ -2,22 +2,11 @@ from edc_constants.constants import NEVER, NO, NOT_APPLICABLE, OTHER, UNKNOWN
 from edc_reportable import (
     MILLIGRAMS_PER_DECILITER,
     MILLIMOLES_PER_LITER,
-    MILLIMOLES_PER_LITER_DISPLAY
+    MILLIMOLES_PER_LITER_DISPLAY,
 )
 from edc_visit_tracking.constants import MISSED_VISIT, SCHEDULED, UNSCHEDULED
 
-from .constants import (
-    DIET_LIFESTYLE,
-    DRUGS,
-    GTE_3HRS,
-    INSULIN,
-    MORE_THAN_HALF,
-    NEARLY_EVERYDAY,
-    NOT_AT_ALL,
-    SEVERAL_DAYS,
-    SITTING,
-    THIS_CLINIC
-)
+from .constants import DIET_LIFESTYLE, DRUGS, GTE_3HRS, INSULIN, SITTING, THIS_CLINIC
 
 ALCOHOL_CONSUMPTION = (
     ("ocassionally", "Ocassionally"),
@@ -136,13 +125,6 @@ PAYEE_CHOICES = (
     ("relative", "Relative of others paying"),
     ("free", "Free drugs from the pharmacy"),
     (NOT_APPLICABLE, "Not applicable"),
-)
-
-PHQ_CHOICES = (
-    (NOT_AT_ALL, "Not at all"),
-    (SEVERAL_DAYS, "Several days"),
-    (MORE_THAN_HALF, "More than half the days"),
-    (NEARLY_EVERYDAY, "Nearly everyday"),
 )
 
 PHYSICAL_ACTIVITY = (

@@ -6,29 +6,8 @@ from ..model_mixins import CrfModelMixin
 
 class NextAppointment(CrfModelMixin, edc_models.BaseUuidModel):
 
-    hiv_clinic_appt_date = models.DateField(
-        verbose_name="HIV clinic: next scheduled routine appointment",
-        null=True,
-        blank=True,
-        help_text="if applicable.",
-    )
-
-    ncd_clinic_appt_date = models.DateField(
-        verbose_name="NCD clinic: next scheduled routine appointment",
-        null=True,
-        blank=True,
-        help_text="if applicable.",
-    )
-
-    dm_clinic_appt_date = models.DateField(
-        verbose_name="Diabetes-only clinic: next scheduled routine appointment",
-        null=True,
-        blank=True,
-        help_text="if applicable.",
-    )
-
-    htn_clinic_appt_date = models.DateField(
-        verbose_name="Hypertension-only clinic: next scheduled routine appointment",
+    appt_date = models.DateField(
+        verbose_name="Next scheduled routine appointment",
         null=True,
         blank=True,
         help_text="if applicable.",

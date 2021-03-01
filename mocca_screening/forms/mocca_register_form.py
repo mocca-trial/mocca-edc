@@ -6,10 +6,11 @@ from edc_utils import age
 from mocca_screening.mocca_original_sites import get_mocca_sites_by_country
 
 from ..models import MoccaRegister
+from ..stubs import MoccaRegisterFormValidatorStub
 
 
 class MoccaRegisterFormValidator(FormValidator):
-    def clean(self):
+    def clean(self: MoccaRegisterFormValidatorStub):
         mocca_country = get_current_country()
         if self.cleaned_data.get("mocca_site"):
             sites = get_mocca_sites_by_country(country=mocca_country)
@@ -48,7 +49,7 @@ class MoccaRegisterFormValidator(FormValidator):
                 }
             )
 
-    def get_age(self):
+    def get_age(self: MoccaRegisterFormValidatorStub):
         return age(
             born=self.cleaned_data.get("dob"),
             reference_dt=self.instance.report_datetime,

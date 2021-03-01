@@ -5,6 +5,7 @@ from .admin_site import mocca_lists_admin
 from .models import (
     ArvDrugs,
     ArvRegimens,
+    CholTreatments,
     ClinicServices,
     Conditions,
     DmTreatments,
@@ -70,6 +71,11 @@ class OffstudyReasonsAdmin(ListModelAdminMixin, admin.ModelAdmin):
 
 @admin.register(HtnTreatments, site=mocca_lists_admin)
 class HtnTreatmentsAdmin(ListModelAdminMixin, admin.ModelAdmin):
+    pass
+
+
+@admin.register(CholTreatments, site=mocca_lists_admin)
+class CholTreatmentsAdmin(ListModelAdminMixin, admin.ModelAdmin):
     pass
 
 

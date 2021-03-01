@@ -1,5 +1,6 @@
 from edc_offstudy.constants import END_OF_STUDY_ACTION
 from edc_visit_schedule import site_visit_schedules
+
 from mocca_visit_schedule.constants import SCHEDULE
 
 from .end_of_study import EndOfStudy
@@ -17,16 +18,14 @@ class OffSchedule(EndOfStudy):
 
     @property
     def visit_schedule(self):
-        """Returns a visit schedule object.
-        """
+        """Returns a visit schedule object."""
         return site_visit_schedules.get_by_onschedule_model(
             onschedule_model=self._meta.label_lower
         )[0]
 
     @property
     def schedule(self):
-        """Returns a schedule object.
-        """
+        """Returns a schedule object."""
         return site_visit_schedules.get_by_onschedule_model(
             onschedule_model=self._meta.label_lower
         )[1]

@@ -11,15 +11,22 @@ from edc_constants.constants import (
     REFILL,
     ROUTINE_VISIT,
     STUDY_DEFINED_TIMEPOINT,
+    UNKNOWN,
     UNWELL_VISIT,
 )
-from edc_offstudy.constants import (
-    LATE_EXCLUSION,
-    WITHDRAWAL,
-)
+from edc_offstudy.constants import LATE_EXCLUSION, WITHDRAWAL
 from edc_transfer.constants import TRANSFERRED
 
 list_data = {
+    "mocca_lists.diagnosislocations": [
+        ("hospital", "Hospital"),
+        ("gov_clinic", "Government clinic"),
+        ("private_clinic", "Private clinic"),
+        ("private_doctor", "Private doctor"),
+        ("mocca_clinic", "MOCCA study clinic"),
+        (UNKNOWN, "Don't recall"),
+        (OTHER, "Other, specify"),
+    ],
     "mocca_lists.moccaoriginalsites": [
         ("amana", "Amana"),
         ("bunju", "Bunju"),
@@ -143,6 +150,12 @@ list_data = {
             "vitamin_b_folic_acid",
             "Vitamin Bs + Folic Acid (Neuroton- diabetic neuropathy)",
         ),
+        (OTHER, "Other, specify"),
+    ],
+    "mocca_lists.choltreatments": [
+        ("rosuvastatin", "Rosuvastatin"),
+        ("simvastatin", "Simvastatin"),
+        ("atorvastatin", "Atorvastatin"),
         (OTHER, "Other, specify"),
     ],
     "mocca_lists.clinicservices": [

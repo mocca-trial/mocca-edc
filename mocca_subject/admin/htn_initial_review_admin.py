@@ -11,9 +11,7 @@ from .modeladmin_mixins import CrfModelAdminMixin
 
 
 @admin.register(HtnInitialReview, site=mocca_subject_admin)
-class HtnInitialReviewAdmin(
-    CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
-):
+class HtnInitialReviewAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin):
 
     form = HtnInitialReviewForm
 
@@ -41,3 +39,10 @@ class HtnInitialReviewAdmin(
         "managed_by": admin.VERTICAL,
         "dx_location": admin.VERTICAL,
     }
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj=obj, **kwargs)
+        form = self.replace_label_text(
+            form, "ncd_condition_label", self.model.ncd_condition_label
+        )
+        return form

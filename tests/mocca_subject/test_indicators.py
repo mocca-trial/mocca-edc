@@ -1,12 +1,14 @@
 from django import forms
-from django.test import TestCase, tag
+from django.test import TestCase
 from edc_appointment.constants import INCOMPLETE_APPT
 from edc_constants.constants import INCOMPLETE
 from edc_utils import get_utcnow
+from model_bakery import baker
+
 from mocca_screening.constants import HIV_CLINIC
 from mocca_subject.forms.indicators_form import IndicatorsFormValidator
-from tests.mocca_test_case_mixin import MoccaTestCaseMixin
-from model_bakery import baker
+
+from ..mocca_test_case_mixin import MoccaTestCaseMixin
 
 
 class TestIndicators(MoccaTestCaseMixin, TestCase):
@@ -22,9 +24,7 @@ class TestIndicators(MoccaTestCaseMixin, TestCase):
             subject_screening=self.subject_screening,
             subject_consent=self.subject_consent,
         )
-        baker.make(
-            "mocca_subject.clinicalreviewbaseline", subject_visit=self.subject_visit
-        )
+        baker.make("mocca_subject.clinicalreviewbaseline", subject_visit=self.subject_visit)
 
     def test_weight_height_required_at_baseline(self):
         data = {

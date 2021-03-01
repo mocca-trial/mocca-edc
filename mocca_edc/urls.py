@@ -24,6 +24,7 @@ from edc_randomization.admin_site import edc_randomization_admin
 from edc_reference.admin_site import edc_reference_admin
 from edc_registration.admin_site import edc_registration_admin
 from edc_visit_schedule.admin_site import edc_visit_schedule_admin
+
 from mocca_ae.admin_site import mocca_ae_admin
 from mocca_consent.admin_site import mocca_consent_admin
 from mocca_export.admin_site import mocca_export_admin

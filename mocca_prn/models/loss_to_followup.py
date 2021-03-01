@@ -1,8 +1,8 @@
 from django.db import models
 from edc_action_item.models.action_model_mixin import ActionModelMixin
 from edc_identifier.model_mixins import (
-    TrackingModelMixin,
     NonUniqueSubjectIdentifierFieldMixin,
+    TrackingModelMixin,
 )
 from edc_ltfu.choices import LOSS_CHOICES
 from edc_ltfu.constants import LOSS_TO_FOLLOWUP_ACTION
@@ -36,7 +36,5 @@ class LossToFollowup(
 
     class Meta(LossToFollowupModelMixin.Meta, BaseUuidModel.Meta):
         indexes = [
-            models.Index(
-                fields=["subject_identifier", "action_identifier", "site", "id"]
-            )
+            models.Index(fields=["subject_identifier", "action_identifier", "site", "id"])
         ]

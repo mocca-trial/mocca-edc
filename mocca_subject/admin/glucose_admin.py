@@ -10,8 +10,7 @@ from ..models import Glucose
 from .modeladmin_mixins import CrfModelAdminMixin
 
 
-@admin.register(Glucose, site=mocca_subject_admin)
-class GlucoseAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin):
+class GlucoseModelAdminMixin:
     form = GlucoseForm
 
     fieldsets = (
@@ -20,6 +19,7 @@ class GlucoseAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAd
             "Blood Sugar Measurement",
             {
                 "fields": (
+                    "glucose_performed",
                     "glucose_fasted",
                     "glucose_date",
                     "glucose",
@@ -34,6 +34,14 @@ class GlucoseAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAd
 
     radio_fields = {
         "crf_status": admin.VERTICAL,
+        "glucose_performed": admin.VERTICAL,
         "glucose_fasted": admin.VERTICAL,
         "glucose_units": admin.VERTICAL,
     }
+
+
+@admin.register(Glucose, site=mocca_subject_admin)
+class GlucoseAdmin(
+    GlucoseModelAdminMixin, CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
+):
+    pass

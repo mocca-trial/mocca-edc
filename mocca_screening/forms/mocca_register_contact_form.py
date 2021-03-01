@@ -1,5 +1,5 @@
 from django import forms
-from edc_constants.constants import ALIVE, DEAD, UNKNOWN, YES
+from edc_constants.constants import ALIVE, UNKNOWN, YES
 from edc_form_validators import FormValidator, FormValidatorMixin
 
 from ..models import MoccaRegisterContact

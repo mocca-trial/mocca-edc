@@ -14,7 +14,9 @@ class SubjectVisitFormValidator(VisitFormValidator):
     def clean(self):
         super().clean()
         self.m2m_other_specify(
-            OTHER, m2m_field="clinic_services", field_other="clinic_services_other",
+            OTHER,
+            m2m_field="clinic_services",
+            field_other="clinic_services_other",
         )
 
         self.validate__clinic_services()
@@ -29,9 +31,7 @@ class SubjectVisitFormValidator(VisitFormValidator):
             self.cleaned_data.get("appointment").visit_code_sequence == 0
             and STUDY_DEFINED_TIMEPOINT not in selections
         ):
-            raise forms.ValidationError(
-                {"clinic_services": "This is scheduled study visit."}
-            )
+            raise forms.ValidationError({"clinic_services": "This is scheduled study visit."})
         elif (
             self.cleaned_data.get("appointment").visit_code_sequence != 0
             and STUDY_DEFINED_TIMEPOINT in selections

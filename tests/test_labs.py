@@ -1,6 +1,7 @@
 from django.test import TestCase, tag
-from edc_lab.site_labs import site_labs
 from edc_lab.models import Panel
+from edc_lab.site_labs import site_labs
+
 from mocca_labs.lab_profiles import subject_lab_profile
 
 
@@ -19,12 +20,8 @@ class TestLabs(TestCase):
         self.assertEqual("mocca_subject.subjectrequisition", obj.requisition_model)
 
     def test_panel_model(self):
-        for panel in site_labs.get(
-            lab_profile_name="subject_lab_profile"
-        ).panels.values():
-            self.assertEqual(
-                panel.requisition_model, "mocca_subject.subjectrequisition"
-            )
+        for panel in site_labs.get(lab_profile_name="subject_lab_profile").panels.values():
+            self.assertEqual(panel.requisition_model, "mocca_subject.subjectrequisition")
 
     def test_panels_exist(self):
         self.assertGreater(Panel.objects.all().count(), 0)

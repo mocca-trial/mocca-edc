@@ -1,7 +1,8 @@
 from django.test import TestCase, tag  # noqa
-from edc_constants.constants import COMPLETE, SMOKER, NONSMOKER, NOT_APPLICABLE, NO
-from mocca_subject.forms import OtherBaselineDataForm
+from edc_constants.constants import COMPLETE, NO, NONSMOKER, NOT_APPLICABLE, SMOKER
 from model_bakery import baker
+
+from mocca_subject.forms import OtherBaselineDataForm
 
 from ..mocca_test_case_mixin import MoccaTestCaseMixin
 
@@ -22,9 +23,7 @@ class TestOtherBaselineData(MoccaTestCaseMixin, TestCase):
 
         self.subject_visit = self.get_subject_visit()
 
-        baker.make(
-            "mocca_subject.clinicalreviewbaseline", subject_visit=self.subject_visit
-        )
+        baker.make("mocca_subject.clinicalreviewbaseline", subject_visit=self.subject_visit)
 
         self.data.update(
             subject_visit=self.subject_visit.pk,
