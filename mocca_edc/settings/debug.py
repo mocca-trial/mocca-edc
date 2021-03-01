@@ -1,4 +1,5 @@
 import os  # noqa
+
 from multisite import SiteID
 
 from .defaults import *  # noqa
@@ -21,5 +22,5 @@ ALLOWED_HOSTS = [
 # end comment
 
 if os.path.exists(BASE_DIR) and not os.path.exists(KEY_PATH):  # noqa
-    os.makedirs(KEY_PATH)
+    os.makedirs(KEY_PATH)  # noqa
     AUTO_CREATE_KEYS = True

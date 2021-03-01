@@ -1,13 +1,13 @@
-from mocca_ae.models.ae_initial import AeInitial
-from mocca_ae.models.ae_tmg import AeTmg
-from mocca_ae.models.ae_susar import AeSusar
-from mocca_ae.models.ae_followup import AeFollowup
-from edc_constants.constants import YES, NO, NOT_APPLICABLE
-from model_bakery.recipe import Recipe
+from edc_constants.constants import NO, NOT_APPLICABLE, YES
 from edc_reportable.constants import GRADE4
 from edc_utils.date import get_utcnow
-from mocca_ae.models.death_report import DeathReport
+from model_bakery.recipe import Recipe
 
+from mocca_ae.models.ae_followup import AeFollowup
+from mocca_ae.models.ae_initial import AeInitial
+from mocca_ae.models.ae_susar import AeSusar
+from mocca_ae.models.ae_tmg import AeTmg
+from mocca_ae.models.death_report import DeathReport
 
 aeinitial = Recipe(
     AeInitial,

@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django_audit_fields.admin import audit_fieldset_tuple
 from edc_crf.admin import crf_status_fieldset_tuple
-from edc_form_label.form_label_modeladmin_mixin import FormLabelModelAdminMixin
 from edc_model_admin import SimpleHistoryAdmin
 
 from ..admin_site import mocca_subject_admin
@@ -11,9 +10,7 @@ from .modeladmin_mixins import CrfModelAdminMixin
 
 
 @admin.register(HivInitialReview, site=mocca_subject_admin)
-class HivInitialReviewAdmin(
-    CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
-):
+class HivInitialReviewAdmin(CrfModelAdminMixin, SimpleHistoryAdmin):
     form = HivInitialReviewForm
 
     fieldsets = (
@@ -24,6 +21,8 @@ class HivInitialReviewAdmin(
                 "fields": (
                     "dx_ago",
                     "dx_date",
+                    "dx_location",
+                    "dx_location_other",
                     "receives_care",
                     "clinic",
                     "clinic_other",
@@ -59,4 +58,5 @@ class HivInitialReviewAdmin(
         "has_vl": admin.VERTICAL,
         "receives_care": admin.VERTICAL,
         "vl_quantifier": admin.VERTICAL,
+        "dx_location": admin.VERTICAL,
     }

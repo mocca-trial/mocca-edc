@@ -2,8 +2,9 @@ from django.db import models
 from edc_constants.choices import YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
+from respond_model.model_mixins import ReviewModelMixin
 
-from ..model_mixins import CrfModelMixin, ReviewModelMixin
+from ..model_mixins import CrfModelMixin
 
 
 class HivReview(ReviewModelMixin, CrfModelMixin, edc_models.BaseUuidModel):
@@ -30,7 +31,9 @@ class HivReview(ReviewModelMixin, CrfModelMixin, edc_models.BaseUuidModel):
         help_text="Select `not applicable` if previously reported.",
     )
     arv_initiation_actual_date = models.DateField(
-        verbose_name="Date started antiretroviral therapy (ART)", null=True, blank=True,
+        verbose_name="Date started antiretroviral therapy (ART)",
+        null=True,
+        blank=True,
     )
 
     class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):

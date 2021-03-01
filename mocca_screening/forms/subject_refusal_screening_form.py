@@ -1,7 +1,6 @@
 from django import forms
 from edc_constants.constants import OTHER
-from edc_form_validators import FormValidator
-from edc_form_validators import FormValidatorMixin
+from edc_form_validators import FormValidator, FormValidatorMixin
 
 from ..models import SubjectRefusal
 

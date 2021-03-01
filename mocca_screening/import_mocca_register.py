@@ -1,17 +1,17 @@
-import os
-import pdb
-import sys
 import csv
+import os
+import sys
+from typing import List
 
 from django.apps import apps as django_apps
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.management import color_style
 from edc_constants.constants import FEMALE, MALE
-from edc_facility.import_holidays import import_file
-from mocca_lists.models import MoccaOriginalSites
+from edc_model.stubs import BaseUuidModelStub
 from tqdm import tqdm
 
+from mocca_lists.models import MoccaOriginalSites
 
 style = color_style()
 
@@ -20,7 +20,13 @@ class ImportMoccaError(Exception):
     pass
 
 
-def import_mocca_register(verbose=None):
+def birthyear_in_range(x: int) -> int:
+    if not (1900 <= x <= 2003):
+        raise TypeError(f"Birth year out of range. Got {x}")
+    return x
+
+
+def import_mocca_register(verbose: bool = None):
     model_cls = django_apps.get_model("mocca_screening.moccaregister")
     fieldnames = [
         "country",
@@ -45,17 +51,13 @@ def import_mocca_register(verbose=None):
         )
     model_cls.objects.all().delete()
 
-    with open(path, "r") as f:
-        reader = csv.DictReader(f, fieldnames=fieldnames)
-        rows = [row for row in reader]
-
     import_file(path, model_cls, fieldnames)
 
     if verbose:
         sys.stdout.write("Done.\n")
 
 
-def import_file(path, model_cls, fieldnames):
+def import_file(path: str, model_cls: BaseUuidModelStub, fieldnames: List[str]) -> None:
     sys.stdout.write(style.MIGRATE_HEADING("\n Importing mocca register.\n"))
     with open(path, "r") as f:
         reader = csv.DictReader(f, fieldnames=fieldnames)
@@ -75,7 +77,7 @@ def import_file(path, model_cls, fieldnames):
                     mocca_screening_identifier=row["screening_id"],
                     mocca_study_identifier=row["study_id"],
                     initials=(row["initials"] or "").upper(),
-                    birth_year=row["birth_year"],
+                    birth_year=birthyear_in_range(int(row["birth_year"])),
                     age_in_years=row["age_in_years"],
-                    gender=MALE if row["gender"] == "MALE" else FEMALE,
+                    gender=MALE if row["gender"].lower() == "male" else FEMALE,
                 )

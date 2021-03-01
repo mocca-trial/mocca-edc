@@ -1,10 +1,13 @@
 from edc_model import models as edc_models
+from respond_model.model_mixins import MedicationAdherenceModelMixin
 
-from ..model_mixins import CrfModelMixin, MedicationAdherenceModelMixin
+from ..model_mixins import CrfModelMixin
 
 
 class DmMedicationAdherence(
-    MedicationAdherenceModelMixin, CrfModelMixin, edc_models.BaseUuidModel,
+    MedicationAdherenceModelMixin,
+    CrfModelMixin,
+    edc_models.BaseUuidModel,
 ):
 
     condition_label = "Diabetes"

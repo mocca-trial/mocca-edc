@@ -11,6 +11,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RemoveConstraint(
-            model_name="moccaregister", name="unique_first_name__last_name",
+            model_name="moccaregister",
+            name="unique_first_name__last_name",
         ),
     ]

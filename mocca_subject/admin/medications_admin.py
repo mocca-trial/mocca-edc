@@ -11,19 +11,21 @@ from .modeladmin_mixins import CrfModelAdminMixin
 
 
 @admin.register(Medications, site=mocca_subject_admin)
-class MedicationsAdmin(
-    CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
-):
+class MedicationsAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin):
     form = MedicationsForm
 
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
-        ("Prescriptions", {"fields": ("refill_htn", "refill_dm", "refill_hiv")}),
+        (
+            "Prescriptions",
+            {"fields": ("refill_htn", "refill_dm", "refill_chol", "refill_hiv")},
+        ),
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,
     )
 
     radio_fields = {
+        "refill_chol": admin.VERTICAL,
         "refill_htn": admin.VERTICAL,
         "refill_dm": admin.VERTICAL,
         "refill_hiv": admin.VERTICAL,

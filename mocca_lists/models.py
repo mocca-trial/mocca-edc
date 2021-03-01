@@ -43,6 +43,12 @@ class HtnTreatments(ListModelMixin):
         verbose_name_plural = "Hypertension Treatments"
 
 
+class CholTreatments(ListModelMixin):
+    class Meta(ListModelMixin.Meta):
+        verbose_name = "Cholesterol Treatments"
+        verbose_name_plural = "Cholesterol Treatments"
+
+
 class OffstudyReasons(ListModelMixin):
     class Meta(ListModelMixin.Meta):
         verbose_name = "Offstudy Reasons"
@@ -101,3 +107,9 @@ class TransportChoices(ListModelMixin):
     class Meta(ListModelMixin.Meta):
         verbose_name = "Transport Choices"
         verbose_name_plural = "Transport Choices"
+
+
+class DiagnosisLocations(ListModelMixin):
+    class Meta(ListModelMixin.Meta):
+        verbose_name = "Diagnosis Locations"
+        verbose_name_plural = "Diagnosis Locations"

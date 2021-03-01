@@ -29,7 +29,6 @@ class ClinicalReviewBaselineAdmin(
             "High Cholesterol",
             {"fields": ("chol_test", "chol_test_ago", "chol_test_date", "chol_dx")},
         ),
-        ("Other", {"fields": ("health_insurance", "patient_club")}),
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,
     )
@@ -40,10 +39,8 @@ class ClinicalReviewBaselineAdmin(
         "chol_test": admin.VERTICAL,
         "dm_dx": admin.VERTICAL,
         "dm_test": admin.VERTICAL,
-        "health_insurance": admin.VERTICAL,
         "hiv_dx": admin.VERTICAL,
         "hiv_test": admin.VERTICAL,
         "htn_dx": admin.VERTICAL,
         "htn_test": admin.VERTICAL,
-        "patient_club": admin.VERTICAL,
     }
