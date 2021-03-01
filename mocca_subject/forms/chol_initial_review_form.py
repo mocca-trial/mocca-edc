@@ -1,21 +1,19 @@
 from django import forms
-from edc_constants.constants import YES
+from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_form_validators.form_validator import FormValidator
-from mocca_subject.forms.mixins import InitialReviewFormValidatorMixin
-
-from ..constants import INSULIN, DRUGS
-from ..models import CholInitialReview
-from .mixins import (
-    EstimatedDateFromAgoFormMixin,
-    CrfModelFormMixin,
+from edc_model.models import estimated_date_from_ago
+from respond_model.form_validators import (
     CrfFormValidatorMixin,
-    raise_if_clinical_review_does_not_exist,
+    InitialReviewFormValidatorMixin,
 )
+from respond_model.utils import raise_if_clinical_review_does_not_exist
+
+from ..constants import DRUGS
+from ..models import CholInitialReview
 
 
 class CholInitialReviewFormValidator(
     InitialReviewFormValidatorMixin,
-    EstimatedDateFromAgoFormMixin,
     CrfFormValidatorMixin,
     FormValidator,
 ):
@@ -25,13 +23,15 @@ class CholInitialReviewFormValidator(
 
         # TODO: How is CHOL managed? Like DM? Drugs and lifestyle?
         self.required_if(
-            DRUGS, field="managed_by", field_required="med_start_ago",
+            DRUGS,
+            field="managed_by",
+            field_required="med_start_ago",
         )
 
         if self.cleaned_data.get("dx_ago") and self.cleaned_data.get("med_start_ago"):
             if (
-                self.estimated_date_from_ago("dx_ago")
-                - self.estimated_date_from_ago("med_start_ago")
+                estimated_date_from_ago(data=self.cleaned_data, ago_field="dx_ago")
+                - estimated_date_from_ago(data=self.cleaned_data, ago_field="med_start_ago")
             ).days > 1:
                 raise forms.ValidationError(
                     {"med_start_ago": "Invalid. Cannot be before diagnosis."}

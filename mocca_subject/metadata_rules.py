@@ -1,10 +1,15 @@
 from edc_constants.constants import NO, NOT_APPLICABLE, YES
-from edc_metadata import REQUIRED, NOT_REQUIRED
-from edc_metadata_rules import CrfRule, CrfRuleGroup, register, P
+from edc_metadata import NOT_REQUIRED, REQUIRED
+from edc_metadata.metadata_rules import CrfRule, CrfRuleGroup, P, register
+from respond_model.utils import is_baseline
 
-from .predicates import Predicates
 
-pc = Predicates()
+def func_glucose_baseline_required(visit=None, **kwargs):
+    return is_baseline(visit)
+
+
+def func_glucose_required(visit=None, **kwargs):
+    return not is_baseline(visit)
 
 
 @register()
@@ -17,18 +22,25 @@ class ClinicalReviewBaselineRuleGroup(CrfRuleGroup):
         target_models=["hivinitialreview"],
     )
 
-    diabetes = CrfRule(
+    dm = CrfRule(
         predicate=P("dm_dx", "eq", YES),
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
         target_models=["dminitialreview"],
     )
 
-    hypertension = CrfRule(
+    htn = CrfRule(
         predicate=P("htn_dx", "eq", YES),
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
         target_models=["htninitialreview"],
+    )
+
+    chol = CrfRule(
+        predicate=P("chol_dx", "eq", YES),
+        consequence=REQUIRED,
+        alternative=NOT_REQUIRED,
+        target_models=["cholinitialreview"],
     )
 
     class Meta:
@@ -60,6 +72,13 @@ class ClinicalReviewRuleGroup(CrfRuleGroup):
         target_models=["htninitialreview"],
     )
 
+    chol_dx = CrfRule(
+        predicate=P("chol_dx", "eq", YES),
+        consequence=REQUIRED,
+        alternative=NOT_REQUIRED,
+        target_models=["cholinitialreview"],
+    )
+
     hiv_test = CrfRule(
         predicate=P("hiv_test", "eq", NOT_APPLICABLE),
         consequence=REQUIRED,
@@ -81,6 +100,13 @@ class ClinicalReviewRuleGroup(CrfRuleGroup):
         target_models=["htnreview"],
     )
 
+    chol_test = CrfRule(
+        predicate=P("chol_test", "eq", NOT_APPLICABLE),
+        consequence=REQUIRED,
+        alternative=NOT_REQUIRED,
+        target_models=["cholreview"],
+    )
+
     complications = CrfRule(
         predicate=P("complications", "eq", YES),
         consequence=REQUIRED,
@@ -94,28 +120,20 @@ class ClinicalReviewRuleGroup(CrfRuleGroup):
 
 
 @register()
-class HealthEconomicsRuleGroup(CrfRuleGroup):
+class GlucoseRuleGroup(CrfRuleGroup):
 
-    econ = CrfRule(
-        predicate=pc.health_economics_required,
+    gluc_baseline = CrfRule(
+        predicate=func_glucose_baseline_required,
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
-        target_models=["healtheconomicsrevised"],
+        target_models=["glucosebaseline"],
     )
 
-    class Meta:
-        app_label = "mocca_subject"
-        source_model = "mocca_subject.subjectvisit"
-
-
-@register()
-class FamilyHistoryRuleGroup(CrfRuleGroup):
-
-    econ = CrfRule(
-        predicate=pc.family_history_required,
+    gluc = CrfRule(
+        predicate=func_glucose_required,
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
-        target_models=["familyhistory"],
+        target_models=["glucose"],
     )
 
     class Meta:
@@ -147,6 +165,13 @@ class MedicationsRuleGroup(CrfRuleGroup):
         target_models=["drugrefillhtn"],
     )
 
+    refill_chol = CrfRule(
+        predicate=P("refill_chol", "eq", YES),
+        consequence=REQUIRED,
+        alternative=NOT_REQUIRED,
+        target_models=["drugrefillchol"],
+    )
+
     adherence_hiv = CrfRule(
         predicate=P("refill_hiv", "in", [YES, NO]),
         consequence=REQUIRED,
@@ -166,6 +191,13 @@ class MedicationsRuleGroup(CrfRuleGroup):
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
         target_models=["htnmedicationadherence"],
+    )
+
+    adherence_chol = CrfRule(
+        predicate=P("refill_chol", "in", [YES, NO]),
+        consequence=REQUIRED,
+        alternative=NOT_REQUIRED,
+        target_models=["cholmedicationadherence"],
     )
 
     class Meta:

@@ -1,4 +1,5 @@
-from typing import Protocol
+from datetime import datetime
+from typing import Protocol, Type
 
 from edc_model.stubs import BaseUuidModelStub
 from edc_screening.stubs import (
@@ -16,7 +17,22 @@ class MoccaRegisterModelStub(BaseUuidModelStub, Protocol):
     gender: str
     mocca_site: MoccaSiteStub
     mocca_study_identfier: str
+    report_datetime: datetime
     screening_identifier: str
+
+
+class MoccaRegisterFormStub(Protocol):
+    cleaned_data: dict
+    instance: MoccaRegisterModelStub
+    model: Type[MoccaRegisterModelStub]
+
+    def clean(self) -> dict:
+        ...
+
+
+class MoccaRegisterFormValidatorStub(MoccaRegisterFormStub, Protocol):
+    def get_age(self) -> int:
+        ...
 
 
 class SubjectScreeningModelStub(BaseSubjectScreeningModelStub, Protocol):

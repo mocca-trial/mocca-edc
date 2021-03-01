@@ -1,14 +1,16 @@
 from django import forms
+from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_form_validators.form_validator import FormValidator
-
-from ..models import ViralLoadResult
-from .mixins import (
-    CrfModelFormMixin,
+from respond_model.form_validators import (
     CrfFormValidatorMixin,
-    raise_if_baseline,
-    raise_if_clinical_review_does_not_exist,
     ResultFormValidatorMixin,
 )
+from respond_model.utils import (
+    raise_if_baseline,
+    raise_if_clinical_review_does_not_exist,
+)
+
+from ..models import ViralLoadResult
 
 
 class ViralLoadResultFormValidator(
@@ -17,10 +19,8 @@ class ViralLoadResultFormValidator(
     def clean(self):
         if self.cleaned_data.get("subject_visit"):
             raise_if_baseline(self.cleaned_data.get("subject_visit"))
-            raise_if_clinical_review_does_not_exist(
-                self.cleaned_data.get("subject_visit")
-            )
-        self.validate_drawn_date_by_dx_date("hiv_dx_date", "HIV infection")
+            raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
+        self.validate_drawn_date_by_dx_date("hiv", "HIV infection")
 
 
 class ViralLoadResultForm(CrfModelFormMixin, forms.ModelForm):

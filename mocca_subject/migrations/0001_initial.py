@@ -1609,15 +1609,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "identifier_prefix",
-                    models.CharField(
-                        editable=False, max_length=50, null=True, unique=True
-                    ),
+                    models.CharField(editable=False, max_length=50, null=True, unique=True),
                 ),
                 (
                     "primary_aliquot_identifier",
-                    models.CharField(
-                        editable=False, max_length=18, null=True, unique=True
-                    ),
+                    models.CharField(editable=False, max_length=18, null=True, unique=True),
                 ),
                 (
                     "consent_model",
@@ -2208,9 +2204,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "smoker_quit_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "smoker_quit_estimated_date",
@@ -3651,9 +3645,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "dx_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "dx_date",
@@ -3697,9 +3689,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "med_start_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "med_start_estimated_date",
@@ -4302,9 +4292,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "dx_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "dx_date",
@@ -4378,9 +4366,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "arv_initiation_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "arv_initiation_actual_date",
@@ -5459,15 +5445,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "identifier_prefix",
-                    models.CharField(
-                        db_index=True, editable=False, max_length=50, null=True
-                    ),
+                    models.CharField(db_index=True, editable=False, max_length=50, null=True),
                 ),
                 (
                     "primary_aliquot_identifier",
-                    models.CharField(
-                        db_index=True, editable=False, max_length=18, null=True
-                    ),
+                    models.CharField(db_index=True, editable=False, max_length=18, null=True),
                 ),
                 (
                     "consent_model",
@@ -6094,9 +6076,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "smoker_quit_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "smoker_quit_estimated_date",
@@ -7654,9 +7634,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "dx_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "dx_date",
@@ -7700,9 +7678,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "med_start_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "med_start_estimated_date",
@@ -8354,9 +8330,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "dx_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "dx_date",
@@ -8430,9 +8404,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "arv_initiation_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "arv_initiation_actual_date",
@@ -12006,9 +11978,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "dx_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "dx_date",
@@ -12053,9 +12023,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "med_start_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "med_start_estimated_date",
@@ -12370,9 +12338,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "complications_other",
-                    models.TextField(
-                        blank=True, help_text="Please include dates", null=True
-                    ),
+                    models.TextField(blank=True, help_text="Please include dates", null=True),
                 ),
                 ("history_date", models.DateTimeField()),
                 ("history_change_reason", models.CharField(max_length=100, null=True)),
@@ -12559,9 +12525,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "stroke_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "stroke_estimated_date",
@@ -12583,9 +12547,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "heart_attack_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "heart_attack_estimated_date",
@@ -12607,9 +12569,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "renal_disease_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "renal_disease_estimated_date",
@@ -12631,9 +12591,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "vision_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "vision_estimated_date",
@@ -12655,9 +12613,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "numbness_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "numbness_estimated_date",
@@ -12679,9 +12635,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "foot_ulcers_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "foot_ulcers_estimated_date",
@@ -12703,9 +12657,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "complications_other",
-                    models.TextField(
-                        blank=True, help_text="Please include dates", null=True
-                    ),
+                    models.TextField(blank=True, help_text="Please include dates", null=True),
                 ),
                 ("history_date", models.DateTimeField()),
                 ("history_change_reason", models.CharField(max_length=100, null=True)),
@@ -12860,9 +12812,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "hiv_test_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "hiv_test_estimated_datetime",
@@ -12906,9 +12856,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "htn_test_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "htn_test_estimated_datetime",
@@ -12951,9 +12899,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "dm_test_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "dm_test_estimated_datetime",
@@ -16795,9 +16741,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "dx_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "dx_date",
@@ -16842,9 +16786,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "med_start_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "med_start_estimated_date",
@@ -17140,9 +17082,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "complications_other",
-                    models.TextField(
-                        blank=True, help_text="Please include dates", null=True
-                    ),
+                    models.TextField(blank=True, help_text="Please include dates", null=True),
                 ),
                 (
                     "site",
@@ -17310,9 +17250,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "stroke_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "stroke_estimated_date",
@@ -17334,9 +17272,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "heart_attack_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "heart_attack_estimated_date",
@@ -17358,9 +17294,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "renal_disease_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "renal_disease_estimated_date",
@@ -17382,9 +17316,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "vision_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "vision_estimated_date",
@@ -17406,9 +17338,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "numbness_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "numbness_estimated_date",
@@ -17430,9 +17360,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "foot_ulcers_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "foot_ulcers_estimated_date",
@@ -17454,9 +17382,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "complications_other",
-                    models.TextField(
-                        blank=True, help_text="Please include dates", null=True
-                    ),
+                    models.TextField(blank=True, help_text="Please include dates", null=True),
                 ),
                 (
                     "site",
@@ -17601,9 +17527,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "hiv_test_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "hiv_test_estimated_datetime",
@@ -17647,9 +17571,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "htn_test_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "htn_test_estimated_datetime",
@@ -17692,9 +17614,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "dm_test_ago",
-                    edc_model.models.fields.duration.DurationYMDField(
-                        blank=True, null=True
-                    ),
+                    edc_model.models.fields.duration.DurationYMDField(blank=True, null=True),
                 ),
                 (
                     "dm_test_estimated_datetime",
@@ -18429,7 +18349,8 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.AlterUniqueTogether(
-            name="subjectrequisition", unique_together={("panel", "subject_visit")},
+            name="subjectrequisition",
+            unique_together={("panel", "subject_visit")},
         ),
         migrations.AddIndex(
             model_name="reasonforvisit",

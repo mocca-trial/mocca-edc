@@ -1,25 +1,13 @@
 from dateutil.relativedelta import relativedelta
-from edc_visit_schedule import Schedule, Visit as BaseVisit
-from edc_visit_schedule.constants import (
-    DAY1,
-    MONTH6,
-    MONTH12,
-)
+from edc_visit_schedule import Schedule
+from edc_visit_schedule import Visit as BaseVisit
+from edc_visit_schedule.constants import DAY1
 
 from ..constants import SCHEDULE
-from .crfs import (
-    crfs_d1,
-    crfs_6m,
-    crfs_12m,
-    crfs_missed,
-    crfs_prn as default_crfs_prn,
-    crfs_unscheduled as default_crfs_unscheduled,
-)
-from .requisitions import (
-    requisitions_d1,
-    requisitions_6m,
-    requisitions_12m,
-)
+from .crfs import crfs, crfs_d1, crfs_missed
+from .crfs import crfs_prn as default_crfs_prn
+from .crfs import crfs_unscheduled as default_crfs_unscheduled
+from .requisitions import requisitions_all, requisitions_d1, requisitions_prn
 
 default_requisitions = None
 
@@ -41,7 +29,7 @@ class Visit(BaseVisit):
             crfs_prn=crfs_prn or default_crfs_prn,
             requisitions_prn=requisitions_prn,  # or default_requisitions_prn,
             crfs_missed=crfs_missed,
-            **kwargs
+            **kwargs,
         )
 
 
@@ -64,35 +52,24 @@ visit00 = Visit(
     rlower=relativedelta(days=0),
     rupper=relativedelta(days=0),
     requisitions=requisitions_d1,
+    requisitions_prn=requisitions_prn,
     crfs=crfs_d1,
     facility_name="5-day-clinic",
 )
 
-
-visit06 = Visit(
-    code=MONTH6,
-    title="Month 6",
-    timepoint=6,
-    rbase=relativedelta(months=6),
-    rlower=relativedelta(months=1),
-    rupper=relativedelta(months=5),
-    requisitions=requisitions_6m,
-    crfs=crfs_6m,
-    facility_name="5-day-clinic",
-)
-
-visit12 = Visit(
-    code=MONTH12,
-    title="Month 12",
-    timepoint=12,
-    rbase=relativedelta(months=12),
-    rlower=relativedelta(months=1),
-    rupper=relativedelta(months=3),
-    requisitions=requisitions_12m,
-    crfs=crfs_12m,
-    facility_name="5-day-clinic",
-)
-
 schedule.add_visit(visit=visit00)
-schedule.add_visit(visit=visit06)
-schedule.add_visit(visit=visit12)
+
+for n in range(1, 13):
+    visit = Visit(
+        code=str(1000 + (10 * n)),
+        title=f"Month {n}",
+        timepoint=n,
+        rbase=relativedelta(months=n),
+        rlower=relativedelta(months=0),
+        rupper=relativedelta(months=n + 1),
+        requisitions=requisitions_all,
+        requisitions_prn=requisitions_prn,
+        crfs=crfs,
+        facility_name="5-day-clinic",
+    )
+    schedule.add_visit(visit=visit)

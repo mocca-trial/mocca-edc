@@ -6,9 +6,7 @@ from edc_ltfu.modelform_mixins import LtfuFormValidatorMixin
 from edc_offstudy.constants import OTHER_RX_DISCONTINUATION
 
 
-class EndOfStudyFormValidator(
-    LtfuFormValidatorMixin, ValidateDeathReportMixin, FormValidator
-):
+class EndOfStudyFormValidator(LtfuFormValidatorMixin, ValidateDeathReportMixin, FormValidator):
 
     offschedule_reason_field = "offschedule_reason"
     loss_to_followup_model = "mocca_prn.losstofollowup"
@@ -29,10 +27,7 @@ class EndOfStudyFormValidator(
                     other_stored_value=OTHER_RX_DISCONTINUATION,
                 )
 
-            if (
-                self.cleaned_data.get("offschedule_reason").name
-                != OTHER_RX_DISCONTINUATION
-            ):
+            if self.cleaned_data.get("offschedule_reason").name != OTHER_RX_DISCONTINUATION:
                 self.validate_other_specify(
                     field="offschedule_reason",
                     other_specify_field="other_offschedule_reason",

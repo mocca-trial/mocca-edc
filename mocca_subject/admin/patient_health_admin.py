@@ -12,9 +12,7 @@ from .modeladmin_mixins import CrfModelAdminMixin
 
 
 @admin.register(PatientHealth, site=mocca_subject_admin)
-class PatientHealthAdmin(
-    CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
-):
+class PatientHealthAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin):
     form = PatientHealthForm
 
     fieldsets = (
@@ -35,7 +33,7 @@ class PatientHealthAdmin(
                     "ph9badabt",
                     "ph9concen",
                     "ph9moving",
-                    "phpthough",
+                    "ph9though",
                     "ph9functio",
                 ),
             },
@@ -55,5 +53,5 @@ class PatientHealthAdmin(
         "ph9moving": admin.VERTICAL,
         "ph9tired": admin.VERTICAL,
         "ph9troubl": admin.VERTICAL,
-        "phpthough": admin.VERTICAL,
+        "ph9though": admin.VERTICAL,
     }

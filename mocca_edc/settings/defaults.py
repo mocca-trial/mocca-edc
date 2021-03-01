@@ -78,19 +78,20 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "multisite",
     "django_crypto_fields.apps.AppConfig",
+    "django_audit_fields.apps.AppConfig",
     "django_revision.apps.AppConfig",
     "django_extensions",
     "django_celery_results",
     "django_celery_beat",
     "logentry_admin",
     "simple_history",
+    "defender",
     "storages",
     "edc_action_item.apps.AppConfig",
     "edc_appointment.apps.AppConfig",
     "edc_adverse_event.apps.AppConfig",
     "edc_auth.apps.AppConfig",
     "edc_crf.apps.AppConfig",
-    # "edc_call_manager.apps.AppConfig",
     "edc_consent.apps.AppConfig",
     "edc_lab.apps.AppConfig",
     "edc_visit_schedule.apps.AppConfig",
@@ -107,7 +108,6 @@ INSTALLED_APPS = [
     "edc_locator.apps.AppConfig",
     "edc_reference.apps.AppConfig",
     "edc_metadata.apps.AppConfig",
-    "edc_metadata_rules.apps.AppConfig",
     "edc_model.apps.AppConfig",
     "edc_model_admin.apps.AppConfig",
     "edc_navbar.apps.AppConfig",
@@ -151,6 +151,7 @@ MIDDLEWARE = [
     "multisite.middleware.DynamicSiteMiddleware",
     "django.contrib.sites.middleware.CurrentSiteMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "defender.middleware.FailedLoginMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -232,9 +233,7 @@ WSGI_APPLICATION = f"{APP_NAME}.wsgi.application"
 AUTHENTICATION_BACKENDS = ["edc_auth.backends.ModelBackendWithSite"]
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
-    },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
@@ -248,9 +247,7 @@ PASSWORD_HASHERS = [
 ]
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
-    },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
         "OPTIONS": {"min_length": 20},
@@ -322,13 +319,14 @@ LABEL_TEMPLATE_FOLDER = env.str("DJANGO_LABEL_TEMPLATE_FOLDER") or os.path.join(
 )
 CUPS_SERVERS = env.dict("DJANGO_CUPS_SERVERS")
 
-SUBJECT_SCREENING_MODEL = env.str("EDC_SUBJECT_SCREENING_MODEL")
+LIST_MODEL_APP_LABEL = env.str("EDC_LIST_MODEL_APP_LABEL")
+SUBJECT_APP_LABEL = env.str("EDC_SUBJECT_APP_LABEL")
 SUBJECT_CONSENT_MODEL = env.str("EDC_SUBJECT_CONSENT_MODEL")
 SUBJECT_REQUISITION_MODEL = env.str("EDC_SUBJECT_REQUISITION_MODEL")
-SUBJECT_VISIT_MODEL = env.str("EDC_SUBJECT_VISIT_MODEL")
+SUBJECT_SCREENING_MODEL = env.str("EDC_SUBJECT_SCREENING_MODEL")
 SUBJECT_VISIT_MISSED_MODEL = env.str("EDC_SUBJECT_VISIT_MISSED_MODEL")
 SUBJECT_VISIT_MISSED_REASONS_MODEL = env.str("EDC_SUBJECT_VISIT_MISSED_REASONS_MODEL")
-LIST_MODEL_APP_LABEL = env.str("EDC_LIST_MODEL_APP_LABEL")
+SUBJECT_VISIT_MODEL = env.str("EDC_SUBJECT_VISIT_MODEL")
 
 EDC_NAVBAR_DEFAULT = env("EDC_NAVBAR_DEFAULT")
 
@@ -418,11 +416,22 @@ EDC_RANDOMIZATION_SKIP_VERIFY_CHECKS = True
 # edc_visit_tracking
 EDC_VISIT_TRACKING_ALLOW_MISSED_UNSCHEDULED = True
 
+# respond
+RESPOND_DIAGNOSIS_LABELS = env.dict("RESPOND_DIAGNOSIS_LABELS")
+
 # django-simple-history
 SIMPLE_HISTORY_REVERT_ENABLED = False
 
 # django-multisite
 CACHE_MULTISITE_KEY_PREFIX = APP_NAME
+
+# django-defender
+# see if env.str("DJANGO_CACHE") == "redis" above
+# and that redis server is running
+DEFENDER_REDIS_NAME = "default"
+DEFENDER_LOCK_OUT_BY_IP_AND_USERNAME = True
+DEFENDER_LOCKOUT_TEMPLATE = "edc_auth/bootstrap3/login.html"
+DEFENDER_LOGIN_FAILURE_LIMIT = 5
 
 # static
 if env("AWS_ENABLED"):
@@ -453,9 +462,7 @@ if SENTRY_ENABLED and SENTRY_DSN:
     import sentry_sdk
     from sentry_sdk.integrations.django import DjangoIntegration
 
-    sentry_sdk.init(
-        dsn=SENTRY_DSN, integrations=[DjangoIntegration()], send_default_pii=True
-    )
+    sentry_sdk.init(dsn=SENTRY_DSN, integrations=[DjangoIntegration()], send_default_pii=True)
 # else:
 #     if env("DJANGO_LOGGING_ENABLED"):
 #         from .logging.standard import LOGGING  # noqa

@@ -1,4 +1,4 @@
-from edc_constants.constants import UNKNOWN, OTHER
+from edc_constants.constants import OTHER, UNKNOWN
 
 DEATH_LOCATIONS = (
     ("home", "At home"),

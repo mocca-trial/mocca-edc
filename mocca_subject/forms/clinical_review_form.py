@@ -1,22 +1,21 @@
 from django import forms
-from django.core.exceptions import ObjectDoesNotExist
 from edc_constants.constants import NO, YES
+from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_form_validators.form_validator import FormValidator
-from mocca_subject.models import ClinicalReviewBaseline
-
-from ..models import ClinicalReview
-from .mixins import (
-    CrfModelFormMixin,
+from respond_model.form_validators import (
     CrfFormValidatorMixin,
     DiagnosisFormValidatorMixin,
 )
+from respond_model.utils.form_utils import requires_clinical_review_at_baseline
+
+from ..models import ClinicalReview
 
 
 class ClinicalReviewFormValidator(
     DiagnosisFormValidatorMixin, CrfFormValidatorMixin, FormValidator
 ):
     def clean(self):
-        self.requires_clinical_review_at_baseline()
+        requires_clinical_review_at_baseline(self.cleaned_data.get("subject_visit"))
 
         diagnoses = self.get_diagnoses()
 
@@ -32,9 +31,7 @@ class ClinicalReviewFormValidator(
                 field_applicable=f"{cond}_test",
                 label=label,
             )
-            self.required_if(
-                YES, field=f"{cond}_test", field_required=f"{cond}_test_date"
-            )
+            self.required_if(YES, field=f"{cond}_test", field_required=f"{cond}_test_date")
             self.required_if(YES, field=f"{cond}_test", field_required=f"{cond}_reason")
             self.applicable_if(YES, field=f"{cond}_test", field_applicable=f"{cond}_dx")
 
@@ -61,16 +58,6 @@ class ClinicalReviewFormValidator(
                         f"Not applicable. Patient was recruited from the {cond.title} clinic."
                     ),
                 }
-            )
-
-    def requires_clinical_review_at_baseline(self):
-        try:
-            ClinicalReviewBaseline.objects.get(
-                subject_visit__subject_identifier=self.subject_identifier
-            )
-        except ObjectDoesNotExist:
-            raise forms.ValidationError(
-                f"Please complete the {ClinicalReviewBaseline._meta.verbose_name} first."
             )
 
 
