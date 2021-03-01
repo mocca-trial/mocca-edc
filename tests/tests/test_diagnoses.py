@@ -147,7 +147,7 @@ class TestDiagnoses(MoccaTestCaseMixin, TestCase):
         self.assertEqual(YES, diagnoses.get_dx_date("hiv"))
         self.assertEqual(
             diagnoses.get_dx_date("hiv"),
-            clinical_review_baseline.hiv_test_estimated_datetime.date(),
+            clinical_review_baseline.hiv_test_estimated_date,
         )
         self.assertIsNone(diagnoses.get_dx_date("dm"))
         self.assertIsNone(diagnoses.get_dx_date("htn"))
@@ -161,7 +161,7 @@ class TestDiagnoses(MoccaTestCaseMixin, TestCase):
         self.assertEqual(YES, diagnoses.get_dx_date("hiv"))
         self.assertEqual(
             diagnoses.get_dx_date("hiv"),
-            clinical_review_baseline.hiv_test_estimated_datetime.date(),
+            clinical_review_baseline.hiv_test_estimated_date,
         )
         self.assertIsNone(diagnoses.get_dx_date("dm"))
         self.assertIsNone(diagnoses.get_dx_date("htn"))
@@ -175,7 +175,7 @@ class TestDiagnoses(MoccaTestCaseMixin, TestCase):
         self.assertEqual(YES, diagnoses.get_dx_date("hiv"))
         self.assertEqual(
             diagnoses.get_dx_date("hiv"),
-            clinical_review_baseline.hiv_test_estimated_datetime.date(),
+            clinical_review_baseline.hiv_test_estimated_date,
         )
         self.assertIsNone(diagnoses.get_dx_date("dm"))
         self.assertIsNone(diagnoses.get_dx_date("htn"))
