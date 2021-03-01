@@ -14,6 +14,3 @@ class BloodResultsLipidForm(ActionItemFormMixin, CrfModelFormMixin, forms.ModelF
     class Meta:
         model = BloodResultsLipid
         fields = "__all__"
-
-
-meta_
