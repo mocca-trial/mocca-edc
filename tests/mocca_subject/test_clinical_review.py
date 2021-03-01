@@ -1,12 +1,13 @@
 from dateutil.relativedelta import relativedelta
 from django.test import TestCase, tag
 from edc_appointment.constants import INCOMPLETE_APPT
-from edc_constants.constants import INCOMPLETE, NO, NOT_APPLICABLE, POS, YES
+from edc_constants.constants import INCOMPLETE, NO, NOT_APPLICABLE, YES
 from edc_utils import get_utcnow
 from edc_visit_tracking.constants import UNSCHEDULED
+from model_bakery import baker
+
 from mocca_screening.constants import HIV_CLINIC
 from mocca_subject.forms.clinical_review_form import ClinicalReviewForm
-from model_bakery import baker
 
 from ..mocca_test_case_mixin import MoccaTestCaseMixin
 
@@ -21,8 +22,8 @@ class TestClinicalReview(MoccaTestCaseMixin, TestCase):
             subject_screening=self.subject_screening, clinic_type=HIV_CLINIC
         )
 
-    @tag("cr")
-    def test_clinical_review_requires_cr(self):
+    @tag("cr1")
+    def test_clinical_review_requires_baseline_and_initial(self):
         subject_visit_baseline = self.get_subject_visit(
             subject_screening=self.subject_screening,
             subject_consent=self.subject_consent,
@@ -45,6 +46,7 @@ class TestClinicalReview(MoccaTestCaseMixin, TestCase):
         form.is_valid()
         self.assertIn("__all__", form._errors)
 
+        # add clinicalreviewbaseline
         baker.make(
             "mocca_subject.clinicalreviewbaseline",
             subject_visit=subject_visit_baseline,
@@ -52,6 +54,11 @@ class TestClinicalReview(MoccaTestCaseMixin, TestCase):
             hiv_test_date=get_utcnow() - relativedelta(years=5),
             hiv_dx=YES,
         )
+        form = ClinicalReviewForm(data=data)
+        form.is_valid()
+        self.assertIn("__all__", form._errors)
+
+        # add hivinitialreview
         baker.make(
             "mocca_subject.hivinitialreview",
             subject_visit=subject_visit_baseline,
@@ -109,61 +116,3 @@ class TestClinicalReview(MoccaTestCaseMixin, TestCase):
         form = ClinicalReviewForm(data=data)
         form.is_valid()
         self.assertNotIn("hiv_test", form._errors)
-
-    @tag("cr")
-    def test_treatment_pay_method(self):
-        subject_visit_baseline = self.get_subject_visit(
-            subject_screening=self.subject_screening,
-            subject_consent=self.subject_consent,
-        )
-        baker.make(
-            "mocca_subject.clinicalreviewbaseline",
-            subject_visit=subject_visit_baseline,
-            hiv_dx=YES,
-            hiv_test_ago="5y",
-        )
-
-        baker.make(
-            "mocca_subject.hivinitialreview",
-            subject_visit=subject_visit_baseline,
-            dx_ago="5y",
-            arv_initiation_ago="4y",
-        )
-
-        subject_visit_baseline.appointment.appt_status = INCOMPLETE_APPT
-        subject_visit_baseline.appointment.save()
-        subject_visit_baseline.appointment.refresh_from_db()
-        subject_visit_baseline.refresh_from_db()
-
-        subject_visit = self.get_next_subject_visit(
-            subject_visit=subject_visit_baseline, reason=UNSCHEDULED
-        )
-
-        data = {
-            "subject_visit": subject_visit,
-            "report_datetime": subject_visit.report_datetime,
-            "hiv_test": NOT_APPLICABLE,
-            "hiv_dx": NOT_APPLICABLE,
-            "htn_test": NO,
-            "htn_dx": NOT_APPLICABLE,
-            "dm_test": NO,
-            "dm_dx": NOT_APPLICABLE,
-            "complications": NO,
-            "crf_status": INCOMPLETE,
-            "health_insurance": YES,
-            "patient_club": YES,
-        }
-        form = ClinicalReviewForm(data=data)
-        form.is_valid()
-        self.assertIn("health_insurance_monthly_pay", form._errors)
-
-        data.update(health_insurance_monthly_pay=0)
-        form = ClinicalReviewForm(data=data)
-        form.is_valid()
-        self.assertNotIn("health_insurance_monthly_pay", form._errors)
-        self.assertIn("patient_club_monthly_pay", form._errors)
-
-        data.update(patient_club_monthly_pay=0)
-        form = ClinicalReviewForm(data=data)
-        form.is_valid()
-        self.assertNotIn("patient_club_monthly_pay", form._errors)

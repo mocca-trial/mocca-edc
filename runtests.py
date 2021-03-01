@@ -1,14 +1,13 @@
 #!/usr/bin/env python
-import django
 import logging
 import os
 import sys
+from os.path import abspath, dirname, join
 
+import django
 from django.conf import settings
 from django.test.runner import DiscoverRunner
 from edc_test_utils import DefaultTestSettings
-from os.path import abspath, dirname, join
-
 from edc_utils import get_datetime_from_env
 from multisite import SiteID
 
@@ -20,18 +19,21 @@ DEFAULT_SETTINGS = DefaultTestSettings(
     BASE_DIR=base_dir,
     APP_NAME=app_name,
     SITE_ID=SiteID(default=120),
+    RESPOND_DIAGNOSIS_LABELS=dict(
+        hiv="HIV", htn="Hypertension", dm="Diabetes", chol="Cholesterol"
+    ),
     MOCCA_REGISTER_FILE=os.path.join(base_dir, "tests", "mocca_register.csv"),
     EDC_SITES_MODULE_NAME="mocca_sites.sites",
-    SUBJECT_VISIT_MODEL="mocca_subject.subjectvisit",
-    SUBJECT_VISIT_MISSED_MODEL="mocca_subject.subjectvisitmissed",
-    SUBJECT_CONSENT_MODEL="mocca_consent.subjectconsent",
-    SUBJECT_REQUISITION_MODEL=f"mocca_subject.subjectrequisition",
     EDC_PROTOCOL_STUDY_OPEN_DATETIME=get_datetime_from_env(2019, 6, 30, 0, 0, 0, "UTC"),
-    EDC_PROTOCOL_STUDY_CLOSE_DATETIME=get_datetime_from_env(
-        2024, 12, 31, 23, 59, 59, "UTC"
-    ),
+    EDC_PROTOCOL_STUDY_CLOSE_DATETIME=get_datetime_from_env(2024, 12, 31, 23, 59, 59, "UTC"),
     ADVERSE_EVENT_ADMIN_SITE="mocca_ae_admin",
     ADVERSE_EVENT_APP_LABEL="mocca_ae",
+    SUBJECT_SCREENING_MODEL=(f"{app_name.replace('edc', 'screening')}.subjectscreening"),
+    SUBJECT_CONSENT_MODEL=f"{app_name.replace('edc', 'consent')}.subjectconsent",
+    SUBJECT_VISIT_MODEL=f"{app_name.replace('edc', 'subject')}.subjectvisit",
+    SUBJECT_VISIT_MISSED_MODEL=(f"{app_name.replace('edc', 'subject')}.subjectvisitmissed"),
+    SUBJECT_REQUISITION_MODEL=(f"{app_name.replace('edc', 'subject')}.subjectrequisition"),
+    SUBJECT_APP_LABEL=f"{app_name.replace('edc', 'subject')}",
     EDC_NAVBAR_DEFAULT="mocca_dashboard",
     DASHBOARD_BASE_TEMPLATES=dict(
         edc_base_template="edc_dashboard/base.html",
@@ -97,7 +99,6 @@ DEFAULT_SETTINGS = DefaultTestSettings(
         "edc_list_data.apps.AppConfig",
         "edc_locator.apps.AppConfig",
         "edc_metadata.apps.AppConfig",
-        "edc_metadata_rules.apps.AppConfig",
         "edc_model_admin.apps.AppConfig",
         "edc_model_wrapper.apps.AppConfig",
         "edc_navbar.apps.AppConfig",
@@ -145,7 +146,7 @@ def main():
     django.setup()
     tags = [t.split("=")[1] for t in sys.argv if t.startswith("--tag")]
     failfast = True if [t for t in sys.argv if t == "--failfast"] else False
-    failures = DiscoverRunner(failfast=failfast, tags=tags).run_tests([f"tests"])
+    failures = DiscoverRunner(failfast=failfast, tags=tags).run_tests(["tests"])
     sys.exit(bool(failures))
 
 

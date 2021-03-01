@@ -1,12 +1,12 @@
 from django.db import models
 from edc_model import models as edc_models
+
 from mocca_lists.models import ArvDrugs
 
-from ..model_mixins import DrugSupplyModelMixin
 from .drug_refill_hiv import DrugRefillHiv
 
 
-class DrugSupplyHiv(DrugSupplyModelMixin, edc_models.BaseUuidModel):
+class DrugSupplyHiv(edc_models.BaseUuidModel):
 
     drug_refill = models.ForeignKey(DrugRefillHiv, on_delete=models.PROTECT)
 

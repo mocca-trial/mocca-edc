@@ -1,19 +1,12 @@
-from edc_constants.constants import NEVER, NO, NOT_APPLICABLE, OTHER
+from edc_constants.constants import NEVER, NO, NOT_APPLICABLE, OTHER, UNKNOWN
 from edc_reportable import (
     MILLIGRAMS_PER_DECILITER,
     MILLIMOLES_PER_LITER,
     MILLIMOLES_PER_LITER_DISPLAY,
 )
-from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED, MISSED_VISIT
+from edc_visit_tracking.constants import MISSED_VISIT, SCHEDULED, UNSCHEDULED
 
-from .constants import (
-    DIET_LIFESTYLE,
-    DRUGS,
-    INSULIN,
-    SITTING,
-    GTE_3HRS,
-    THIS_CLINIC,
-)
+from .constants import DIET_LIFESTYLE, DRUGS, GTE_3HRS, INSULIN, SITTING, THIS_CLINIC
 
 ALCOHOL_CONSUMPTION = (
     ("ocassionally", "Ocassionally"),
@@ -116,11 +109,12 @@ GLUCOSE_UNITS = (
 )
 
 INFO_SOURCE = (
-    ("hospital_notes", "Hospital notes"),
-    ("outpatient_cards", "Outpatient cards"),
     ("patient", "Patient"),
+    ("patient_representative", "Patient Representative"),
     ("patient_and_outpatient", "Patient, hospital notes and/or outpatient card"),
     ("collateral_history", "Collateral History from relative/guardian"),
+    ("hospital_notes", "Hospital notes"),
+    ("outpatient_cards", "Outpatient cards"),
     (NOT_APPLICABLE, "Not applicable"),
     (OTHER, "Other"),
 )
@@ -132,7 +126,6 @@ PAYEE_CHOICES = (
     ("free", "Free drugs from the pharmacy"),
     (NOT_APPLICABLE, "Not applicable"),
 )
-
 
 PHYSICAL_ACTIVITY = (
     ("retired", "Retired"),
@@ -165,8 +158,8 @@ TRANSPORT_CHOICES = (
 )
 
 VISIT_UNSCHEDULED_REASON = (
-    ("routine_non_study", "Routine appointment (non-study)"),
-    ("patient_unwell_outpatient", "Patient unwell"),
+    ("routine_non_study", "Routine scheduled (non-study)"),
+    ("patient_unwell_outpatient", "Patient unwell / unscheduled"),
     ("drug_refill", "Drug refill only"),
     (OTHER, "Other"),
     (NOT_APPLICABLE, "Not applicable"),
@@ -174,6 +167,16 @@ VISIT_UNSCHEDULED_REASON = (
 
 VISIT_REASON = (
     (SCHEDULED, "Scheduled visit (study)"),
-    (UNSCHEDULED, "Routine / Unscheduled visit (non-study)"),
+    (UNSCHEDULED, "Routine or unscheduled visit"),
     (MISSED_VISIT, "Missed visit"),
+)
+
+DIAGNOSIS_LOCATIONS = (
+    ("hospital", "Hospital"),
+    ("gov_clinic", "Government clinic"),
+    ("private_clinic", "Private clinic"),
+    ("private_doctor", "Private doctor"),
+    ("mocca_clinic", "MOCCA study clinic"),
+    (UNKNOWN, "Don't recall"),
+    (OTHER, "Other, specify"),
 )

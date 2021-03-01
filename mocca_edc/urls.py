@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
-from django.urls.conf import path, include
+from django.urls.conf import include, path
 from django.views.defaults import page_not_found, server_error  # noqa
 from django.views.generic.base import RedirectView
 from edc_action_item.admin_site import edc_action_item_admin
@@ -11,6 +11,7 @@ from edc_crf.admin_site import edc_crf_admin
 from edc_dashboard.views import AdministrationView
 from edc_data_manager.admin_site import edc_data_manager_admin
 from edc_export.admin_site import edc_export_admin
+from edc_facility.admin_site import edc_facility_admin
 from edc_identifier.admin_site import edc_identifier_admin
 from edc_lab.admin_site import edc_lab_admin
 from edc_locator.admin_site import edc_locator_admin
@@ -23,6 +24,7 @@ from edc_randomization.admin_site import edc_randomization_admin
 from edc_reference.admin_site import edc_reference_admin
 from edc_registration.admin_site import edc_registration_admin
 from edc_visit_schedule.admin_site import edc_visit_schedule_admin
+
 from mocca_ae.admin_site import mocca_ae_admin
 from mocca_consent.admin_site import mocca_consent_admin
 from mocca_export.admin_site import mocca_export_admin
@@ -65,6 +67,7 @@ urlpatterns = [
     path("admin/", edc_lab_admin.urls),
     path("admin/", edc_data_manager_admin.urls),
     path("admin/", edc_export_admin.urls),
+    path("admin/", edc_facility_admin.urls),
     path("admin/", edc_locator_admin.urls),
     path("admin/", edc_identifier_admin.urls),
     path("admin/", edc_metadata_admin.urls),
@@ -100,6 +103,7 @@ urlpatterns = [
     path("edc_data_manager/", include("edc_data_manager.urls")),
     path("edc_device/", include("edc_device.urls")),
     path("edc_export/", include("edc_export.urls")),
+    path("edc_facility/", include("edc_facility.urls")),
     path("edc_pdutils/", include("edc_pdutils.urls")),
     path("edc_offstudy/", include("edc_offstudy.urls")),
     path("edc_lab/", include("edc_lab.urls")),

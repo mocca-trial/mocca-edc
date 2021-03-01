@@ -1,5 +1,4 @@
-edc==0.1.70
-git+https://github.com/erikvw/django-simple-history@admin_revert_permissions2
-git+https://github.com/erikvw/django-multisite@master
+edc==0.3.8
+respond-model==0.1.2
 git+https://github.com/erikvw/django-import-export@get_export_admin_action
 beautifulsoup4

@@ -1,5 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from edc_constants.constants import NO
 
@@ -15,8 +15,7 @@ from .subject_screening import SubjectScreening
     dispatch_uid="subject_screening_on_post_save",
 )
 def subject_screening_on_post_save(sender, instance, raw, created, **kwargs):
-    """Updates `mocca_register` patient as used / screened
-    """
+    """Updates `mocca_register` patient as used / screened"""
     if not raw:
         instance.mocca_register.screening_identifier = instance.screening_identifier
         instance.mocca_register.call = NO
@@ -57,8 +56,7 @@ def mocca_register_contact_on_post_save(sender, instance, raw, created, **kwargs
     dispatch_uid="subject_refusal_on_post_save",
 )
 def subject_refusal_on_post_save(sender, instance, raw, created, **kwargs):
-    """Updates `refused` field on SUbjectScreening
-    """
+    """Updates `refused` field on SUbjectScreening"""
     if not raw:
         try:
             obj = SubjectScreening.objects.get(
@@ -78,12 +76,9 @@ def subject_refusal_on_post_save(sender, instance, raw, created, **kwargs):
     dispatch_uid="subject_refusal_on_post_delete",
 )
 def subject_refusal_on_post_delete(sender, instance, using, **kwargs):
-    """Updates/Resets subject screening.
-    """
+    """Updates/Resets subject screening."""
     try:
-        obj = SubjectScreening.objects.get(
-            screening_identifier=instance.screening_identifier
-        )
+        obj = SubjectScreening.objects.get(screening_identifier=instance.screening_identifier)
     except ObjectDoesNotExist:
         pass
     else:

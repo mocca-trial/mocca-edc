@@ -1,18 +1,23 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.safestring import mark_safe
-from edc_constants.choices import YES_NO, YES_NO_PENDING_NA, YES_NO_NA
+from edc_constants.choices import YES_NO, YES_NO_NA, YES_NO_PENDING_NA
 from edc_constants.constants import NOT_APPLICABLE, YES
 from edc_lab.choices import VL_QUANTIFIER_NA
 from edc_model import models as edc_models
+from edc_model.models import estimated_date_from_ago
 from edc_reportable import CELLS_PER_MILLIMETER_CUBED_DISPLAY, COPIES_PER_MILLILITER
+from respond_model.model_mixins import InitialReviewModelMixin
 
 from ..choices import CARE_ACCESS
-from ..model_mixins import CrfModelMixin, InitialReviewModelMixin
+from ..model_mixins import CrfModelMixin, DiagnosisLocationModelMixin
 
 
 class HivInitialReview(
-    InitialReviewModelMixin, CrfModelMixin, edc_models.BaseUuidModel
+    InitialReviewModelMixin,
+    DiagnosisLocationModelMixin,
+    CrfModelMixin,
+    edc_models.BaseUuidModel,
 ):
 
     receives_care = models.CharField(
@@ -29,9 +34,7 @@ class HivInitialReview(
     )
 
     clinic_other = models.CharField(
-        verbose_name=mark_safe(
-            "If <u>not</u> attending here, where does the patient attend?"
-        ),
+        verbose_name=mark_safe("If <u>not</u> attending here, where does the patient attend?"),
         max_length=50,
         null=True,
         blank=True,
@@ -45,13 +48,16 @@ class HivInitialReview(
     )
 
     arv_initiation_ago = edc_models.DurationYMDField(
-        verbose_name="How long ago did the patient start ART?", null=True, blank=True,
+        verbose_name="How long ago did the patient start ART?",
+        null=True,
+        blank=True,
     )
 
     arv_initiation_actual_date = models.DateField(
         verbose_name="Date started antiretroviral therapy (ART)",
         validators=[edc_models.date_not_future],
         null=True,
+        blank=True,
         help_text="Calculated based on response to `arv_initiation_ago`",
     )
 
@@ -87,7 +93,10 @@ class HivInitialReview(
     )
 
     vl_quantifier = models.CharField(
-        max_length=10, choices=VL_QUANTIFIER_NA, null=True, blank=True,
+        max_length=10,
+        choices=VL_QUANTIFIER_NA,
+        null=True,
+        blank=True,
     )
 
     vl_date = models.DateField(
@@ -121,14 +130,10 @@ class HivInitialReview(
     )
 
     def save(self, *args, **kwargs):
-        if self.dx_ago:
-            self.dx_estimated_date = edc_models.duration_to_date(
-                self.dx_ago, self.report_datetime
-            )
-        if self.arv_initiation_ago:
-            self.arv_initiation_estimated_date = edc_models.duration_to_date(
-                self.arv_initiation_ago, self.report_datetime
-            )
+        self.dx_estimated_date = estimated_date_from_ago(self, "dx_ago")
+        self.arv_initiation_estimated_date = estimated_date_from_ago(
+            self, "arv_initiation_ago"
+        )
         super().save(*args, **kwargs)
 
     @property

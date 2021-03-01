@@ -41,6 +41,17 @@ class Medications(CrfModelMixin, edc_models.BaseUuidModel):
         ),
     )
 
+    refill_chol = models.CharField(
+        verbose_name="Is the patient filling / refilling Cholesterol medications?",
+        max_length=25,
+        choices=YES_NO_NA,
+        default=NOT_APPLICABLE,
+        help_text=(
+            "Select `not applicable` if subject has not "
+            "been diagnosed and prescribed medication for Cholesterol."
+        ),
+    )
+
     class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
         verbose_name = "Medications"
         verbose_name_plural = "Medications"

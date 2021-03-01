@@ -4,32 +4,25 @@ from django_audit_fields.admin import audit_fieldset_tuple
 from edc_crf.admin import crf_status_fieldset_tuple
 from edc_form_label.form_label_modeladmin_mixin import FormLabelModelAdminMixin
 from edc_model_admin import SimpleHistoryAdmin, TabularInlineMixin
+from respond_model.modeladmin_mixins import DrugSupplyInlineMixin
+
 from mocca_subject.forms import DrugSupplyHtnForm
 
 from ..admin_site import mocca_subject_admin
 from ..forms import DrugRefillHtnForm
 from ..models import DrugRefillHtn, DrugSupplyHtn
-from .modeladmin_mixins import CrfModelAdminMixin, DrugSupplyInlineMixin
+from .modeladmin_mixins import CrfModelAdminMixin
 
 
-class DrugSupplyHtnInline(
-    DrugSupplyInlineMixin, TabularInlineMixin, admin.TabularInline
-):
+class DrugSupplyHtnInline(DrugSupplyInlineMixin, TabularInlineMixin, admin.TabularInline):
     model = DrugSupplyHtn
     form = DrugSupplyHtnForm
     min_num = 1
     insert_after = "return_in_days"
 
-    def get_formset(self, request, obj=None, **kwargs):
-        formset = super().get_formset(request, obj=None, **kwargs)
-        formset.validate_min = True
-        return formset
-
 
 @admin.register(DrugRefillHtn, site=mocca_subject_admin)
-class DrugRefillHtnAdmin(
-    CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
-):
+class DrugRefillHtnAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin):
     form = DrugRefillHtnForm
 
     additional_instructions = mark_safe(

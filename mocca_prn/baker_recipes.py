@@ -1,7 +1,8 @@
 from django.contrib.sites.models import Site
 from edc_utils import get_utcnow
-from mocca_prn.models import IntegratedCareClinicRegistration
 from model_bakery.recipe import Recipe
+
+from mocca_prn.models import IntegratedCareClinicRegistration
 
 integratedcareclinicregistration = Recipe(
     IntegratedCareClinicRegistration,

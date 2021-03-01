@@ -2,6 +2,7 @@ from django.db import models
 from edc_model.models import BaseUuidModel, HistoricalRecords
 from edc_sites.models import CurrentSiteManager, SiteModelMixin
 from edc_utils import get_utcnow
+
 from mocca_screening.models.model_mixins import CareModelMixin
 
 

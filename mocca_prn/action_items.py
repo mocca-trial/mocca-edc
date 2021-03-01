@@ -3,9 +3,9 @@ from edc_ltfu.action_items import LossToFollowupAction as BaseLossToFollowupActi
 from edc_offstudy.action_items import EndOfStudyAction as BaseEndOfStudyAction
 from edc_prn.action_items import (
     ProtocolDeviationViolationAction as BaseProtocolDeviationViolationAction,
-    UnblindingRequestAction as BaseUnblindingRequestAction,
-    UnblindingReviewAction as BaseUnblindingReviewAction,
 )
+from edc_prn.action_items import UnblindingRequestAction as BaseUnblindingRequestAction
+from edc_prn.action_items import UnblindingReviewAction as BaseUnblindingReviewAction
 
 
 class EndOfStudyAction(BaseEndOfStudyAction):

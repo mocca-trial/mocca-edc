@@ -2,9 +2,12 @@ import re
 
 from django.db.models import Q
 from django.urls import reverse
-from edc_dashboard.view_mixins import EdcViewMixin
 from edc_constants.constants import ABNORMAL
-from edc_dashboard.view_mixins import ListboardFilterViewMixin, SearchFormViewMixin
+from edc_dashboard.view_mixins import (
+    EdcViewMixin,
+    ListboardFilterViewMixin,
+    SearchFormViewMixin,
+)
 from edc_dashboard.views import ListboardView
 from edc_navbar import NavbarViewMixin
 
@@ -40,7 +43,8 @@ class ListboardView(
         context = super().get_context_data(**kwargs)
         url = reverse("mocca_screening_admin:mocca_screening_moccaregister_changelist")
         context.update(
-            subject_screening_add_url=url, ABNORMAL=ABNORMAL,
+            subject_screening_add_url=url,
+            ABNORMAL=ABNORMAL,
         )
         return context
 

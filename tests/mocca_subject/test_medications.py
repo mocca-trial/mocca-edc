@@ -1,13 +1,15 @@
 from django.test import TestCase, tag
 from edc_appointment.constants import INCOMPLETE_APPT
-from edc_constants.constants import INCOMPLETE, NO, NOT_APPLICABLE, POS, YES
+from edc_constants.constants import INCOMPLETE, NO, NOT_APPLICABLE, YES
 from edc_utils import get_utcnow
 from edc_visit_tracking.constants import UNSCHEDULED
-from mocca_screening.constants import HIV_CLINIC
-from mocca_subject.diagnoses import Diagnoses
-from mocca_subject.forms import MedicationsForm
-from tests.mocca_test_case_mixin import MoccaTestCaseMixin
 from model_bakery import baker
+from respond_model.diagnoses import Diagnoses
+
+from mocca_screening.constants import HIV_CLINIC
+from mocca_subject.forms import MedicationsForm
+
+from ..mocca_test_case_mixin import MoccaTestCaseMixin
 
 
 class TestMedications(MoccaTestCaseMixin, TestCase):
@@ -40,7 +42,7 @@ class TestMedications(MoccaTestCaseMixin, TestCase):
 
     @tag("med")
     def test_refill_applicable_if_dx(self):
-        diagnoses = Diagnoses(
+        Diagnoses(
             subject_identifier=self.subject_visit_baseline.subject_identifier,
             report_datetime=self.subject_visit_baseline.report_datetime,
             lte=True,
@@ -94,5 +96,6 @@ class TestMedications(MoccaTestCaseMixin, TestCase):
     @tag("med")
     def test_metadata_requires2(self):
         baker.make(
-            "mocca_subject.medications", subject_visit=self.subject_visit_baseline,
+            "mocca_subject.medications",
+            subject_visit=self.subject_visit_baseline,
         )

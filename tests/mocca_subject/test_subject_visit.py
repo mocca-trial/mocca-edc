@@ -6,8 +6,8 @@ from edc_constants.constants import STUDY_DEFINED_TIMEPOINT
 from edc_utils import get_utcnow
 from edc_visit_schedule.constants import DAY1
 from edc_visit_tracking.constants import SCHEDULED
+
 from mocca_lists.models import ClinicServices
-from mocca_screening.constants import HIV_CLINIC
 from mocca_subject.forms.subject_visit_form import SubjectVisitFormValidator
 
 from ..mocca_test_case_mixin import MoccaTestCaseMixin
@@ -16,11 +16,9 @@ from ..mocca_test_case_mixin import MoccaTestCaseMixin
 class TestSubjectVisit(MoccaTestCaseMixin, TestCase):
     def setUp(self):
         super().setUp()
-        self.subject_screening = self.get_subject_screening(
-            report_datetime=get_utcnow(), clinic_type=HIV_CLINIC
-        )
+        self.subject_screening = self.get_subject_screening(report_datetime=get_utcnow())
         self.subject_consent = self.get_subject_consent(
-            subject_screening=self.subject_screening, clinic_type=HIV_CLINIC
+            subject_screening=self.subject_screening
         )
 
     @tag("v")

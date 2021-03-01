@@ -1,13 +1,13 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase, tag
 from edc_action_item.models import ActionItem
-from edc_constants.constants import CLOSED, NEW
 from edc_adverse_event.constants import (
     AE_FOLLOWUP_ACTION,
     AE_TMG_ACTION,
     DEATH_REPORT_ACTION,
     DEATH_REPORT_TMG_ACTION,
 )
+from edc_constants.constants import CLOSED, NEW
 from edc_reportable.constants import GRADE4, GRADE5
 from model_bakery import baker
 
@@ -41,9 +41,7 @@ class TestActions(MoccaTestCaseMixin, TestCase):
             "mocca_ae.aeinitial", subject_identifier=subject_consent.subject_identifier
         )
 
-        action_item = ActionItem.objects.get(
-            action_identifier=ae_initial.action_identifier
-        )
+        action_item = ActionItem.objects.get(action_identifier=ae_initial.action_identifier)
         try:
             action_item = ActionItem.objects.get(
                 parent_action_item=action_item,
