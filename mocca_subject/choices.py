@@ -69,7 +69,7 @@ MISSED_PILLS = (
     ("last_week", "last week"),
     ("lt_month_ago", "less than a month ago"),
     ("gt_month_ago", "more than a month ago"),
-    (NEVER, "have never missed taking my study pills"),
+    (NEVER, "have never missed taking my pills"),
 )
 
 

@@ -26,7 +26,11 @@ class GlucoseBaselineFormValidator(
             raise_if_not_baseline(self.cleaned_data.get("subject_visit"))
             raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
         if self.cleaned_data.get("glucose_performed") == YES:
-            self.validate_test_date_by_dx_date("dm", "Diabetes", test_date_fld="glucose_date")
+            self.validate_test_date_by_dx_date(
+                "dm",
+                "Diabetes",
+                test_date_fld="glucose_date",
+            )
             self.validate_glucose_test()
 
 
