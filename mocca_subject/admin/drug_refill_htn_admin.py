@@ -3,22 +3,12 @@ from django.utils.safestring import mark_safe
 from django_audit_fields.admin import audit_fieldset_tuple
 from edc_crf.admin import crf_status_fieldset_tuple
 from edc_form_label.form_label_modeladmin_mixin import FormLabelModelAdminMixin
-from edc_model_admin import SimpleHistoryAdmin, TabularInlineMixin
-from respond_model.modeladmin_mixins import DrugSupplyInlineMixin
-
-from mocca_subject.forms import DrugSupplyHtnForm
+from edc_model_admin import SimpleHistoryAdmin
 
 from ..admin_site import mocca_subject_admin
 from ..forms import DrugRefillHtnForm
-from ..models import DrugRefillHtn, DrugSupplyHtn
+from ..models import DrugRefillHtn
 from .modeladmin_mixins import CrfModelAdminMixin
-
-
-class DrugSupplyHtnInline(DrugSupplyInlineMixin, TabularInlineMixin, admin.TabularInline):
-    model = DrugSupplyHtn
-    form = DrugSupplyHtnForm
-    min_num = 1
-    insert_after = "return_in_days"
 
 
 @admin.register(DrugRefillHtn, site=mocca_subject_admin)
@@ -29,7 +19,6 @@ class DrugRefillHtnAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHis
         '<span style="color:orange">Note: Medications CRF must be completed first.</span>'
     )
 
-    inlines = [DrugSupplyHtnInline]
     add_form_template = "admin/custom_inline/change_form.html"
     change_form_template = "admin/custom_inline/change_form.html"
 

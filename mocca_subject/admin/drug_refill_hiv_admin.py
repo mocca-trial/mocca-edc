@@ -3,21 +3,12 @@ from django.utils.safestring import mark_safe
 from django_audit_fields.admin import audit_fieldset_tuple
 from edc_crf.admin import crf_status_fieldset_tuple
 from edc_form_label.form_label_modeladmin_mixin import FormLabelModelAdminMixin
-from edc_model_admin import SimpleHistoryAdmin, TabularInlineMixin
-from respond_model.modeladmin_mixins import DrugSupplyInlineMixin
+from edc_model_admin import SimpleHistoryAdmin
 
 from ..admin_site import mocca_subject_admin
-from ..forms import DrugRefillHivForm, DrugSupplyHivForm
-from ..models import DrugRefillHiv, DrugSupplyHiv
+from ..forms import DrugRefillHivForm
+from ..models import DrugRefillHiv
 from .modeladmin_mixins import CrfModelAdminMixin
-
-
-class DrugSupplyHivInline(TabularInlineMixin, DrugSupplyInlineMixin, admin.TabularInline):
-
-    model = DrugSupplyHiv
-    form = DrugSupplyHivForm
-    min_num = 1
-    insert_after = "return_in_days"
 
 
 @admin.register(DrugRefillHiv, site=mocca_subject_admin)
@@ -43,17 +34,7 @@ class DrugRefillHivAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHis
                     "modifications_other",
                     "modifications_reason",
                     "modifications_reason_other",
-                )
-            },
-        ),
-        (
-            "Supply",
-            {
-                "fields": (
                     "return_in_days",
-                    "clinic_days",
-                    "club_days",
-                    "purchased_days",
                 )
             },
         ),
