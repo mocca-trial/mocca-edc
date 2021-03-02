@@ -14,10 +14,6 @@ from .drug_refill_chol_form import DrugRefillCholForm
 from .drug_refill_dm_form import DrugRefillDmForm
 from .drug_refill_hiv_form import DrugRefillHivForm
 from .drug_refill_htn_form import DrugRefillHtnForm
-from .drug_supply_chol_form import DrugSupplyCholForm
-from .drug_supply_dm_form import DrugSupplyDmForm
-from .drug_supply_hiv_form import DrugSupplyHivForm
-from .drug_supply_htn_form import DrugSupplyHtnForm
 from .family_history_form import FamilyHistoryForm
 from .glucose_baseline_form import GlucoseBaselineForm
 from .glucose_form import GlucoseForm
