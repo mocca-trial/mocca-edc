@@ -5,7 +5,6 @@ from respond_model.form_validators import (
     CrfFormValidatorMixin,
     DrugRefillFormValidatorMixin,
 )
-from respond_model.utils import validate_total_days
 
 from ..models import DrugRefillHiv
 
@@ -13,8 +12,7 @@ from ..models import DrugRefillHiv
 class DrugRefillHivFormValidator(
     DrugRefillFormValidatorMixin, CrfFormValidatorMixin, FormValidator
 ):
-    def clean(self):
-        validate_total_days(self, return_in_days=self.cleaned_data.get("return_in_days"))
+    pass
 
 
 class DrugRefillHivForm(CrfModelFormMixin, forms.ModelForm):

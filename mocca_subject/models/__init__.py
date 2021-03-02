@@ -14,10 +14,6 @@ from .drug_refill_chol import DrugRefillChol
 from .drug_refill_dm import DrugRefillDm
 from .drug_refill_hiv import DrugRefillHiv
 from .drug_refill_htn import DrugRefillHtn
-from .drug_supply_chol import DrugSupplyChol
-from .drug_supply_dm import DrugSupplyDm
-from .drug_supply_hiv import DrugSupplyHiv
-from .drug_supply_htn import DrugSupplyHtn
 from .family_history import FamilyHistory
 from .glucose import Glucose, GlucoseBaseline
 from .hiv_initial_review import HivInitialReview
