@@ -52,13 +52,14 @@ def import_mocca_register(
             f"into {model_cls._meta.label_lower}\n"
         )
 
-    if model_cls.objects.all().count() > 0 and force_delete:
-        model_cls.objects.all().delete()
-    else:
-        raise ImportMoccaError(
-            "Unable to continue. Not deleting existing records. "
-            "Use `force_delete` to override"
-        )
+    if model_cls.objects.all().count() > 0:
+        if force_delete:
+            model_cls.objects.all().delete()
+        else:
+            raise ImportMoccaError(
+                "Unable to continue. Not deleting existing records. "
+                "Use `force_delete` to override"
+            )
 
     import_file(path, model_cls, fieldnames)
 
