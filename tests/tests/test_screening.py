@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.test import TestCase, tag
 from django.urls import reverse
 from django_webtest import WebTest
@@ -173,18 +172,20 @@ class TestScreening(MoccaTestCaseMixin, WebTest):
         )
         change_list_url = f"{change_list_url}?q={self.mocca_register.mocca_study_identifier}"
         add_url = reverse("mocca_screening_admin:mocca_screening_subjectscreening_add")
-        response = self.app.get(change_list_url, user=self.user, status=200)
-        self.assertIn(self.mocca_register.mocca_study_identifier, response)
 
         mocca_register_contact.survival_status = ALIVE
         mocca_register_contact.call = NO
         mocca_register_contact.screen_now = NO
         mocca_register_contact.save()
+        self.assertTrue(mocca_register_contact.call == NO)
+        self.assertTrue(mocca_register_contact.screen_now == NO)
         self.assertTrue(mocca_register_contact.survival_status == ALIVE)
+        response = self.app.get(change_list_url, user=self.user, status=200)
+        self.assertIn(self.mocca_register.mocca_study_identifier, response)
         self.assertIn(add_url, response)
 
         mocca_register_contact.survival_status = DEAD
         mocca_register_contact.save()
-        mocca_register_contact.refresh_db()
         self.assertTrue(mocca_register_contact.survival_status == DEAD)
+        response = self.app.get(change_list_url, user=self.user, status=200)
         self.assertNotIn(add_url, response)

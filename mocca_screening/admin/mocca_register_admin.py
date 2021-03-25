@@ -1,5 +1,3 @@
-import pdb
-
 from django.contrib import admin
 from django.core.exceptions import ObjectDoesNotExist
 from django.template.loader import render_to_string
@@ -227,7 +225,6 @@ class MoccaRegisterAdmin(
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     def screen(self, obj=None, label=None):
-        pdb.set_trace()
         mocca_register_contact = MoccaRegisterContact.objects.get(mocca_register=obj)
         if (
             obj.call == YES and obj.screen_now == NO
