@@ -5,7 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django_audit_fields.admin import ModelAdminAuditFieldsMixin, audit_fieldset_tuple
-from edc_constants.constants import NO, YES
+from edc_constants.constants import DEAD, NO, YES
 from edc_dashboard import url_names
 from edc_model_admin import ModelAdminFormInstructionsMixin, TemplatesModelAdminMixin
 from edc_model_admin.model_admin_simple_history import SimpleHistoryAdmin
@@ -227,7 +227,11 @@ class MoccaRegisterAdmin(
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     def screen(self, obj=None, label=None):
-        if obj.call == YES and obj.screen_now == NO:
+        pdb.set_trace()
+        mocca_register_contact = MoccaRegisterContact.objects.get(mocca_register=obj)
+        if (
+            obj.call == YES and obj.screen_now == NO
+        ) or mocca_register_contact.survival_status == DEAD:
             return self.get_empty_value_display()
         elif obj.screening_identifier:
             url = reverse(

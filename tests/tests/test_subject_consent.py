@@ -1,13 +1,13 @@
 from dateutil.relativedelta import relativedelta
 from django import forms
-from django.test import TestCase, tag
-from edc_constants.constants import FEMALE, MOBILE_NUMBER, NO, SUBJECT, YES
+from django.test import TestCase
+from edc_constants.constants import FEMALE, MOBILE_NUMBER, NO, YES
 from edc_utils import get_utcnow
 from pytz import timezone
 
 from mocca_consent.forms import SubjectConsentForm, SubjectConsentFormValidator
 
-from ..mocca_test_case_mixin import MoccaTestCaseMixin
+from ...mocca_test_case_mixin import MoccaTestCaseMixin
 
 
 def get_now():

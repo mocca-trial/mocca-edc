@@ -1,6 +1,11 @@
-from django.test import TestCase
-from edc_constants.constants import FEMALE, MALE, NO, NOT_APPLICABLE, YES
+from django.contrib.auth import get_user_model
+from django.test import TestCase, tag
+from django.urls import reverse
+from django_webtest import WebTest
+from edc_auth import AUDITOR, EVERYONE, SCREENING
+from edc_constants.constants import ALIVE, DEAD, FEMALE, MALE, NO, NOT_APPLICABLE, YES
 from edc_sites import get_current_country
+from model_bakery.baker import make_recipe
 
 from mocca_lists.models import MoccaOriginalSites
 from mocca_screening.forms import SubjectScreeningForm
@@ -9,13 +14,14 @@ from mocca_screening.models import MoccaRegister, SubjectScreening
 from ..mocca_test_case_mixin import MoccaTestCaseMixin
 
 
-class TestScreening(MoccaTestCaseMixin, TestCase):
+class TestScreening(MoccaTestCaseMixin, WebTest):
     """
     Uganda,Kiswa,KB-0140--1,05-0124,GW,1936,82,Male
     Uganda,Kiswa,KB-0141--1,05-0125,NM,1960,58,Female
     """
 
     def setUp(self):
+        super().setUp()
         self.assertEqual("uganda", get_current_country())
         self.mocca_register = MoccaRegister.objects.get(
             mocca_country=get_current_country(), mocca_study_identifier="05-0125"
@@ -153,3 +159,32 @@ class TestScreening(MoccaTestCaseMixin, TestCase):
                 mocca_study_identifier=data.get("mocca_study_identifier")
             ).eligible
         )
+
+    @tag("webtest")
+    def test_mocca_register_changelist(self):
+
+        mocca_register_contact = make_recipe(
+            "mocca_screening.moccaregistercontact", mocca_register=self.mocca_register
+        )
+
+        self.login(superuser=False, groups=[EVERYONE, AUDITOR, SCREENING])
+        change_list_url = reverse(
+            "mocca_screening_admin:mocca_screening_moccaregister_changelist"
+        )
+        change_list_url = f"{change_list_url}?q={self.mocca_register.mocca_study_identifier}"
+        add_url = reverse("mocca_screening_admin:mocca_screening_subjectscreening_add")
+        response = self.app.get(change_list_url, user=self.user, status=200)
+        self.assertIn(self.mocca_register.mocca_study_identifier, response)
+
+        mocca_register_contact.survival_status = ALIVE
+        mocca_register_contact.call = NO
+        mocca_register_contact.screen_now = NO
+        mocca_register_contact.save()
+        self.assertTrue(mocca_register_contact.survival_status == ALIVE)
+        self.assertIn(add_url, response)
+
+        mocca_register_contact.survival_status = DEAD
+        mocca_register_contact.save()
+        mocca_register_contact.refresh_db()
+        self.assertTrue(mocca_register_contact.survival_status == DEAD)
+        self.assertNotIn(add_url, response)
