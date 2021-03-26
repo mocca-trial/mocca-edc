@@ -10,6 +10,8 @@ class BloodResultsLipid(
     BloodResultsModelMixin,
     edc_models.BaseUuidModel,
 ):
+    reportables_name = "mocca"
+
     class Meta(CrfNoManagerModelMixin.Meta, edc_models.BaseUuidModel.Meta):
         verbose_name = "Blood Result: Lipids"
         verbose_name_plural = "Blood Results: Lipids"
