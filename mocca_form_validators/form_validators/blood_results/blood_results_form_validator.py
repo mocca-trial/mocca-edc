@@ -1,14 +1,13 @@
 from django import forms
 from edc_constants.constants import FASTING
-
-from mocca_labs.panels import (
+from respond_model.labs import (
     blood_glucose_panel,
     blood_glucose_poc_panel,
-    chemistry_panel,
-    fbc_panel,
     hba1c_panel,
     hba1c_poc_panel,
 )
+
+from mocca_labs.panels import chemistry_lipids_panel
 
 from .blood_results_form_validator_mixin import BloodResultsFormValidatorMixin
 
@@ -29,14 +28,6 @@ class BloodResultsGluFormValidator(BloodResultsFormValidatorMixin):
         return dict(fasting=fasting)
 
 
-class BloodResultsFbcFormValidator(BloodResultsFormValidatorMixin):
-
-    requisition_field = "fbc_requisition"
-    assay_datetime_field = "fbc_assay_datetime"
-    field_names = ["haemoglobin", "hct", "rbc", "wbc", "platelets"]
-    panels = [fbc_panel]
-
-
 class BloodResultsHba1cFormValidator(BloodResultsFormValidatorMixin):
 
     requisition_field = "hba1c_requisition"
@@ -53,21 +44,6 @@ class BloodResultsLipidFormValidator(BloodResultsFormValidatorMixin):
 
     requisition_field = "lipid_requisition"
     assay_datetime_field = "lipid_assay_datetime"
-    field_names = ["ldl", "hdl", "trig"]
-    panels = [chemistry_panel]
-
-
-class BloodResultsLftFormValidator(BloodResultsFormValidatorMixin):
-
-    requisition_field = "lft_requisition"
-    assay_datetime_field = "lft_assay_datetime"
-    field_names = ["ast", "alt", "alp", "amylase", "ggt", "albumin"]
-    panels = [chemistry_panel]
-
-
-class BloodResultsRftFormValidator(BloodResultsFormValidatorMixin):
-
-    requisition_field = "rft_requisition"
-    assay_datetime_field = "rft_assay_datetime"
-    field_names = ["urea", "creatinine", "uric_acid", "egfr"]
-    panels = [chemistry_panel]
+    field_names = ["ldl", "hdl", "trig", "chol"]
+    panels = [chemistry_lipids_panel]
+    reportable_grades = []
