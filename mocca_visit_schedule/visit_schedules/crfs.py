@@ -1,11 +1,11 @@
 from edc_visit_schedule import Crf, FormsCollection
 
 crfs_prn = FormsCollection(
-    Crf(show_order=210, model="mocca_subject.bloodresultsfbc"),
     Crf(show_order=212, model="mocca_subject.bloodresultslipid"),
     Crf(show_order=214, model="mocca_subject.cd4result"),
     Crf(show_order=215, model="mocca_subject.glucose"),
     Crf(show_order=216, model="mocca_subject.viralloadresult"),
+    Crf(show_order=300, model="mocca_subject.patienthealth"),
     name="prn",
 )
 
@@ -30,9 +30,6 @@ all_crfs = [
     Crf(show_order=195, model="mocca_subject.htnmedicationadherence", required=False),
     Crf(show_order=197, model="mocca_subject.cholmedicationadherence", required=False),
     Crf(show_order=200, model="mocca_subject.complicationsfollowup", required=False),
-    # Crf(show_order=210, model="mocca_subject.glucose", required=False),
-    # Crf(show_order=211, model="mocca_subject.bloodresultsfbc"),
-    # Crf(show_order=212, model="mocca_subject.bloodresultslipid"),
     Crf(show_order=230, model="mocca_subject.nextappointment"),
 ]
 crfs = FormsCollection(*all_crfs, name="all")
@@ -67,9 +64,7 @@ crfs_d1 = FormsCollection(
     Crf(show_order=168, model="mocca_subject.otherbaselinedata"),
     Crf(show_order=170, model="mocca_subject.complicationsbaseline"),
     Crf(show_order=171, model="mocca_subject.glucosebaseline"),
-    Crf(show_order=211, model="mocca_subject.bloodresultsfbc"),
     Crf(show_order=212, model="mocca_subject.bloodresultslipid"),
-    Crf(show_order=300, model="mocca_subject.patienthealth"),
     Crf(show_order=400, model="mocca_subject.nextappointment"),
     name="day1",
 )
