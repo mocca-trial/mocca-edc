@@ -4,7 +4,7 @@ from edc_crf.modelform_mixins import CrfModelFormMixin
 
 from mocca_form_validators.form_validators import BloodResultsLipidFormValidator
 
-from ...models import BloodResultsLipid
+from ..models import BloodResultsLipid
 
 
 class BloodResultsLipidForm(ActionItemFormMixin, CrfModelFormMixin, forms.ModelForm):
