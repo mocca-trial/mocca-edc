@@ -56,18 +56,11 @@ class BaseBloodResultsAction(Action):
         return next_actions
 
 
-class BloodResultsFbcAction(BaseBloodResultsAction):
-    name = BLOOD_RESULTS_FBC_ACTION
-    display_name = "Reportable result: FBC"
-    reference_model = "mocca_subject.bloodresultsfbc"
-
-
 class BloodResultsLipidAction(BaseBloodResultsAction):
     name = BLOOD_RESULTS_LIPID_ACTION
     display_name = "Reportable result: LIPIDS"
     reference_model = "mocca_subject.bloodresultslipid"
 
 
-site_action_items.register(BloodResultsFbcAction)
 site_action_items.register(BloodResultsLipidAction)
 site_action_items.register(SubjectVisitMissedAction)

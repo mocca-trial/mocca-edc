@@ -171,8 +171,12 @@ class TestScreening(MoccaTestCaseMixin, WebTest):
             "mocca_screening_admin:mocca_screening_moccaregister_changelist"
         )
         change_list_url = f"{change_list_url}?q={self.mocca_register.mocca_study_identifier}"
-        add_url = reverse("mocca_screening_admin:mocca_screening_subjectscreening_add")
-
+        screening_add_url = reverse(
+            "mocca_screening_admin:mocca_screening_subjectscreening_add"
+        )
+        refusal_add_url = reverse(
+            "mocca_screening_admin:mocca_screening_subjectrefusalscreening_add"
+        )
         mocca_register_contact.survival_status = ALIVE
         mocca_register_contact.call = NO
         mocca_register_contact.screen_now = NO
@@ -182,10 +186,12 @@ class TestScreening(MoccaTestCaseMixin, WebTest):
         self.assertTrue(mocca_register_contact.survival_status == ALIVE)
         response = self.app.get(change_list_url, user=self.user, status=200)
         self.assertIn(self.mocca_register.mocca_study_identifier, response)
-        self.assertIn(add_url, response)
+        self.assertIn(screening_add_url, response)
+        self.assertIn(refusal_add_url, response)
 
         mocca_register_contact.survival_status = DEAD
         mocca_register_contact.save()
         self.assertTrue(mocca_register_contact.survival_status == DEAD)
         response = self.app.get(change_list_url, user=self.user, status=200)
-        self.assertNotIn(add_url, response)
+        self.assertNotIn(screening_add_url, response)
+        self.assertNotIn(refusal_add_url, response)

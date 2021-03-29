@@ -1,6 +1,6 @@
 from django.test import TestCase, tag
 from edc_appointment.constants import INCOMPLETE_APPT
-from edc_constants.constants import NOT_APPLICABLE, POS, YES
+from edc_constants.constants import CHOL, DM, HIV, HTN, NOT_APPLICABLE, POS, YES
 from edc_utils import get_utcnow
 from edc_visit_tracking.constants import UNSCHEDULED
 from model_bakery import baker
@@ -120,7 +120,7 @@ class TestDiagnoses(MoccaTestCaseMixin, TestCase):
         )
         self.assertRaises(InitialReviewRequired, getattr(diagnoses, "get_dx_date"), "hiv")
 
-    @tag("dx")
+    @tag("dx2")
     def test_diagnoses_dates_baseline(self):
         subject_visit_baseline = self.get_subject_visit(
             subject_screening=self.subject_screening,
@@ -144,13 +144,17 @@ class TestDiagnoses(MoccaTestCaseMixin, TestCase):
             subject_identifier=subject_visit_baseline.subject_identifier,
         )
 
-        self.assertEqual(YES, diagnoses.get_dx_date("hiv"))
+        self.assertEqual(YES, diagnoses.get_dx(HIV))
+        self.assertIsNone(diagnoses.get_dx(DM))
+        self.assertIsNone(diagnoses.get_dx(HTN))
+        self.assertIsNone(diagnoses.get_dx(CHOL))
         self.assertEqual(
             diagnoses.get_dx_date("hiv"),
             clinical_review_baseline.hiv_test_estimated_date,
         )
-        self.assertIsNone(diagnoses.get_dx_date("dm"))
-        self.assertIsNone(diagnoses.get_dx_date("htn"))
+        self.assertIsNone(diagnoses.get_dx_date(DM))
+        self.assertIsNone(diagnoses.get_dx_date(HTN))
+        self.assertIsNone(diagnoses.get_dx_date(CHOL))
 
         diagnoses = Diagnoses(
             subject_identifier=subject_visit_baseline.subject_identifier,
@@ -158,13 +162,17 @@ class TestDiagnoses(MoccaTestCaseMixin, TestCase):
             lte=True,
         )
 
-        self.assertEqual(YES, diagnoses.get_dx_date("hiv"))
+        self.assertEqual(YES, diagnoses.get_dx(HIV))
+        self.assertIsNone(diagnoses.get_dx(DM))
+        self.assertIsNone(diagnoses.get_dx(HTN))
+        self.assertIsNone(diagnoses.get_dx(CHOL))
         self.assertEqual(
-            diagnoses.get_dx_date("hiv"),
+            diagnoses.get_dx_date(HIV),
             clinical_review_baseline.hiv_test_estimated_date,
         )
-        self.assertIsNone(diagnoses.get_dx_date("dm"))
-        self.assertIsNone(diagnoses.get_dx_date("htn"))
+        self.assertIsNone(diagnoses.get_dx_date(DM))
+        self.assertIsNone(diagnoses.get_dx_date(HTN))
+        self.assertIsNone(diagnoses.get_dx_date(CHOL))
 
         diagnoses = Diagnoses(
             subject_identifier=subject_visit_baseline.subject_identifier,
@@ -172,13 +180,17 @@ class TestDiagnoses(MoccaTestCaseMixin, TestCase):
             lte=False,
         )
 
-        self.assertEqual(YES, diagnoses.get_dx_date("hiv"))
+        self.assertEqual(YES, diagnoses.get_dx(HIV))
+        self.assertIsNone(diagnoses.get_dx(DM))
+        self.assertIsNone(diagnoses.get_dx(HTN))
+        self.assertIsNone(diagnoses.get_dx(CHOL))
         self.assertEqual(
-            diagnoses.get_dx_date("hiv"),
+            diagnoses.get_dx_date(HIV),
             clinical_review_baseline.hiv_test_estimated_date,
         )
-        self.assertIsNone(diagnoses.get_dx_date("dm"))
-        self.assertIsNone(diagnoses.get_dx_date("htn"))
+        self.assertIsNone(diagnoses.get_dx_date(DM))
+        self.assertIsNone(diagnoses.get_dx_date(HTN))
+        self.assertIsNone(diagnoses.get_dx_date(CHOL))
 
     @tag("dx1")
     def test_diagnoses_dates(self):
@@ -246,8 +258,8 @@ class TestDiagnoses(MoccaTestCaseMixin, TestCase):
         )
         self.assertIsNotNone(diagnoses.get_dx_date("htn"))
 
-    @tag("dx")
-    def test_diagnoses_dates_baseline(self):
+    @tag("dx2")
+    def test_diagnoses_dates_baseline2(self):
         subject_visit_baseline = self.get_subject_visit(
             subject_screening=self.subject_screening,
             subject_consent=self.subject_consent,
@@ -285,4 +297,4 @@ class TestDiagnoses(MoccaTestCaseMixin, TestCase):
         diagnoses = Diagnoses(
             subject_identifier=subject_visit_baseline.subject_identifier,
         )
-        self.assertRaises(MultipleInitialReviewsExist, getattr, diagnoses.get_initial_reviews)
+        self.assertRaises(MultipleInitialReviewsExist, diagnoses.get_initial_reviews)

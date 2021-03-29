@@ -13,7 +13,7 @@ from mocca_dashboard.model_wrappers import SubjectScreeningModelWrapper
 from mocca_screening.models import SubjectScreening
 from mocca_subject.models import SubjectVisit
 
-from .mocca_test_case_mixin import MoccaTestCaseMixin
+from ..mocca_test_case_mixin import MoccaTestCaseMixin
 
 
 class SubjectModelWrapperTestHelper(ModelWrapperTestHelper):

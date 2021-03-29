@@ -7,7 +7,7 @@ from pytz import timezone
 
 from mocca_consent.forms import SubjectConsentForm, SubjectConsentFormValidator
 
-from ...mocca_test_case_mixin import MoccaTestCaseMixin
+from ..mocca_test_case_mixin import MoccaTestCaseMixin
 
 
 def get_now():
