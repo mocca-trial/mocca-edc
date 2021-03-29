@@ -21,13 +21,13 @@ from model_bakery import baker
 from mocca_screening.models.subject_screening import SubjectScreening
 from mocca_sites.sites import fqdn
 
-from .mocca_test_case_mixin import MoccaTestCaseMixin
+from ..mocca_test_case_mixin import MoccaTestCaseMixin
 
 style = color_style()
 
 User = get_user_model()
 
-app_prefix = "inte"
+app_prefix = "mocca"
 
 
 def login(testcase, user=None, superuser=None, groups=None):

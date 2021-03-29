@@ -14,7 +14,6 @@ class TestVisitSchedule(MoccaTestCaseMixin, TestCase):
             subject_screening=self.subject_screening
         )
 
-    @tag("vs")
     def test_baseline(self):
         subject_visit = self.get_subject_visit(
             subject_screening=self.subject_screening,
@@ -25,7 +24,6 @@ class TestVisitSchedule(MoccaTestCaseMixin, TestCase):
         self.assertEqual("1000", subject_visit.appointment.visit_code)
         self.assertEqual(0, subject_visit.appointment.visit_code_sequence)
 
-    @tag("vs")
     def test_next_up_to_12m(self):
         subject_visit = self.get_subject_visit(
             subject_screening=self.subject_screening,
@@ -43,7 +41,6 @@ class TestVisitSchedule(MoccaTestCaseMixin, TestCase):
             self.assertEqual(visit_code, subject_visit.appointment.visit_code)
             self.assertEqual(0, subject_visit.appointment.visit_code_sequence)
 
-    @tag("vs")
     def test_next_unscheduled(self):
         subject_visit = self.get_subject_visit(
             subject_screening=self.subject_screening,

@@ -1,4 +1,4 @@
-from .blood_results import BloodResultsFbcForm, BloodResultsLipidForm
+from .blood_results_lipid_form import BloodResultsLipidForm
 from .cd4_result_form import Cd4ResultForm
 from .chol_initial_review_form import CholInitialReviewForm
 from .chol_medication_adherence_form import CholMedicationAdherenceForm

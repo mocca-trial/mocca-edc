@@ -29,11 +29,13 @@ class ClinicalReviewBaselineAdmin(
             "High Cholesterol",
             {"fields": ("chol_test", "chol_test_ago", "chol_test_date", "chol_dx")},
         ),
+        ("Complications", {"fields": ("complications",)}),
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,
     )
 
     radio_fields = {
+        "complications": admin.VERTICAL,
         "crf_status": admin.VERTICAL,
         "chol_dx": admin.VERTICAL,
         "chol_test": admin.VERTICAL,

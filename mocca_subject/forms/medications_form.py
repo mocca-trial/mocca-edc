@@ -5,7 +5,7 @@ from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_form_validators.form_validator import FormValidator
 from edc_utils import convert_php_dateformat
 from respond_model.diagnoses import Diagnoses, InitialReviewRequired
-from respond_model.form_validators import CrfFormValidatorMixin
+from respond_model.form_validators_mixins import CrfFormValidatorMixin
 from respond_model.utils import is_baseline, model_exists_or_raise
 
 from ..models import ClinicalReview, ClinicalReviewBaseline, Medications

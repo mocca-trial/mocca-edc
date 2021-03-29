@@ -88,6 +88,7 @@ class TestClinicalReviewBaseline(MoccaTestCaseMixin, TestCase):
             "chol_test": NO,
             "chol_test_ago": None,
             "chol_dx": NOT_APPLICABLE,
+            "complications": YES,
         }
         form = ClinicalReviewBaselineForm(data=data)
         form.is_valid()
@@ -110,6 +111,7 @@ class TestClinicalReviewBaseline(MoccaTestCaseMixin, TestCase):
             "chol_test": NO,
             "chol_test_ago": None,
             "chol_dx": NOT_APPLICABLE,
+            "complications": YES,
         }
         form = ClinicalReviewBaselineForm(data=data)
         form.is_valid()
@@ -132,6 +134,7 @@ class TestClinicalReviewBaseline(MoccaTestCaseMixin, TestCase):
             "chol_test": NO,
             "chol_test_ago": None,
             "chol_dx": NOT_APPLICABLE,
+            "complications": YES,
         }
         form = ClinicalReviewBaselineForm(data=data)
         form.is_valid()
@@ -154,6 +157,7 @@ class TestClinicalReviewBaseline(MoccaTestCaseMixin, TestCase):
             "chol_test": YES,
             "chol_test_ago": "1y1m",
             "chol_dx": YES,
+            "complications": YES,
         }
         form = ClinicalReviewBaselineForm(data=data)
         form.is_valid()

@@ -11,7 +11,7 @@ from edc_constants.constants import CLOSED, NEW
 from edc_reportable.constants import GRADE4, GRADE5
 from model_bakery import baker
 
-from .mocca_test_case_mixin import MoccaTestCaseMixin
+from ..mocca_test_case_mixin import MoccaTestCaseMixin
 
 
 class TestActions(MoccaTestCaseMixin, TestCase):
