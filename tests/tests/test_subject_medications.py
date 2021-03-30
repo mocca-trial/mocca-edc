@@ -4,7 +4,7 @@ from edc_constants.constants import INCOMPLETE, NO, NOT_APPLICABLE, YES
 from edc_utils import get_utcnow
 from edc_visit_tracking.constants import UNSCHEDULED
 from model_bakery import baker
-from respond_model.diagnoses import Diagnoses
+from respond_models.diagnoses import Diagnoses
 
 from mocca_screening.constants import HIV_CLINIC
 from mocca_subject.forms import MedicationsForm

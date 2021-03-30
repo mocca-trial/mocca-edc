@@ -5,7 +5,7 @@ from edc_constants.constants import HIGH_PRIORITY, YES
 from edc_ltfu.constants import LOSS_TO_FOLLOWUP_ACTION
 from edc_visit_schedule.constants import DAY1
 from edc_visit_tracking.action_items import VisitMissedAction
-from respond_model.constants import BLOOD_RESULTS_FBC_ACTION, BLOOD_RESULTS_LIPID_ACTION
+from respond_models.constants import BLOOD_RESULTS_LIPID_ACTION
 
 from mocca_visit_schedule.constants import SCHEDULE
 

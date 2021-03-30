@@ -1,7 +1,7 @@
 from django.db import models
 from edc_constants.choices import YES_NO
 from edc_model import models as edc_models
-from respond_model.model_mixins import GlucoseModelMixin
+from respond_models.mixins import GlucoseModelMixin
 
 from ..model_mixins import CrfModelMixin
 

@@ -1,5 +1,5 @@
 from edc_lab import RequisitionPanel
-from respond_model.labs import chemistry_processing
+from respond_labs.processing_profiles import chemistry_processing
 
 chemistry_lipids_panel = RequisitionPanel(
     name="chemistry",

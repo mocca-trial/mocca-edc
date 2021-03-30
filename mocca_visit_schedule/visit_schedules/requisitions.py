@@ -1,5 +1,5 @@
 from edc_visit_schedule import FormsCollection, Requisition
-from respond_model.labs import (
+from respond_labs.panels import (
     blood_glucose_panel,
     blood_glucose_poc_panel,
     hba1c_panel,

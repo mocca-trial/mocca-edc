@@ -1,12 +1,7 @@
 from django.db import models
-from edc_constants.choices import YES_NO
 from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
-from respond_model.model_mixins import (
-    GlucoseModelMixin,
-    InitialReviewModelMixin,
-    NcdInitialReviewModelMixin,
-)
+from respond_models.mixins import InitialReviewModelMixin, NcdInitialReviewModelMixin
 
 from mocca_subject.model_mixins import CrfModelMixin, DiagnosisLocationModelMixin
 
