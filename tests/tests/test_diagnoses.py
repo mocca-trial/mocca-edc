@@ -4,7 +4,7 @@ from edc_constants.constants import CHOL, DM, HIV, HTN, NOT_APPLICABLE, POS, YES
 from edc_utils import get_utcnow
 from edc_visit_tracking.constants import UNSCHEDULED
 from model_bakery import baker
-from respond_model.diagnoses import (
+from respond_models.diagnoses import (
     ClinicalReviewBaselineRequired,
     Diagnoses,
     InitialReviewRequired,

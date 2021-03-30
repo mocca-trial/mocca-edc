@@ -3,7 +3,7 @@ from django.utils.html import format_html
 from edc_constants.choices import YES_NO
 from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
-from respond_model.model_mixins import (
+from respond_models.mixins import (
     HivArvInitiationModelMixin,
     HivArvMonitoringModelMixin,
     InitialReviewModelMixin,

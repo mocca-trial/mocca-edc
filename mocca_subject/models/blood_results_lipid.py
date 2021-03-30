@@ -1,7 +1,7 @@
 from edc_crf.model_mixins import CrfNoManagerModelMixin
 from edc_model import models as edc_models
 from edc_reportable.model_mixin import BloodResultsModelMixin
-from respond_model.model_mixins.blood_results import BloodResultsLipidModelMixin
+from respond_models.mixins.blood_results import BloodResultsLipidModelMixin
 
 
 class BloodResultsLipid(

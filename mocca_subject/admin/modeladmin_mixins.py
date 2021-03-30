@@ -4,7 +4,6 @@ from edc_model_admin.dashboard import (
     ModelAdminCrfDashboardMixin,
     ModelAdminSubjectDashboardMixin,
 )
-from respond_model.modeladmin_mixins import MedicationAdherenceAdminMixin
 
 
 class ModelAdminMixin(ModelAdminSubjectDashboardMixin):

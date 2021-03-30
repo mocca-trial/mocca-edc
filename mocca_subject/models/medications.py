@@ -1,5 +1,5 @@
 from edc_model import models as edc_models
-from respond_model.model_mixins.medication_model_mixins import (
+from respond_models.mixins.medication import (
     CholMedicationsModelMixin,
     DmMedicationsModelMixin,
     HivMedicationsModelMixin,
