@@ -1,4 +1,6 @@
-from django.test import TestCase, tag
+import pdb
+
+from django.test import tag
 from django.urls import reverse
 from django_webtest import WebTest
 from edc_auth import AUDITOR, EVERYONE, SCREENING
@@ -7,7 +9,7 @@ from edc_sites import get_current_country
 from model_bakery.baker import make_recipe
 
 from mocca_lists.models import MoccaOriginalSites
-from mocca_screening.forms import MoccaRegisterForm, SubjectScreeningForm
+from mocca_screening.forms import SubjectScreeningForm
 from mocca_screening.forms.mocca_register_form import MoccaRegisterFormValidator
 from mocca_screening.models import MoccaRegister, SubjectScreening
 
@@ -19,6 +21,8 @@ class TestScreening(MoccaTestCaseMixin, WebTest):
     Uganda,Kiswa,KB-0140--1,05-0124,GW,1936,82,Male
     Uganda,Kiswa,KB-0141--1,05-0125,NM,1960,58,Female
     """
+
+    import_randomization_list = False
 
     def setUp(self):
         super().setUp()
@@ -115,37 +119,40 @@ class TestScreening(MoccaTestCaseMixin, WebTest):
         form.is_valid()
         self.assertIn("care_facility_location", form._errors)
 
-    def test_screening_ineligible(self):
-
-        responses = dict(
-            willing_to_consent=NO,
-            requires_acute_care=YES,
-            care=NO,
-            pregnant=YES,
-        )
+    def screen(self, field, value):
         for gender in [MALE, FEMALE]:
-            for k, v in responses.items():
-                with self.subTest(k=k, v=v, gender=gender):
-                    data = self.get_subject_screening_form_data(gender=gender)
-                    data.update({k: v})
-                    if k == "pregnant" and gender == MALE:
-                        continue
-                    if k == "care":
-                        data.update(
-                            care_not_in_reason="blah blah",
-                            care_facility_location=NOT_APPLICABLE,
-                            icc=NOT_APPLICABLE,
-                            icc_since_mocca=NO,
-                        )
-                    form = SubjectScreeningForm(data=data, instance=None)
-                    form.is_valid()
-                    self.assertEqual(form._errors, {})
-                    form.save()
-                    self.assertFalse(
-                        SubjectScreening.objects.get(
-                            mocca_study_identifier=data.get("mocca_study_identifier")
-                        ).eligible
-                    )
+            if field == "pregnant" and gender == MALE:
+                continue
+            data = self.get_subject_screening_form_data(gender=gender)
+            data.update({field: value})
+            if field == "care":
+                data.update(
+                    care_not_in_reason="blah blah",
+                    care_facility_location=NOT_APPLICABLE,
+                    icc=NOT_APPLICABLE,
+                    icc_since_mocca=NO,
+                )
+            form = SubjectScreeningForm(data=data, instance=None)
+            form.is_valid()
+            self.assertEqual(form._errors, {})
+            form.save()
+            self.assertFalse(
+                SubjectScreening.objects.get(
+                    mocca_study_identifier=data.get("mocca_study_identifier")
+                ).eligible
+            )
+
+    def test_screening_ineligible_unwilling(self):
+        self.screen("willing_to_consent", NO)
+
+    def test_screening_ineligible_requires_acute_care(self):
+        self.screen("requires_acute_care", YES)
+
+    def test_screening_ineligible_care(self):
+        self.screen("care", NO)
+
+    def test_screening_ineligible_pregnant(self):
+        self.screen("pregnant", YES)
 
     def test_screening_unsuitable(self):
 
@@ -160,8 +167,7 @@ class TestScreening(MoccaTestCaseMixin, WebTest):
             ).eligible
         )
 
-    @tag("12")
-    def test_register_deceased(self):
+    def test_mocca_register_validator_ok(self):
 
         cleaned_data = {
             "report_datetime": self.mocca_register.report_datetime,
@@ -181,7 +187,29 @@ class TestScreening(MoccaTestCaseMixin, WebTest):
             cleaned_data=cleaned_data, instance=self.mocca_register
         )
         form_validator.validate()
-        self.assertIn("death_date", form_validator._errors)
+        self.assertDictEqual({}, form_validator._errors)
+
+    def test_mocca_register_validator_deceased(self):
+
+        cleaned_data = {
+            "report_datetime": self.mocca_register.report_datetime,
+            "screening_identifier": self.mocca_register.screening_identifier,
+            "mocca_study_identifier": self.mocca_register.mocca_study_identifier,
+            "mocca_country": "uganda",
+            "mocca_site": self.mocca_register.mocca_site,
+            "initials": self.mocca_register.initials,
+            "gender": self.mocca_register.gender,
+            "age_in_years": self.mocca_register.age_in_years,
+            "birth_year": self.mocca_register.birth_year,
+            "survival_status": DEAD,
+            "call": YES,
+            "screen_now": YES,
+        }
+        form_validator = MoccaRegisterFormValidator(
+            cleaned_data=cleaned_data, instance=self.mocca_register
+        )
+        form_validator.validate()
+        self.assertDictEqual({}, form_validator._errors)
 
     @tag("webtest")
     def test_mocca_register_changelist(self):
