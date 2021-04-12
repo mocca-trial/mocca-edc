@@ -1,6 +1,11 @@
 from django.contrib import admin
 from django_audit_fields.admin import audit_fieldset_tuple
-from edc_model_admin import ModelAdminFormInstructionsMixin, TemplatesModelAdminMixin
+from edc_model_admin import (
+    ModelAdminFormAutoNumberMixin,
+    ModelAdminFormInstructionsMixin,
+    ModelAdminNextUrlRedirectMixin,
+    TemplatesModelAdminMixin,
+)
 from edc_model_admin.model_admin_simple_history import SimpleHistoryAdmin
 
 from ..admin_site import mocca_screening_admin
@@ -10,7 +15,11 @@ from ..models import SubjectRefusalScreening
 
 @admin.register(SubjectRefusalScreening, site=mocca_screening_admin)
 class SubjectRefusalScreeningAdmin(
-    TemplatesModelAdminMixin, ModelAdminFormInstructionsMixin, SimpleHistoryAdmin
+    TemplatesModelAdminMixin,
+    ModelAdminFormAutoNumberMixin,
+    ModelAdminFormInstructionsMixin,
+    ModelAdminNextUrlRedirectMixin,
+    SimpleHistoryAdmin,
 ):
     form = SubjectRefusalScreeningForm
 

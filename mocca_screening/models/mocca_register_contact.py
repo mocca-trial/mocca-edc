@@ -48,9 +48,9 @@ class MoccaRegisterContact(SiteModelMixin, BaseUuidModel):
     icc = models.CharField(
         verbose_name="Does the patient currently receive regular integrated care",
         max_length=25,
-        choices=YES_NO,
+        choices=YES_NO_UNSURE_NA,
         null=True,
-        blank=True,
+        blank=False,
         help_text="Either at this facility or elsewhere",
     )
 

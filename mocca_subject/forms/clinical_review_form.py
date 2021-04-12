@@ -2,11 +2,11 @@ from django import forms
 from edc_constants.constants import NO, YES
 from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_form_validators.form_validator import FormValidator
-from respond_model.form_validators import (
+from respond_forms.form_validator_mixins import (
     CrfFormValidatorMixin,
     DiagnosisFormValidatorMixin,
 )
-from respond_model.utils.form_utils import requires_clinical_review_at_baseline
+from respond_forms.utils import requires_clinical_review_at_baseline
 
 from ..models import ClinicalReview
 

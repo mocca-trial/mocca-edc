@@ -1,7 +1,7 @@
 import csv
 import os
 import sys
-from typing import List
+from typing import List, Optional
 
 from django.apps import apps as django_apps
 from django.conf import settings
@@ -26,7 +26,11 @@ def birthyear_in_range(x: int) -> int:
     return x
 
 
-def import_mocca_register(verbose: bool = None):
+def import_mocca_register(
+    path: Optional[str] = None,
+    verbose: bool = None,
+    force_delete: Optional[bool] = None,
+):
     model_cls = django_apps.get_model("mocca_screening.moccaregister")
     fieldnames = [
         "country",
@@ -38,7 +42,7 @@ def import_mocca_register(verbose: bool = None):
         "age_in_years",
         "gender",
     ]
-    path = settings.MOCCA_REGISTER_FILE
+    path = os.path.expanduser(path or settings.MOCCA_REGISTER_FILE)
     try:
         if not os.path.exists(path):
             raise ImportMoccaError(path)
@@ -49,7 +53,15 @@ def import_mocca_register(verbose: bool = None):
             f"\nImporting MOCCA register from '{path}' "
             f"into {model_cls._meta.label_lower}\n"
         )
-    model_cls.objects.all().delete()
+
+    if model_cls.objects.all().count() > 0:
+        if force_delete:
+            model_cls.objects.all().delete()
+        else:
+            raise ImportMoccaError(
+                "Unable to continue. Not deleting existing records. "
+                "Use `force_delete` to override"
+            )
 
     import_file(path, model_cls, fieldnames)
 
@@ -57,7 +69,11 @@ def import_mocca_register(verbose: bool = None):
         sys.stdout.write("Done.\n")
 
 
-def import_file(path: str, model_cls: BaseUuidModelStub, fieldnames: List[str]) -> None:
+def import_file(
+    path: str,
+    model_cls: BaseUuidModelStub,
+    fieldnames: List[str],
+) -> None:
     sys.stdout.write(style.MIGRATE_HEADING("\n Importing mocca register.\n"))
     with open(path, "r") as f:
         reader = csv.DictReader(f, fieldnames=fieldnames)

@@ -1,6 +1,6 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.utils.safestring import mark_safe
+from django.utils.html import format_html
 from edc_model import models as edc_models
 
 from mocca_lists.models import NonAdherenceReasons
@@ -12,7 +12,7 @@ class MedicationAdherenceModelMixin(models.Model):
     condition_label = "condition_label"
 
     visual_score_slider = models.CharField(
-        verbose_name=mark_safe(
+        verbose_name=format_html(
             f"Visual adherence score for <U>{condition_label}</U> medication"
         ),
         max_length=3,
@@ -20,7 +20,7 @@ class MedicationAdherenceModelMixin(models.Model):
     )
 
     visual_score_confirmed = models.IntegerField(
-        verbose_name=mark_safe(
+        verbose_name=format_html(
             "<B><font color='orange'>Interviewer</font></B>: "
             "please confirm the score indicated from above."
         ),
@@ -29,8 +29,9 @@ class MedicationAdherenceModelMixin(models.Model):
     )
 
     last_missed_pill = models.CharField(
-        verbose_name=mark_safe(
-            f"When was the last time you missed taking your <U>{condition_label}</U> medication?"
+        verbose_name=format_html(
+            "When was the last time you missed taking your "
+            f"<U>{condition_label}</U> medication?"
         ),
         max_length=25,
         choices=MISSED_PILLS,

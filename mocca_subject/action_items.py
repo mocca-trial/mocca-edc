@@ -5,7 +5,7 @@ from edc_constants.constants import HIGH_PRIORITY, YES
 from edc_ltfu.constants import LOSS_TO_FOLLOWUP_ACTION
 from edc_visit_schedule.constants import DAY1
 from edc_visit_tracking.action_items import VisitMissedAction
-from respond_model.constants import BLOOD_RESULTS_FBC_ACTION, BLOOD_RESULTS_LIPID_ACTION
+from respond_models.constants import BLOOD_RESULTS_LIPID_ACTION
 
 from mocca_visit_schedule.constants import SCHEDULE
 
@@ -56,18 +56,11 @@ class BaseBloodResultsAction(Action):
         return next_actions
 
 
-class BloodResultsFbcAction(BaseBloodResultsAction):
-    name = BLOOD_RESULTS_FBC_ACTION
-    display_name = "Reportable result: FBC"
-    reference_model = "mocca_subject.bloodresultsfbc"
-
-
 class BloodResultsLipidAction(BaseBloodResultsAction):
     name = BLOOD_RESULTS_LIPID_ACTION
     display_name = "Reportable result: LIPIDS"
     reference_model = "mocca_subject.bloodresultslipid"
 
 
-site_action_items.register(BloodResultsFbcAction)
 site_action_items.register(BloodResultsLipidAction)
 site_action_items.register(SubjectVisitMissedAction)

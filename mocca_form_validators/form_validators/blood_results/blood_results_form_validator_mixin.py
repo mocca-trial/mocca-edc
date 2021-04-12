@@ -10,7 +10,7 @@ class BloodResultsFormValidatorMixin(
 ):
 
     reportable_grades = [GRADE3, GRADE4]
-    reference_list_name = "inte"
+    reference_list_name = "mocca"
     requisition_field = None
     assay_datetime_field = None
     field_names = []
@@ -37,25 +37,10 @@ class BloodResultsFormValidatorMixin(
                 self.requisition_field, self.assay_datetime_field, *self.panels
             )
 
-        for field_name in self.field_names:
-            if f"{field_name}_units" in self.cleaned_data:
-                self.required_if_not_none(
-                    field=field_name,
-                    field_required=f"{field_name}_units",
-                    field_required_evaluate_as_int=True,
-                )
-            if f"{field_name}_abnormal" in self.cleaned_data:
-                self.required_if_not_none(
-                    field=field_name,
-                    field_required=f"{field_name}_abnormal",
-                    field_required_evaluate_as_int=True,
-                )
-            if f"{field_name}_reportable" in self.cleaned_data:
-                self.required_if_not_none(
-                    field=field_name,
-                    field_required=f"{field_name}_reportable",
-                    field_required_evaluate_as_int=True,
-                )
+        # for field_name in self.field_names:
+        #     self.validate_units_field(field_name)
+        #     # self.validate_abnormal_field(field_name)
+        #     # self.validate_reportable_field(field_name)
 
         self.validate_reportable_fields(
             reference_list_name=self.reference_list_name, **self.extra_options

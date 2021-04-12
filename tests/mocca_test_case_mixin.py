@@ -3,8 +3,11 @@ from pprint import pprint
 from typing import Optional
 
 from dateutil.relativedelta import relativedelta
+from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.sites.models import Site
+from django.urls import reverse
 from edc_appointment.tests.appointment_test_case_mixin import AppointmentTestCaseMixin
 from edc_auth.group_permissions_updater import GroupPermissionsUpdater
 from edc_constants.constants import FEMALE, NO, NOT_APPLICABLE, YES
@@ -33,9 +36,27 @@ from mocca_screening.models import MoccaRegister, SubjectScreening
 from mocca_sites.sites import fqdn
 from mocca_subject.models import SubjectVisit
 
+User = get_user_model()
+
 
 def age_in_years(birth_year: int) -> int:
     return datetime.now().year - birth_year
+
+
+def login(testcase, user=None, superuser=None, groups=None):
+    user = testcase.user if user is None else user
+    superuser = True if superuser is None else superuser
+    if not superuser:
+        user.is_superuser = False
+        user.is_active = True
+        user.save()
+        for group_name in groups:
+            group = Group.objects.get(name=group_name)
+            user.groups.add(group)
+    form = testcase.app.get(reverse("home_url")).maybe_follow().form
+    form["username"] = user.username
+    form["password"] = "pass"
+    return form.submit()
 
 
 class MoccaTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
@@ -56,23 +77,29 @@ class MoccaTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
         add_or_update_django_sites(sites=get_sites_by_country("uganda"))
         site_list_data.autodiscover()
         import_holidays(test=True)
-        GroupPermissionsUpdater(codenames_by_group=get_codenames_by_group(), verbose=True)
+        # GroupPermissionsUpdater(codenames_by_group=get_codenames_by_group(), verbose=True)
         if cls.import_randomization_list:
             RandomizationListImporter(verbose=False, name="default", sid_count_for_tests=2)
         cls.mocca_sites = get_mocca_sites_by_country(country=get_current_country())
         import_mocca_register()
 
-    def login(self, user=None, superuser=None, groups=None):
-        user = self.user if user is None else user
-        superuser = True if superuser is None else superuser
-        if not superuser:
-            user.is_superuser = False
-            user.is_active = True
-            user.save()
-            for group_name in groups:
-                group = Group.objects.get(name=group_name)
-                user.groups.add(group)
-        return self.client.force_login(user or self.user)
+    def setUp(self):
+        self.user = User.objects.create_superuser("user_login", "u@example.com", "pass")
+
+    def login(self, **kwargs):
+        return login(self, **kwargs)
+
+    # def login(self, user=None, superuser=None, groups=None):
+    #     user = self.user if user is None else user
+    #     superuser = True if superuser is None else superuser
+    #     if not superuser:
+    #         user.is_superuser = False
+    #         user.is_active = True
+    #         user.save()
+    #         for group_name in groups:
+    #             group = Group.objects.get(name=group_name)
+    #             user.groups.add(group)
+    #     return self.client.force_login(user or self.user)
 
     def get_mocca_register(self, gender: str) -> MoccaRegister:
         mocca_study_identifiers = SubjectScreening.objects.values_list(
