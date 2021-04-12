@@ -48,10 +48,10 @@ class SubjectRefusalScreening(SiteModelMixin, BaseUuidModel):
     history = HistoricalRecords()
 
     def __str__(self):
-        return self.mocca_register
+        return self.mocca_register.mocca_study_identifier
 
     def natural_key(self):
-        return (self.mocca_register,)
+        return tuple(self.mocca_register)
 
     @staticmethod
     def get_search_slug_fields():

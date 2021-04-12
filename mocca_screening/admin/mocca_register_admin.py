@@ -248,19 +248,26 @@ class MoccaRegisterAdmin(
 
     def screen(self, obj=None):
         mocca_register_contact = self.get_mocca_register(obj)
+        try:
+            subject_refusal_screening = SubjectRefusalScreening.objects.get(mocca_register=obj)
+        except ObjectDoesNotExist:
+            subject_refusal_screening = None
         if (
-            obj.call == YES and obj.screen_now == NO
-        ) or mocca_register_contact.survival_status == DEAD:
+            (obj.call == YES and obj.screen_now == NO)
+            or mocca_register_contact.survival_status == DEAD
+            or subject_refusal_screening
+        ):
             return self.get_empty_value_display()
         elif obj.screening_identifier:
             url = reverse(
                 url_names.get(self.screening_listboard_url_name),
                 kwargs=self.get_screening_listboard_url_kwargs(obj),
             )
-            url = f"{url}?mocca_register={str(obj.id)}"
+            # url = f"{url}?mocca_register={str(obj.id)}"
             label = obj.screening_identifier
             fa_icon = "fas fa-share"
             fa_icon_after = True
+            button_type = "go"
         else:
             add_url = reverse(self.screening_add_url)
             url = f"{add_url}?next={self.changelist_url_name}&mocca_register={str(obj.id)}"
@@ -279,13 +286,14 @@ class MoccaRegisterAdmin(
             label = "Add"
             fa_icon = "fas fa-plus"
             fa_icon_after = None
-
+            button_type = "add"
         context = dict(
             title=f"{SubjectScreening._meta.verbose_name}",
             url=url,
             label=label,
             fa_icon=fa_icon,
             fa_icon_after=fa_icon_after,
+            button_type=button_type,
         )
         return render_to_string(self.button_template, context=context)
 
@@ -304,6 +312,9 @@ class MoccaRegisterAdmin(
         return getattr(self.get_last_contact(obj), "survival_status", "") == DEAD
 
     def care_status(self, obj=None):
+        """Returns an url to Add/Edit the CareStatus
+        or the empty_value string.
+        """
         if (
             not self.called_once(obj)
             or self.get_subject_screening_obj(obj=obj)
@@ -327,12 +338,16 @@ class MoccaRegisterAdmin(
             url=url,
             label=label,
             fa_icon=fa_icon,
+            button_type="add" if label == "Add" else "edit",
         )
         return render_to_string(self.button_template, context=context)
 
     care_status.short_description = "Care Status"
 
     def refusal(self, obj=None):
+        """Returns an url to Add/Edit the SubjectRefusalScreening
+        or the empty_value string.
+        """
         mocca_register_contact = self.get_mocca_register(obj)
         if (
             not self.called_once(obj)
@@ -341,16 +356,14 @@ class MoccaRegisterAdmin(
         ):
             return self.get_empty_value_display()
         try:
-            subject_refusal = SubjectRefusal.objects.get(
-                screening_identifier=obj.screening_identifier
-            )
+            subject_refusal_screening = SubjectRefusalScreening.objects.get(mocca_register=obj)
         except ObjectDoesNotExist:
             url = reverse(self.refusal_add_url)
             url = f"{url}?next={self.changelist_url_name}&mocca_register={str(obj.id)}"
             label = "Add"
             fa_icon = "fas fa-plus"
         else:
-            url = reverse(self.refusal_change_url, args=(subject_refusal.id,))
+            url = reverse(self.refusal_change_url, args=(subject_refusal_screening.id,))
             url = f"{url}?next={self.changelist_url_name}"
             label = "Edit"
             fa_icon = "fas fa-pen"
@@ -359,6 +372,7 @@ class MoccaRegisterAdmin(
             url=url,
             label=label,
             fa_icon=fa_icon,
+            button_type="add" if label == "Add" else "edit",
         )
         return render_to_string(self.button_template, context=context)
 

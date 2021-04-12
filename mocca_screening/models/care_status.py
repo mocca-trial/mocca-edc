@@ -36,7 +36,7 @@ class CareStatus(SiteModelMixin, CareModelMixin, BaseUuidModel):
     history = HistoricalRecords()
 
     def natural_key(self):
-        return (self.mocca_register,)
+        return tuple(self.mocca_register)
 
     natural_key.dependencies = [
         "sites.Site",

@@ -28,6 +28,16 @@ class CareStatusAdmin(
         audit_fieldset_tuple,
     )
 
+    list_display = (
+        "mocca_register",
+        "report_datetime",
+        "care",
+        "care_facility_location",
+        "icc",
+        "user_created",
+        "created",
+    )
+
     radio_fields = {
         "care": admin.VERTICAL,
         "care_facility_location": admin.VERTICAL,
