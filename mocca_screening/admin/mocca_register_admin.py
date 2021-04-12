@@ -1,3 +1,5 @@
+import pdb
+
 from django.contrib import admin
 from django.core.exceptions import ObjectDoesNotExist
 from django.template.loader import render_to_string
@@ -5,7 +7,11 @@ from django.urls import reverse
 from django_audit_fields.admin import ModelAdminAuditFieldsMixin, audit_fieldset_tuple
 from edc_constants.constants import DEAD, NO, YES
 from edc_dashboard import url_names
-from edc_model_admin import ModelAdminFormInstructionsMixin, TemplatesModelAdminMixin
+from edc_model_admin import (
+    ModelAdminFormAutoNumberMixin,
+    ModelAdminFormInstructionsMixin,
+    TemplatesModelAdminMixin,
+)
 from edc_model_admin.model_admin_simple_history import SimpleHistoryAdmin
 from edc_sites import get_current_country
 
@@ -107,7 +113,10 @@ class ViewMoccaRegisterContactInline(
 
 @admin.register(MoccaRegister, site=mocca_screening_admin)
 class MoccaRegisterAdmin(
-    TemplatesModelAdminMixin, ModelAdminFormInstructionsMixin, SimpleHistoryAdmin
+    TemplatesModelAdminMixin,
+    ModelAdminFormAutoNumberMixin,
+    ModelAdminFormInstructionsMixin,
+    SimpleHistoryAdmin,
 ):
     form = MoccaRegisterForm
     inlines = [AddMoccaRegisterContactInline, ViewMoccaRegisterContactInline]
@@ -183,9 +192,10 @@ class MoccaRegisterAdmin(
     )
 
     radio_fields = {
+        "best_tel": admin.VERTICAL,
+        "call": admin.VERTICAL,
         "gender": admin.VERTICAL,
         "mocca_site": admin.VERTICAL,
-        "call": admin.VERTICAL,
         "screen_now": admin.VERTICAL,
     }
 
@@ -290,9 +300,16 @@ class MoccaRegisterAdmin(
     def button_template(self):
         return "mocca_screening/bootstrap3/dashboard_button.html"
 
+    def is_deceased(self, obj=None):
+        return getattr(self.get_last_contact(obj), "survival_status", "") == DEAD
+
     def care_status(self, obj=None):
-        if not self.called_once(obj) or self.get_subject_screening_obj(obj=obj):
-            return self.get_empty_value_display()
+        if (
+            not self.called_once(obj)
+            or self.get_subject_screening_obj(obj=obj)
+            or self.is_deceased(obj)
+        ):
+            return "deceased" if self.is_deceased(obj) else self.get_empty_value_display()
         try:
             care_status = CareStatus.objects.get(mocca_register=obj)
         except ObjectDoesNotExist:
@@ -355,3 +372,9 @@ class MoccaRegisterAdmin(
     @staticmethod
     def called_once(obj=None):
         return MoccaRegisterContact.objects.filter(mocca_register=obj).exists()
+
+    @staticmethod
+    def get_last_contact(obj=None):
+        return (
+            MoccaRegisterContact.objects.filter(mocca_register=obj).order_by("-created").last()
+        )
