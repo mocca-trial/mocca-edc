@@ -5,7 +5,6 @@ crfs_prn = FormsCollection(
     Crf(show_order=214, model="mocca_subject.cd4result"),
     Crf(show_order=215, model="mocca_subject.glucose"),
     Crf(show_order=216, model="mocca_subject.viralloadresult"),
-    Crf(show_order=300, model="mocca_subject.patienthealth"),
     name="prn",
 )
 
