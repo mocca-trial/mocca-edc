@@ -5,6 +5,7 @@
 .project
 .settings/
 .DS_Store
+*.sql
 env-live
 env-uat
 db.sqlite3
