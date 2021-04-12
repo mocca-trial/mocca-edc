@@ -27,7 +27,9 @@ def birthyear_in_range(x: int) -> int:
 
 
 def import_mocca_register(
-    path: Optional[str] = None, verbose: bool = None, force_delete: Optional[bool] = None
+    path: Optional[str] = None,
+    verbose: bool = None,
+    force_delete: Optional[bool] = None,
 ):
     model_cls = django_apps.get_model("mocca_screening.moccaregister")
     fieldnames = [
@@ -67,7 +69,11 @@ def import_mocca_register(
         sys.stdout.write("Done.\n")
 
 
-def import_file(path: str, model_cls: BaseUuidModelStub, fieldnames: List[str]) -> None:
+def import_file(
+    path: str,
+    model_cls: BaseUuidModelStub,
+    fieldnames: List[str],
+) -> None:
     sys.stdout.write(style.MIGRATE_HEADING("\n Importing mocca register.\n"))
     with open(path, "r") as f:
         reader = csv.DictReader(f, fieldnames=fieldnames)

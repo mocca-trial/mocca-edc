@@ -1,5 +1,5 @@
 from django.test import TestCase
-from edc_constants.constants import INCOMPLETE, NO, NOT_APPLICABLE, YES
+from edc_constants.constants import FEMALE, INCOMPLETE, MALE, NO, NOT_APPLICABLE, YES
 from edc_utils import get_utcnow
 from pytz import timezone
 
@@ -23,10 +23,13 @@ class TestClinicalReviewBaseline(MoccaTestCaseMixin, TestCase):
         super().setUp()
         # hiv clinic
         self.subject_screening_hiv = self.get_subject_screening(
-            report_datetime=get_utcnow(), clinic_type=HIV_CLINIC
+            report_datetime=get_utcnow(),
+            clinic_type=HIV_CLINIC,
+            gender=FEMALE,
         )
         self.subject_consent_hiv = self.get_subject_consent(
-            subject_screening=self.subject_screening_hiv, clinic_type=HIV_CLINIC
+            subject_screening=self.subject_screening_hiv,
+            clinic_type=HIV_CLINIC,
         )
         self.subject_visit_hiv = self.get_subject_visit(
             subject_screening=self.subject_screening_hiv,
@@ -35,7 +38,9 @@ class TestClinicalReviewBaseline(MoccaTestCaseMixin, TestCase):
 
         # htn clinic
         self.subject_screening_htn = self.get_subject_screening(
-            report_datetime=get_utcnow(), clinic_type=HYPERTENSION_CLINIC
+            report_datetime=get_utcnow(),
+            clinic_type=HYPERTENSION_CLINIC,
+            gender=MALE,
         )
         self.subject_consent_htn = self.get_subject_consent(
             subject_screening=self.subject_screening_htn,
@@ -48,7 +53,9 @@ class TestClinicalReviewBaseline(MoccaTestCaseMixin, TestCase):
 
         # diabetes clinic
         self.subject_screening_dm = self.get_subject_screening(
-            report_datetime=get_utcnow(), clinic_type=DIABETES_CLINIC
+            report_datetime=get_utcnow(),
+            clinic_type=DIABETES_CLINIC,
+            gender=FEMALE,
         )
         self.subject_consent_dm = self.get_subject_consent(
             subject_screening=self.subject_screening_dm,
@@ -61,7 +68,9 @@ class TestClinicalReviewBaseline(MoccaTestCaseMixin, TestCase):
 
         # NCD clinic
         self.subject_screening_ncd = self.get_subject_screening(
-            report_datetime=get_utcnow(), clinic_type=NCD_CLINIC
+            report_datetime=get_utcnow(),
+            clinic_type=NCD_CLINIC,
+            gender=MALE,
         )
         self.subject_consent_ncd = self.get_subject_consent(
             subject_screening=self.subject_screening_ncd,
