@@ -1,4 +1,4 @@
-edc==0.3.11
+edc==0.3.12
 respond-africa==0.1.4
 git+https://github.com/erikvw/django-import-export@get_export_admin_action
 beautifulsoup4
