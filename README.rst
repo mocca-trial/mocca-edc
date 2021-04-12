@@ -1,4 +1,4 @@
-|pypi| |action| |codecov| |downloads|
+|pypi| |actions| |codecov| |downloads|
 
 
 
