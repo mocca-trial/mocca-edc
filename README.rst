@@ -1,4 +1,4 @@
-|pypi| |travis| |codecov| |downloads| |pyup|
+|pypi| |actions| |codecov| |downloads|
 
 
 
@@ -96,8 +96,8 @@ Login::
 .. |pypi| image:: https://img.shields.io/pypi/v/mocca-edc.svg
     :target: https://pypi.python.org/pypi/mocca-edc
 
-.. |travis| image:: https://travis-ci.com/mocca-trial/mocca-edc.svg?branch=develop
-    :target: https://travis-ci.com/mocca-trial/mocca-edc
+.. |actions| image:: https://github.com/mocca-trial/mocca-edc/workflows/build/badge.svg?branch=develop
+  :target: https://github.com/mocca-trial/mocca-edc/actions?query=workflow:build
 
 .. |codecov| image:: https://codecov.io/gh/mocca-trial/mocca-edc/branch/develop/graph/badge.svg
   :target: https://codecov.io/gh/mocca-trial/mocca-edc
@@ -105,6 +105,3 @@ Login::
 .. |downloads| image:: https://pepy.tech/badge/mocca-edc
    :target: https://pepy.tech/project/mocca-edc
 
-.. |pyup| image:: https://pyup.io/repos/github/mocca-trial/mocca-edc/shield.svg
-    :target: https://pyup.io/repos/github/mocca-trial/mocca-edc/
-    :alt: Updates
