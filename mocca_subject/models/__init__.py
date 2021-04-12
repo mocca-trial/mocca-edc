@@ -1,4 +1,4 @@
-from .blood_results import BloodResultsFbc, BloodResultsLipid
+from .blood_results_lipid import BloodResultsLipid
 from .cd4_result import Cd4Result
 from .chol_initial_review import CholInitialReview
 from .chol_medication_adherence import CholMedicationAdherence

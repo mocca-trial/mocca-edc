@@ -2,7 +2,7 @@ from django.db import models
 from edc_constants.choices import YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
-from respond_model.model_mixins import ReviewModelMixin
+from respond_models.mixins import ReviewModelMixin
 
 from mocca_subject.choices import HTN_MANAGEMENT
 

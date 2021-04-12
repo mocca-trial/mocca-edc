@@ -1,6 +1,6 @@
 from django.db import models
 from edc_model import models as edc_models
-from respond_model.model_mixins import DrugRefillModelMixin
+from respond_models.mixins import DrugRefillModelMixin
 
 from mocca_lists.models import HtnTreatments
 

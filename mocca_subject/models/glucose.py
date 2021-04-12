@@ -1,8 +1,9 @@
 from django.db import models
 from edc_constants.choices import YES_NO
 from edc_model import models as edc_models
+from respond_models.mixins import GlucoseModelMixin
 
-from ..model_mixins import CrfModelMixin, GlucoseModelMixin
+from ..model_mixins import CrfModelMixin
 
 
 class Glucose(GlucoseModelMixin, CrfModelMixin, edc_models.BaseUuidModel):
@@ -16,8 +17,8 @@ class Glucose(GlucoseModelMixin, CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
-        verbose_name = "Glucose"
-        verbose_name_plural = "Glucose"
+        verbose_name = "Glucose: Followup"
+        verbose_name_plural = "Glucose: Followup"
 
 
 class GlucoseBaseline(Glucose):

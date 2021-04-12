@@ -2,7 +2,8 @@ from django.contrib import admin
 from edc_action_item import action_fields
 from edc_form_label import FormLabelModelAdminMixin
 from edc_model_admin import SimpleHistoryAdmin
-from edc_visit_tracking.modeladmin_mixins import CrfModelAdminMixin
+
+from mocca_subject.admin.modeladmin_mixins import CrfModelAdminMixin
 
 conclusion_fieldset = (
     "Conclusion",

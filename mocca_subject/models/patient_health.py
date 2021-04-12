@@ -1,5 +1,5 @@
 from edc_model import models as edc_models
-from respond_model.model_mixins import PHQ9ModelMixin
+from respond_models.mixins import PHQ9ModelMixin
 
 from ..model_mixins import CrfModelMixin
 

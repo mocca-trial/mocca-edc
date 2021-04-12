@@ -1,5 +1,5 @@
 from django import forms
-from edc_form_validators import FormValidator, FormValidatorMixin
+from edc_form_validators import INVALID_ERROR, FormValidator, FormValidatorMixin
 from edc_sites import get_current_country
 from edc_utils import age
 
@@ -10,7 +10,12 @@ from ..stubs import MoccaRegisterFormValidatorStub
 
 
 class MoccaRegisterFormValidator(FormValidator):
-    def clean(self: MoccaRegisterFormValidatorStub):
+    def clean(self):
+        self.validate_mocca_site()
+        self.validate_dob_and_age()
+        self.validate_best_tel()
+
+    def validate_mocca_site(self):
         mocca_country = get_current_country()
         if self.cleaned_data.get("mocca_site"):
             sites = get_mocca_sites_by_country(country=mocca_country)
@@ -20,6 +25,8 @@ class MoccaRegisterFormValidator(FormValidator):
                 raise forms.ValidationError(
                     {"mocca_site": "Invalid site for selected country"}
                 )
+
+    def validate_dob_and_age(self):
         if (
             self.cleaned_data.get("dob")
             and self.instance.report_datetime
@@ -54,6 +61,39 @@ class MoccaRegisterFormValidator(FormValidator):
             born=self.cleaned_data.get("dob"),
             reference_dt=self.instance.report_datetime,
         ).years
+
+    def validate_best_tel(self):
+
+        if self.cleaned_data.get("tel_two") and not self.cleaned_data.get("tel_one"):
+            self.raise_validation_error(
+                {"tel_one": "This field is required"}, error_code=INVALID_ERROR
+            )
+        if self.cleaned_data.get("tel_three") and not self.cleaned_data.get("tel_two"):
+            self.raise_validation_error(
+                {"tel_one": "This field is required"}, error_code=INVALID_ERROR
+            )
+        condition = (
+            self.cleaned_data.get("tel_one")
+            or self.cleaned_data.get("tel_two")
+            or self.cleaned_data.get("tel_three")
+        )
+        self.required_if_true(condition, field_required="best_tel")
+        if (
+            not self.cleaned_data.get("tel_two")
+            and self.cleaned_data.get("best_tel")
+            and self.cleaned_data.get("best_tel") == "tel_2"
+        ):
+            self.raise_validation_error(
+                {"best_tel": "Invalid selection"}, error_code=INVALID_ERROR
+            )
+        if (
+            not self.cleaned_data.get("tel_three")
+            and self.cleaned_data.get("best_tel")
+            and self.cleaned_data.get("best_tel") == "tel_3"
+        ):
+            self.raise_validation_error(
+                {"best_tel": "Invalid selection"}, error_code=INVALID_ERROR
+            )
 
 
 class MoccaRegisterForm(FormValidatorMixin, forms.ModelForm):
