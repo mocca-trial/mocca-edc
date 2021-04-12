@@ -1,5 +1,6 @@
 from django.contrib import admin
 from edc_model_admin import (
+    ModelAdminFormAutoNumberMixin,
     ModelAdminFormInstructionsMixin,
     SimpleHistoryAdmin,
     TemplatesModelAdminMixin,
@@ -12,7 +13,10 @@ from ..models import MoccaRegisterContact
 
 @admin.register(MoccaRegisterContact, site=mocca_screening_admin)
 class MoccaRegisterContactAdmin(
-    TemplatesModelAdminMixin, ModelAdminFormInstructionsMixin, SimpleHistoryAdmin
+    TemplatesModelAdminMixin,
+    ModelAdminFormAutoNumberMixin,
+    ModelAdminFormInstructionsMixin,
+    SimpleHistoryAdmin,
 ):
     form = MoccaRegisterContactForm
     show_object_tools = False

@@ -1,5 +1,5 @@
 from django import forms
-from edc_constants.constants import ALIVE, UNKNOWN, YES
+from edc_constants.constants import ALIVE, DEAD, UNKNOWN, YES
 from edc_form_validators import FormValidator, FormValidatorMixin
 
 from ..models import MoccaRegisterContact
@@ -16,8 +16,16 @@ class MoccaRegisterContactFormValidator(FormValidator):
             field_required="death_date",
             inverse=False,
         )
-        self.applicable_if(YES, field="answered", field_applicable="willing_to_attend")
-        self.required_if(YES, field="attends_facility", field_required="next_appt_date")
+        self.applicable_if(
+            ALIVE, field="survival_status", field_applicable="willing_to_attend"
+        )
+        self.applicable_if(ALIVE, field="survival_status", field_applicable="icc")
+        self.required_if(YES, field="willing_to_attend", field_required="next_appt_date")
+        if (
+            self.cleaned_data.get("survival_status") == DEAD
+            and self.cleaned_data.get("call_again") == YES
+        ):
+            raise forms.ValidationError({"call_again": "Invalid. Subject is deceased"})
 
 
 class MoccaRegisterContactForm(FormValidatorMixin, forms.ModelForm):

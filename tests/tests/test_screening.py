@@ -7,7 +7,8 @@ from edc_sites import get_current_country
 from model_bakery.baker import make_recipe
 
 from mocca_lists.models import MoccaOriginalSites
-from mocca_screening.forms import SubjectScreeningForm
+from mocca_screening.forms import MoccaRegisterForm, SubjectScreeningForm
+from mocca_screening.forms.mocca_register_form import MoccaRegisterFormValidator
 from mocca_screening.models import MoccaRegister, SubjectScreening
 
 from ..mocca_test_case_mixin import MoccaTestCaseMixin
@@ -158,6 +159,29 @@ class TestScreening(MoccaTestCaseMixin, WebTest):
                 mocca_study_identifier=data.get("mocca_study_identifier")
             ).eligible
         )
+
+    @tag("12")
+    def test_register_deceased(self):
+
+        cleaned_data = {
+            "report_datetime": self.mocca_register.report_datetime,
+            "screening_identifier": self.mocca_register.screening_identifier,
+            "mocca_study_identifier": self.mocca_register.mocca_study_identifier,
+            "mocca_country": "uganda",
+            "mocca_site": self.mocca_register.mocca_site,
+            "initials": self.mocca_register.initials,
+            "gender": self.mocca_register.gender,
+            "age_in_years": self.mocca_register.age_in_years,
+            "birth_year": self.mocca_register.birth_year,
+            "survival_status": DEAD,
+            "call": YES,
+            "screen_now": NO,
+        }
+        form_validator = MoccaRegisterFormValidator(
+            cleaned_data=cleaned_data, instance=self.mocca_register
+        )
+        form_validator.validate()
+        self.assertIn("death_date", form_validator._errors)
 
     @tag("webtest")
     def test_mocca_register_changelist(self):
