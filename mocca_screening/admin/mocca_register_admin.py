@@ -244,7 +244,9 @@ class MoccaRegisterAdmin(
 
     @staticmethod
     def get_mocca_register(obj):
-        return MoccaRegisterContact.objects.get(mocca_register=obj)
+        return (
+            MoccaRegisterContact.objects.filter(mocca_register=obj).order_by("created").last()
+        )
 
     def screen(self, obj=None):
         mocca_register_contact = self.get_mocca_register(obj)
