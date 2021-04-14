@@ -232,10 +232,10 @@ class TestScreening(MoccaTestCaseMixin, WebTest):
         )
         mocca_register_contact.survival_status = ALIVE
         mocca_register_contact.call = NO
-        mocca_register_contact.screen_now = NO
+        mocca_register_contact.willing_to_attend = YES
         mocca_register_contact.save()
         self.assertTrue(mocca_register_contact.call == NO)
-        self.assertTrue(mocca_register_contact.screen_now == NO)
+        self.assertTrue(mocca_register_contact.willing_to_attend == YES)
         self.assertTrue(mocca_register_contact.survival_status == ALIVE)
         response = self.app.get(change_list_url, user=self.user, status=200)
 
@@ -243,6 +243,7 @@ class TestScreening(MoccaTestCaseMixin, WebTest):
         self.assertIn(screening_add_url, response)
         self.assertIn(refusal_add_url, response)
 
+        mocca_register_contact.willing_to_attend = NOT_APPLICABLE
         mocca_register_contact.survival_status = DEAD
         mocca_register_contact.save()
         self.assertTrue(mocca_register_contact.survival_status == DEAD)
