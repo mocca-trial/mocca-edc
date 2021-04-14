@@ -58,6 +58,10 @@ REFUSAL_REASONS = (
         "Patient is receiving HIV care in the community and does not wish "
         "to return to facility-based care",
     ),
+    (
+        "unable_to_contact",
+        "Clinic was unable to contact the subject",
+    ),
     (OTHER, "Other, please specify"),
 )
 REFUSAL_REASONS_SCREENING = REFUSAL_REASONS
