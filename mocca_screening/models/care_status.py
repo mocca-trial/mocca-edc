@@ -1,4 +1,6 @@
 from django.db import models
+from edc_constants.choices import YES_NO
+from edc_constants.constants import YES
 from edc_model.models import BaseUuidModel, HistoricalRecords
 from edc_sites.models import CurrentSiteManager, SiteModelMixin
 from edc_utils import get_utcnow
@@ -18,6 +20,14 @@ class Manager(models.Manager):
 
 
 class CareStatus(SiteModelMixin, CareModelMixin, BaseUuidModel):
+
+    willing_to_answer = models.CharField(
+        verbose_name="Is the patient willing to provide information about their care status?",
+        max_length=15,
+        choices=YES_NO,
+        default=YES,
+    )
+
     report_datetime = models.DateTimeField(
         verbose_name="Report Date and Time",
         default=get_utcnow,

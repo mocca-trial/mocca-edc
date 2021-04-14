@@ -23,7 +23,7 @@ class CareStatusAdmin(
     form = CareStatusForm
 
     fieldsets = (
-        [None, {"fields": ("mocca_register", "report_datetime")}],
+        [None, {"fields": ("mocca_register", "report_datetime", "willing_to_answer")}],
         care_status_fieldset,
         audit_fieldset_tuple,
     )

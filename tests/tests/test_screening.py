@@ -214,6 +214,7 @@ class TestScreening(MoccaTestCaseMixin, WebTest):
     @tag("webtest")
     def test_mocca_register_changelist(self):
 
+        make_recipe("mocca_screening.moccaregistercontact", mocca_register=self.mocca_register)
         mocca_register_contact = make_recipe(
             "mocca_screening.moccaregistercontact", mocca_register=self.mocca_register
         )
@@ -231,19 +232,31 @@ class TestScreening(MoccaTestCaseMixin, WebTest):
         )
         mocca_register_contact.survival_status = ALIVE
         mocca_register_contact.call = NO
-        mocca_register_contact.screen_now = NO
+        mocca_register_contact.willing_to_attend = YES
         mocca_register_contact.save()
         self.assertTrue(mocca_register_contact.call == NO)
-        self.assertTrue(mocca_register_contact.screen_now == NO)
+        self.assertTrue(mocca_register_contact.willing_to_attend == YES)
         self.assertTrue(mocca_register_contact.survival_status == ALIVE)
         response = self.app.get(change_list_url, user=self.user, status=200)
+
         self.assertIn(self.mocca_register.mocca_study_identifier, response)
         self.assertIn(screening_add_url, response)
         self.assertIn(refusal_add_url, response)
 
+        mocca_register_contact.willing_to_attend = NOT_APPLICABLE
         mocca_register_contact.survival_status = DEAD
         mocca_register_contact.save()
         self.assertTrue(mocca_register_contact.survival_status == DEAD)
         response = self.app.get(change_list_url, user=self.user, status=200)
         self.assertNotIn(screening_add_url, response)
         self.assertNotIn(refusal_add_url, response)
+
+    @tag("webtest")
+    def test_mocca_register_changelist_without_contact(self):
+
+        self.login(superuser=False, groups=[EVERYONE, AUDITOR, SCREENING])
+        change_list_url = reverse(
+            "mocca_screening_admin:mocca_screening_moccaregister_changelist"
+        )
+        change_list_url = f"{change_list_url}?q={self.mocca_register.mocca_study_identifier}"
+        self.app.get(change_list_url, user=self.user, status=200)
