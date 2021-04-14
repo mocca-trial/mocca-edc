@@ -72,6 +72,8 @@ class MoccaTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
 
     mocca_sites = []
 
+    changelist_url_name = "mocca_screening_admin:mocca_screening_moccaregister_changelist"
+
     @classmethod
     def setUpTestData(cls):
         add_or_update_django_sites(sites=get_sites_by_country("uganda"))

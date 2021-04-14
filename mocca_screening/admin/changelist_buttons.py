@@ -108,11 +108,6 @@ class ChangelistButton:
         return self._last_mocca_register_contact
 
     @property
-    def contacted(self):
-        """Returns True if the subject was ever contacted"""
-        return MoccaRegisterContact.objects.filter(mocca_register=self.mocca_register).exists()
-
-    @property
     def willing_or_present(self):
         """Returns True if the subject is either willing to screen
         or present today to screen.
@@ -159,17 +154,20 @@ class CareStatusButton(ChangelistButton):
         if adding a model instance.
         """
 
-        url = reverse(self.care_status_add_url_name)
-        url = (
-            f"{url}?next={self.changelist_url_name}"
-            f"&mocca_register={str(self.mocca_register.id)}"
-        )
         return dict(
             title=f"Add {CareStatus._meta.verbose_name}",
-            url=url,
+            url=self.add_url,
             label="Add",
             fa_icon="fas fa-plus",
             button_type="add",
+        )
+
+    @property
+    def add_url(self):
+        url = reverse(self.care_status_add_url_name)
+        return (
+            f"{url}?next={self.changelist_url_name}"
+            f"&mocca_register={str(self.mocca_register.id)}"
         )
 
     @property
@@ -177,15 +175,18 @@ class CareStatusButton(ChangelistButton):
         """Returns a dictionary of additional context for the button
         if editing the model instance.
         """
-        url = reverse(self.care_status_change_url_name, args=(self.care_status_obj.id,))
-        url = f"{url}?next={self.changelist_url_name}"
         return dict(
             title=f"Change {CareStatus._meta.verbose_name}",
-            url=url,
+            url=self.change_url,
             label="Edit",
             fa_icon="fas fa-pen",
             button_type="edit",
         )
+
+    @property
+    def change_url(self):
+        url = reverse(self.care_status_change_url_name, args=(self.care_status_obj.id,))
+        return f"{url}?next={self.changelist_url_name}"
 
 
 class SubjectRefusalScreeningButton(ChangelistButton):
@@ -216,14 +217,9 @@ class SubjectRefusalScreeningButton(ChangelistButton):
         """Returns a dictionary of additional context for the button
         if adding a model instance.
         """
-        url = reverse(self.refusal_add_url_name)
-        url = (
-            f"{url}?next={self.changelist_url_name}"
-            f"&mocca_register={str(self.mocca_register.id)}"
-        )
 
         return dict(
-            url=url,
+            url=self.add_url,
             label="Add",
             fa_icon="fas fa-plus",
             button_type="add",
@@ -231,21 +227,32 @@ class SubjectRefusalScreeningButton(ChangelistButton):
         )
 
     @property
+    def add_url(self):
+        url = reverse(self.refusal_add_url_name)
+        return (
+            f"{url}?next={self.changelist_url_name}"
+            f"&mocca_register={str(self.mocca_register.id)}"
+        )
+
+    @property
     def change_button_context(self):
         """Returns a dictionary of additional context for the button
         if editing the model instance.
         """
-        url = reverse(
-            self.refusal_change_url_name, args=(self.subject_screening_refusal_obj.id,)
-        )
-        url = f"{url}?next={self.changelist_url_name}"
         return dict(
-            url=url,
+            url=self.change_url,
             label="Edit",
             fa_icon="fas fa-pen",
             button_type="edit",
             title=f"Edit {SubjectRefusalScreening._meta.verbose_name}",
         )
+
+    @property
+    def change_url(self):
+        url = reverse(
+            self.refusal_change_url_name, args=(self.subject_screening_refusal_obj.id,)
+        )
+        return f"{url}?next={self.changelist_url_name}"
 
 
 class ScreeningButton(ChangelistButton):
@@ -286,13 +293,8 @@ class ScreeningButton(ChangelistButton):
         """Returns a dictionary of additional context for the button
         if adding a model instance.
         """
-        add_url = (
-            f"{self.screening_add_url}?next={self.changelist_url_name}"
-            f"&mocca_register={str(self.mocca_register.id)}"
-        )
-        url = "&".join([x for x in [add_url, self.care_status_query_string] if x])
         return dict(
-            url=url,
+            url=self.add_url,
             label="Add",
             fa_icon="fas fa-plus",
             fa_icon_after=None,
@@ -301,22 +303,32 @@ class ScreeningButton(ChangelistButton):
         )
 
     @property
+    def add_url(self):
+        add_url = (
+            f"{self.screening_add_url}?next={self.changelist_url_name}"
+            f"&mocca_register={str(self.mocca_register.id)}"
+        )
+        return "&".join([x for x in [add_url, self.care_status_query_string] if x])
+
+    @property
     def change_button_context(self):
         """Returns a dictionary of additional context for the button
         if editing the model instance.
         """
-        url = (
-            f"{reverse(self.screening_listboard_url)}?"
-            f"q={self.mocca_register.screening_identifier}"
-        )
-
         return dict(
-            url=url,
+            url=self.change_url,
             label=self.mocca_register.screening_identifier,
             fa_icon="fas fa-share",
             fa_icon_after=True,
             button_type="go",
             title=f"Go to subject screening listboard",
+        )
+
+    @property
+    def change_url(self):
+        return (
+            f"{reverse(self.screening_listboard_url)}?"
+            f"q={self.mocca_register.screening_identifier}"
         )
 
     @property
