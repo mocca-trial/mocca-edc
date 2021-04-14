@@ -27,6 +27,10 @@ class BloodResultsLipidAdmin(BloodResultsModelAdminMixin):
             "Triglycerides",
             {"fields": ["trig", "trig_units", "trig_abnormal", "trig_reportable"]},
         ),
+        (
+            "Total cholesterol",
+            {"fields": ["chol", "chol_units", "chol_abnormal", "chol_reportable"]},
+        ),
         conclusion_fieldset,
         summary_fieldset,
         audit_fieldset_tuple,

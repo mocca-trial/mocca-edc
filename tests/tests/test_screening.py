@@ -9,9 +9,19 @@ from edc_sites import get_current_country
 from model_bakery.baker import make_recipe
 
 from mocca_lists.models import MoccaOriginalSites
+from mocca_screening.admin.changelist_buttons import (
+    CareStatusButton,
+    ScreeningButton,
+    SubjectRefusalScreeningButton,
+)
 from mocca_screening.forms import SubjectScreeningForm
 from mocca_screening.forms.mocca_register_form import MoccaRegisterFormValidator
-from mocca_screening.models import MoccaRegister, SubjectScreening
+from mocca_screening.models import (
+    MoccaRegister,
+    SubjectScreening,
+    CareStatus,
+    SubjectRefusalScreening,
+)
 
 from ..mocca_test_case_mixin import MoccaTestCaseMixin
 
@@ -212,6 +222,27 @@ class TestScreening(MoccaTestCaseMixin, WebTest):
         self.assertDictEqual({}, form_validator._errors)
 
     @tag("webtest")
+    def test_mocca_register_changelist_buttons(self):
+
+        button = ScreeningButton(
+            mocca_register=self.mocca_register, changelist_url_name=self.changelist_url_name
+        )
+        response = self.app.get(button.add_url, user=self.user, status=200)
+        self.assertIn(f"Add {SubjectScreening._meta.verbose_name}", response)
+
+        button = SubjectRefusalScreeningButton(
+            mocca_register=self.mocca_register, changelist_url_name=self.changelist_url_name
+        )
+        response = self.app.get(button.add_url, user=self.user, status=200)
+        self.assertIn(f"Add {SubjectRefusalScreening._meta.verbose_name}", response)
+
+        button = CareStatusButton(
+            mocca_register=self.mocca_register, changelist_url_name=self.changelist_url_name
+        )
+        response = self.app.get(button.add_url, user=self.user, status=200)
+        self.assertIn(f"Add {CareStatus._meta.verbose_name}", response)
+
+    @tag("webtest")
     def test_mocca_register_changelist(self):
 
         make_recipe("mocca_screening.moccaregistercontact", mocca_register=self.mocca_register)
@@ -220,9 +251,8 @@ class TestScreening(MoccaTestCaseMixin, WebTest):
         )
 
         self.login(superuser=False, groups=[EVERYONE, AUDITOR, SCREENING])
-        change_list_url = reverse(
-            "mocca_screening_admin:mocca_screening_moccaregister_changelist"
-        )
+
+        change_list_url = reverse(self.changelist_url_name)
         change_list_url = f"{change_list_url}?q={self.mocca_register.mocca_study_identifier}"
         screening_add_url = reverse(
             "mocca_screening_admin:mocca_screening_subjectscreening_add"
