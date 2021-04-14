@@ -118,7 +118,7 @@ class MoccaRegister(SiteModelMixin, BaseUuidModel):
 
     call = models.CharField(verbose_name="Call?", max_length=15, choices=YES_NO, default=YES)
 
-    screen_now = models.CharField(
+    subject_present = models.CharField(
         verbose_name="Patient is present. Screen now instead of calling?",
         max_length=15,
         choices=YES_NO,

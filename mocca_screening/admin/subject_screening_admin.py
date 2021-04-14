@@ -58,8 +58,8 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
         "screening_identifier",
         "eligiblity_status",
         "demographics",
-        "icc",
-        "willing_to_consent",
+        "integrated_care",
+        "will_consent",
         "reasons",
         "report_datetime",
         "user_created",
@@ -80,8 +80,7 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
     search_fields = (
         "screening_identifier",
         "subject_identifier",
-        "mocca_study_identifier",
-        "mocca_screening_identifier",
+        "mocca_register__mocca_study_identifier",
         "initials",
         "reasons_ineligible",
     )
@@ -115,6 +114,12 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
         return mark_safe(
             f"{obj.get_gender_display()} {obj.age_in_years}yrs {obj.initials.upper()}"
         )
+
+    def integrated_care(self, obj=None):
+        return obj.get_icc_display()
+
+    def will_consent(self, obj=None):
+        return obj.get_willing_to_consent_display()
 
     def reasons(self, obj=None):
         return format_reasons_ineligible(obj.reasons_ineligible)

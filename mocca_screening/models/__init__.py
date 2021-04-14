@@ -2,6 +2,7 @@ from .care_status import CareStatus
 from .daily_closing_log import DailyClosingLog
 from .mocca_register import MoccaRegister
 from .mocca_register_contact import MoccaRegisterContact
+from .model_mixins import CareModelMixin
 from .signals import (
     mocca_register_contact_on_post_save,
     subject_refusal_on_post_delete,
