@@ -1,8 +1,10 @@
 from django import forms
+from django.conf import settings
 from edc_consent.form_validators import SubjectConsentFormValidatorMixin
 from edc_consent.modelform_mixins import ConsentModelFormMixin
 from edc_form_validators import FormValidator, FormValidatorMixin
 from edc_sites.forms import SiteModelFormMixin
+from edc_utils import convert_php_dateformat
 
 from ..models import SubjectConsent
 
@@ -10,8 +12,31 @@ from ..models import SubjectConsent
 class SubjectConsentFormValidator(SubjectConsentFormValidatorMixin, FormValidator):
     subject_screening_model = "mocca_screening.subjectscreening"
 
-    def clean(self):
-        return super().clean()
+    def validate_consent_datetime(self):
+        """Validate consent datetime with the report_datetime
+        instead of eligibility datetime.
+
+        report_datetime must come first.
+
+        Watchout for timezone, cleaned_data has local TZ.
+        """
+
+        if (
+            self.consent_datetime - self.subject_screening.report_datetime
+        ).total_seconds() < 0:
+            local_dt = self.subject_screening.report_datetime.astimezone(self.tz)
+            formatted = local_dt.strftime(
+                convert_php_dateformat(settings.SHORT_DATETIME_FORMAT)
+            )
+            raise forms.ValidationError(
+                {
+                    "consent_datetime": (
+                        f"Cannot be before the date and time screening "
+                        f"information was reported. Report datetime was "
+                        f"{formatted}."
+                    )
+                },
+            )
 
 
 class SubjectConsentForm(
