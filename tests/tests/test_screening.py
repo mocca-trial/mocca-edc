@@ -17,10 +17,10 @@ from mocca_screening.admin.changelist_buttons import (
 from mocca_screening.forms import SubjectScreeningForm
 from mocca_screening.forms.mocca_register_form import MoccaRegisterFormValidator
 from mocca_screening.models import (
-    MoccaRegister,
-    SubjectScreening,
     CareStatus,
+    MoccaRegister,
     SubjectRefusalScreening,
+    SubjectScreening,
 )
 
 from ..mocca_test_case_mixin import MoccaTestCaseMixin
@@ -260,6 +260,9 @@ class TestScreening(MoccaTestCaseMixin, WebTest):
         refusal_add_url = reverse(
             "mocca_screening_admin:mocca_screening_subjectrefusalscreening_add"
         )
+
+        # Test screening and refusal buttons are shown
+        # (for alive, no call, willing to attend)
         mocca_register_contact.survival_status = ALIVE
         mocca_register_contact.call = NO
         mocca_register_contact.willing_to_attend = YES
@@ -268,11 +271,22 @@ class TestScreening(MoccaTestCaseMixin, WebTest):
         self.assertTrue(mocca_register_contact.willing_to_attend == YES)
         self.assertTrue(mocca_register_contact.survival_status == ALIVE)
         response = self.app.get(change_list_url, user=self.user, status=200)
-
         self.assertIn(self.mocca_register.mocca_study_identifier, response)
         self.assertIn(screening_add_url, response)
         self.assertIn(refusal_add_url, response)
 
+        # Test screening button hidden, refusal button shown
+        # (for alive, no call, not willing to attend)
+        mocca_register_contact.willing_to_attend = NO
+        mocca_register_contact.save()
+        self.assertTrue(mocca_register_contact.willing_to_attend == NO)
+        response = self.app.get(change_list_url, user=self.user, status=200)
+        self.assertIn(self.mocca_register.mocca_study_identifier, response)
+        self.assertNotIn(screening_add_url, response)
+        self.assertIn(refusal_add_url, response)
+
+        # Test neither the refusal nor the screening button shown
+        # (for deceased status)
         mocca_register_contact.willing_to_attend = NOT_APPLICABLE
         mocca_register_contact.survival_status = DEAD
         mocca_register_contact.save()
