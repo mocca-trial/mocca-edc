@@ -262,7 +262,7 @@ class TestScreening(MoccaTestCaseMixin, WebTest):
         )
 
         # Test screening and refusal buttons are shown
-        # (for alive, no call, willing to attend)
+        # (for alive, don't call again, willing to attend)
         mocca_register_contact.survival_status = ALIVE
         mocca_register_contact.call = NO
         mocca_register_contact.willing_to_attend = YES
@@ -276,7 +276,7 @@ class TestScreening(MoccaTestCaseMixin, WebTest):
         self.assertIn(refusal_add_url, response)
 
         # Test screening button hidden, refusal button shown
-        # (for alive, no call, not willing to attend)
+        # (for alive, don't call again, NOT willing to attend)
         mocca_register_contact.willing_to_attend = NO
         mocca_register_contact.save()
         self.assertTrue(mocca_register_contact.willing_to_attend == NO)
