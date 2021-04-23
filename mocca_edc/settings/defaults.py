@@ -287,6 +287,8 @@ DATETIME_FORMAT = "j N Y H:i"
 SHORT_DATE_FORMAT = "d/m/Y"
 SHORT_DATETIME_FORMAT = "d/m/Y H:i"
 
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 # edc-action-item
 ENFORCE_RELATED_ACTION_ITEM_EXISTS = False
 
@@ -424,6 +426,7 @@ SIMPLE_HISTORY_REVERT_ENABLED = False
 
 # django-multisite
 CACHE_MULTISITE_KEY_PREFIX = APP_NAME
+SILENCED_SYSTEM_CHECKS = ["sites.E101"]
 
 # django-defender
 # see if env.str("DJANGO_CACHE") == "redis" above
