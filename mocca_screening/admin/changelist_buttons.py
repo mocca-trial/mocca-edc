@@ -206,8 +206,6 @@ class SubjectRefusalScreeningButton(ChangelistButton):
             context = None
         elif self.deceased:
             context = None
-        elif not self.willing_or_present:
-            context = None
         else:
             context = self.add_button_context
         return context
