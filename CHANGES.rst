@@ -1,6 +1,10 @@
 Changes
 =======
 
+0.1.28
+------
+- add missing migration in mocca_ae
+
 0.1.27
 ------
 - bump edc and respond-africa
