@@ -49,7 +49,7 @@ class SubjectScreening(
     screening_consent = models.CharField(
         verbose_name=(
             "Has the subject given his/her verbal consent "
-            "to be screened for the MOCCA Extension trial?"
+            "to be screened for the MOCCA Extension study?"
         ),
         max_length=15,
         choices=YES_NO,
@@ -109,7 +109,7 @@ class SubjectScreening(
     willing_to_consent = models.CharField(
         verbose_name=(
             "Has the patient expressed willingness to participate "
-            "in the `MOCCA extension` trial"
+            "in the `MOCCA extension` study"
         ),
         max_length=25,
         choices=YES_NO_NA,
@@ -139,8 +139,7 @@ class SubjectScreening(
         self.mocca_screening_identifier = self.mocca_register.mocca_screening_identifier
         self.mocca_site = self.mocca_register.mocca_site
         self.mocca_study_identifier = self.mocca_register.mocca_study_identifier
-        # if not self.id:
-        self.eligibility_datetime = get_utcnow()
+        self.eligibility_datetime = self.report_datetime
         super().save(*args, **kwargs)
 
     class Meta:
