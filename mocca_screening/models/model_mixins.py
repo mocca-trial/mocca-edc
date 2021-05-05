@@ -47,7 +47,7 @@ class CareModelMixin(models.Model):
     )
 
     icc_not_in_reason = models.CharField(
-        verbose_name="If not integrated care, why not?",
+        verbose_name="If not receiving integrated care, why not?",
         max_length=25,
         choices=NOT_ICC_REASONS,
         default=NOT_APPLICABLE,
