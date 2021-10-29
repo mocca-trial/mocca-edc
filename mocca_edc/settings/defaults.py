@@ -466,9 +466,9 @@ if SENTRY_ENABLED and SENTRY_DSN:
     from sentry_sdk.integrations.django import DjangoIntegration
 
     sentry_sdk.init(dsn=SENTRY_DSN, integrations=[DjangoIntegration()], send_default_pii=True)
-# else:
-#     if env("DJANGO_LOGGING_ENABLED"):
-#         from .logging.standard import LOGGING  # noqa
+
+if env("DJANGO_LOGGING_ENABLED"):
+    from .logging import LOGGING  # noqa
 
 MOCCA_REGISTER_FILE = os.path.join(ETC_DIR, "mocca_register.csv")
 
