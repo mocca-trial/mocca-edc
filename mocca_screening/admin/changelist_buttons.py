@@ -319,7 +319,7 @@ class ScreeningButton(ChangelistButton):
             fa_icon="fas fa-share",
             fa_icon_after=True,
             button_type="go",
-            title=f"Go to subject screening listboard",
+            title="Go to subject screening listboard",
         )
 
     @property

@@ -191,7 +191,7 @@ class AdminSiteTest(MoccaTestCaseMixin, TestCase):
         page = add_screening_page.form.submit()
 
         # redirects back to listboard
-        self.assertRedirects(page, reverse(f"mocca_dashboard:screening_listboard_url"))
+        self.assertRedirects(page, reverse("mocca_dashboard:screening_listboard_url"))
 
         # new screened subject is available
         obj = SubjectScreening.objects.all().last()

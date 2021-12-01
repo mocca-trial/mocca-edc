@@ -154,7 +154,7 @@ class MoccaTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
         form.is_valid()
         try:
             form.save()
-        except ValueError as e:
+        except ValueError:
             pprint(form._errors)
             raise
 
