@@ -1,12 +1,13 @@
 from textwrap import fill
 
-from edc_auth import RANDO
+from edc_randomization.constants import RANDO
 from edc_randomization.models import RandomizationList
 from edc_registration.models import RegisteredSubject
 from edc_reports.crf_pdf_report import CrfPdfReport
 from reportlab.lib.units import cm
 from reportlab.platypus import Table
 
+# TODO: Resolve???
 from mocca_subject.models import Followup
 
 

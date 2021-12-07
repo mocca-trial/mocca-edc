@@ -1,7 +1,7 @@
 from django import forms
 from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_form_validators.form_validator import FormValidator
-from edc_model.models import estimated_date_from_ago
+from edc_model.utils import estimated_date_from_ago
 from respond_forms.form_validator_mixins import (
     CrfFormValidatorMixin,
     InitialReviewFormValidatorMixin,

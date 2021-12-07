@@ -1,4 +1,6 @@
-edc==0.3.16
-respond-africa==0.1.9
-git+https://github.com/erikvw/django-import-export@get_export_admin_action
+edc==0.3.58
+django-collect-offline
+#respond-africa==0.1.9
+git+https://github.com/respond-africa/respond-africa.git@develop
+git+https://github.com/erikvw/django-import-export.git@get_export_admin_action
 beautifulsoup4

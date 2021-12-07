@@ -1,8 +1,6 @@
 from django import forms
 from edc_crf.modelform_mixins import CrfModelFormMixin
-from respond_forms.form_validators import (
-    GlucoseFormValidator as BaseGlucoseFormValidator,
-)
+from edc_glucose.form_validators import GlucoseFormValidator as BaseGlucoseFormValidator
 
 from ..models import Glucose
 

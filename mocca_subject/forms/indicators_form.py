@@ -8,10 +8,10 @@ from respond_forms.form_validator_mixins import (
     CrfFormValidatorMixin,
 )
 from respond_forms.utils import raise_if_clinical_review_does_not_exist
-from respond_models.utils import is_baseline
 
 from mocca_subject.models import HtnInitialReview
 
+from ..action_items import is_baseline
 from ..models import Indicators
 
 

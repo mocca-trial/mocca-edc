@@ -1,4 +1,4 @@
-from edc_crf.model_mixins import CrfModelMixin
+from edc_crf.crf_model_mixin import CrfModelMixin
 from edc_model import models as edc_models
 from respond_models.mixins import MedicationAdherenceModelMixin
 

@@ -118,6 +118,7 @@ DEFAULT_SETTINGS = DefaultTestSettings(
         "edc_subject_dashboard.apps.AppConfig",
         "edc_timepoint.apps.AppConfig",
         "edc_visit_tracking.apps.AppConfig",
+        "edc_ltfu.apps.AppConfig",
         "mocca_consent.apps.AppConfig",
         "mocca_lists.apps.AppConfig",
         "mocca_dashboard.apps.AppConfig",

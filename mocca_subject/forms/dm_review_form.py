@@ -1,9 +1,9 @@
 from django import forms
 from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_form_validators.form_validator import FormValidator
+from edc_glucose.form_validators import GlucoseFormValidatorMixin
 from respond_forms.form_validator_mixins import (
     CrfFormValidatorMixin,
-    GlucoseFormValidatorMixin,
     ReviewFormValidatorMixin,
 )
 from respond_forms.utils import raise_if_clinical_review_does_not_exist

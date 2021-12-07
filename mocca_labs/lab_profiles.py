@@ -1,6 +1,6 @@
 from django.conf import settings
 from edc_lab import LabProfile
-from respond_labs.panels import (
+from edc_lab_panel.panels import (
     blood_glucose_panel,
     blood_glucose_poc_panel,
     hba1c_panel,

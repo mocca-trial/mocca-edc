@@ -1,10 +1,10 @@
-from edc_visit_schedule import FormsCollection, Requisition
-from respond_labs.panels import (
+from edc_lab_panel.panels import (
     blood_glucose_panel,
     blood_glucose_poc_panel,
     hba1c_panel,
     hba1c_poc_panel,
 )
+from edc_visit_schedule import FormsCollection, Requisition
 
 from mocca_labs import chemistry_lipids_panel
 

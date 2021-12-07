@@ -6,14 +6,17 @@ from django.apps import apps as django_apps
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.core.management.color import color_style
-from django.test import TestCase, tag
+from django.test import TestCase
 from django.test.utils import override_settings
 from django.urls.base import reverse
 from django.urls.exceptions import NoReverseMatch
+from edc_adverse_event.auth_objects import TMG
 from edc_appointment.constants import IN_PROGRESS_APPT, SCHEDULED_APPT
 from edc_appointment.models import Appointment
-from edc_auth import AUDITOR, CLINIC, EVERYONE, EXPORT, LAB, PII, TMG
+from edc_auth.auth_objects import AUDITOR, CLINIC, EVERYONE, PII
 from edc_dashboard.url_names import url_names
+from edc_export.auth_objects import EXPORT
+from edc_lab.auth_objects import LAB
 from edc_sites import add_or_update_django_sites, get_sites_by_country
 from edc_utils import get_utcnow
 from model_bakery import baker

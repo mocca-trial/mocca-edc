@@ -3,13 +3,10 @@ from pprint import pprint
 from typing import Optional
 
 from dateutil.relativedelta import relativedelta
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
-from django.contrib.sites.models import Site
 from django.urls import reverse
 from edc_appointment.tests.appointment_test_case_mixin import AppointmentTestCaseMixin
-from edc_auth.group_permissions_updater import GroupPermissionsUpdater
 from edc_constants.constants import FEMALE, NO, NOT_APPLICABLE, YES
 from edc_facility.import_holidays import import_holidays
 from edc_list_data.site_list_data import site_list_data
@@ -26,7 +23,6 @@ from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED
 from edc_visit_tracking.stubs import SubjectVisitModelStub
 from model_bakery import baker
 
-from mocca_auth.codenames_by_group import get_codenames_by_group
 from mocca_consent.models import SubjectConsent
 from mocca_screening.constants import NO_INTERRUPTION
 from mocca_screening.forms import SubjectScreeningForm

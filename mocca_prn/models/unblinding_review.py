@@ -8,8 +8,8 @@ from edc_identifier.model_mixins import (
     TrackingModelMixin,
 )
 from edc_model.models.base_uuid_model import BaseUuidModel
-from edc_prn.constants import UNBLINDING_REVIEW_ACTION
 from edc_sites.models import CurrentSiteManager, SiteModelMixin
+from edc_unblinding.constants import UNBLINDING_REVIEW_ACTION
 from edc_utils.date import get_utcnow
 
 from .unblinding_user import UnblindingReviewerUser

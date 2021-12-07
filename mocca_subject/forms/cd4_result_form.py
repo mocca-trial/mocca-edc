@@ -1,14 +1,12 @@
 from django import forms
 from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_form_validators.form_validator import FormValidator
+from edc_visit_schedule.utils import raise_if_baseline
 from respond_forms.form_validator_mixins import (
     CrfFormValidatorMixin,
     ResultFormValidatorMixin,
 )
-from respond_forms.utils import (
-    raise_if_baseline,
-    raise_if_clinical_review_does_not_exist,
-)
+from respond_forms.utils import raise_if_clinical_review_does_not_exist
 
 from ..models import Cd4Result
 

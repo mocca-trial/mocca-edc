@@ -7,8 +7,8 @@ from edc_utils import convert_php_dateformat
 from respond_forms.form_validator_mixins import CrfFormValidatorMixin
 from respond_forms.utils import model_exists_or_raise
 from respond_models.diagnoses import Diagnoses, InitialReviewRequired
-from respond_models.utils import is_baseline
 
+from ..action_items import is_baseline
 from ..models import ClinicalReview, ClinicalReviewBaseline, Medications
 
 

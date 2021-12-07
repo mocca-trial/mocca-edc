@@ -1,10 +1,9 @@
-import pdb
-
 from django.test import tag
 from django.urls import reverse
 from django_webtest import WebTest
-from edc_auth import AUDITOR, EVERYONE, SCREENING
+from edc_auth.auth_objects import AUDITOR, EVERYONE
 from edc_constants.constants import ALIVE, DEAD, FEMALE, MALE, NO, NOT_APPLICABLE, YES
+from edc_screening.auth_objects import SCREENING
 from edc_sites import get_current_country
 from model_bakery.baker import make_recipe
 
