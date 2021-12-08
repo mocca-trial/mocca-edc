@@ -42,7 +42,6 @@ class GlucoseModelAdminMixin:
 
 @admin.register(Glucose, site=mocca_subject_admin)
 class GlucoseAdmin(
-    # TODO: django.core.exceptions.FieldError: Unknown field(s) (glucose_fasted, glucose, glucose_date) specified for Glucose. Check fields/fieldsets/exclude attributes of class GlucoseAdmin.
     GlucoseModelAdminMixin,
     CrfModelAdminMixin,
     FormLabelModelAdminMixin,

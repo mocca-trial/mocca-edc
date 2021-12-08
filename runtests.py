@@ -127,7 +127,7 @@ DEFAULT_SETTINGS = DefaultTestSettings(
         "mocca_form_validators.apps.AppConfig",
         "mocca_visit_schedule.apps.AppConfig",
         "mocca_ae.apps.AppConfig",
-        "mocca_auth.apps.AppConfig",
+        # "mocca_auth.apps.AppConfig",
         "mocca_prn.apps.AppConfig",
         "mocca_export.apps.AppConfig",
         "mocca_screening.apps.AppConfig",

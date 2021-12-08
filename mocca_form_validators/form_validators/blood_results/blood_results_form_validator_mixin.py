@@ -43,5 +43,5 @@ class BloodResultsFormValidatorMixin(
         #     # self.validate_reportable_field(field_name)
 
         self.validate_reportable_fields(
-            reference_list_name=self.reference_list_name, **self.extra_options
+            reference_range_collection_name=self.reference_list_name, **self.extra_options
         )

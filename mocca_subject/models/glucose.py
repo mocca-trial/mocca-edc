@@ -18,7 +18,11 @@ class Glucose(GlucoseModelMixin, CrfModelMixin, edc_models.BaseUuidModel):
         choices=YES_NO,
     )
 
-    # TODO: Copied from commented-out code in: edc_glucose/model_mixins/blood_glucose_model_mixin.py
+    # TODO: Copied from commented-out code in:
+    #  edc_glucose/model_mixins/blood_glucose_model_mixin.py to fix
+    #     django.core.exceptions.FieldError: Unknown field(s)
+    #        (glucose_fasted, glucose, glucose_date) specified for Glucose.
+    #        Check fields/fieldsets/exclude attributes of class GlucoseAdmin.
     glucose_date = models.DateField(
         validators=[date_not_future],
         null=True,

@@ -11,6 +11,7 @@ from edc_constants.constants import FEMALE, NO, NOT_APPLICABLE, YES
 from edc_facility.import_holidays import import_holidays
 from edc_list_data.site_list_data import site_list_data
 from edc_randomization.randomization_list_importer import RandomizationListImporter
+from edc_randomization.site_randomizers import site_randomizers
 from edc_sites import (
     add_or_update_django_sites,
     get_current_country,
@@ -73,11 +74,15 @@ class MoccaTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
     @classmethod
     def setUpTestData(cls):
         add_or_update_django_sites(sites=get_sites_by_country("uganda"))
+        site_list_data.initialize()
         site_list_data.autodiscover()
         import_holidays(test=True)
         # GroupPermissionsUpdater(codenames_by_group=get_codenames_by_group(), verbose=True)
         if cls.import_randomization_list:
-            RandomizationListImporter(verbose=False, name="default", sid_count_for_tests=2)
+            randomizer_cls = site_randomizers.get("default")
+            RandomizationListImporter(
+                randomizer_cls=randomizer_cls, verbose=False, sid_count_for_tests=2
+            )
         cls.mocca_sites = get_mocca_sites_by_country(country=get_current_country())
         import_mocca_register()
 
