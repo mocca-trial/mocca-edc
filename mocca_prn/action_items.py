@@ -4,12 +4,6 @@ from edc_offstudy.action_items import EndOfStudyAction as BaseEndOfStudyAction
 from edc_protocol_violation.action_items import (
     ProtocolDeviationViolationAction as BaseProtocolDeviationViolationAction,
 )
-from edc_unblinding.action_items import (
-    UnblindingRequestAction as BaseUnblindingRequestAction,
-)
-from edc_unblinding.action_items import (
-    UnblindingReviewAction as BaseUnblindingReviewAction,
-)
 
 
 class EndOfStudyAction(BaseEndOfStudyAction):
@@ -29,18 +23,6 @@ class ProtocolDeviationViolationAction(BaseProtocolDeviationViolationAction):
     admin_site_name = "mocca_prn_admin"
 
 
-class UnblindingRequestAction(BaseUnblindingRequestAction):
-    reference_model = "mocca_prn.unblindingrequest"
-    admin_site_name = "mocca_prn_admin"
-
-
-class UnblindingReviewAction(BaseUnblindingReviewAction):
-    reference_model = "mocca_prn.unblindingreview"
-    admin_site_name = "mocca_prn_admin"
-
-
 site_action_items.register(EndOfStudyAction)
 site_action_items.register(LossToFollowupAction)
 site_action_items.register(ProtocolDeviationViolationAction)
-site_action_items.register(UnblindingRequestAction)
-site_action_items.register(UnblindingReviewAction)

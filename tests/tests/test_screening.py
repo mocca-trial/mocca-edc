@@ -1,4 +1,7 @@
-from django.test import tag
+import unittest
+from importlib import import_module
+
+from django.test import override_settings, tag
 from django.urls import reverse
 from django_webtest import WebTest
 from edc_auth.auth_objects import AUDITOR, EVERYONE
@@ -250,6 +253,11 @@ class TestScreening(MoccaTestCaseMixin, WebTest):
         EDC_AUTH_SKIP_AUTH_UPDATER=False,
     )
     def test_mocca_register_changelist(self):
+        import_module("mocca_auth.auths")
+        import pdb
+
+        # pdb.set_trace()
+        AuthUpdater(verbose=True)
 
         make_recipe("mocca_screening.moccaregistercontact", mocca_register=self.mocca_register)
         mocca_register_contact = make_recipe(
