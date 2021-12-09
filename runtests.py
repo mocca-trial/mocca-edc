@@ -23,7 +23,7 @@ DEFAULT_SETTINGS = DefaultTestSettings(
         hiv="HIV", htn="Hypertension", dm="Diabetes", chol="Cholesterol"
     ),
     MOCCA_REGISTER_FILE=os.path.join(base_dir, "tests", "mocca_register.csv"),
-    EDC_AUTH_SKIP_SITE_AUTHS=False,
+    EDC_AUTH_SKIP_SITE_AUTHS=True,
     EDC_AUTH_SKIP_AUTH_UPDATER=True,
     EDC_SITES_MODULE_NAME="mocca_sites.sites",
     EDC_PROTOCOL_STUDY_OPEN_DATETIME=get_datetime_from_env(2019, 6, 30, 0, 0, 0, "UTC"),
