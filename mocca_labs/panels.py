@@ -7,4 +7,5 @@ lipids_panel = RequisitionPanel(
     abbreviation="LIPIDS",
     processing_profile=lipids_processing,
     utest_ids=["ldl", "hdl", "trig", "chol"],
+    reference_range_collection_name="mocca",
 )
