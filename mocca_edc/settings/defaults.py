@@ -71,23 +71,23 @@ SENTRY_ENABLED = env("SENTRY_ENABLED")
 DEFENDER_ENABLED = env("DEFENDER_ENABLED")
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
+    "mocca_edc.apps.AdminConfig",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
+    "import_export",
+    "defender",
     "multisite",
     "django_crypto_fields.apps.AppConfig",
-    "django_audit_fields.apps.AppConfig",
     "django_revision.apps.AppConfig",
     "django_extensions",
     "django_celery_results",
     "django_celery_beat",
     "logentry_admin",
     "simple_history",
-    "defender",
     "storages",
     "edc_action_item.apps.AppConfig",
     "edc_appointment.apps.AppConfig",
@@ -102,6 +102,7 @@ INSTALLED_APPS = [
     "edc_data_manager.apps.AppConfig",
     "edc_device.apps.AppConfig",
     "edc_export.apps.AppConfig",
+    "edc_facility.apps.AppConfig",
     "edc_fieldsets.apps.AppConfig",
     "edc_form_validators.apps.AppConfig",
     "edc_identifier.apps.AppConfig",
@@ -142,7 +143,6 @@ INSTALLED_APPS = [
     "mocca_export.apps.AppConfig",
     "mocca_screening.apps.AppConfig",
     "mocca_sites.apps.AppConfig",
-    "mocca_edc.apps.EdcFacilityAppConfig",
     "mocca_edc.apps.AppConfig",
 ]
 
