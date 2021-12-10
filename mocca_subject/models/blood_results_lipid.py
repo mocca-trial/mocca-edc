@@ -7,14 +7,12 @@ from edc_blood_results.model_mixins import (
     RequisitionModelMixin,
     TrigModelMixin,
 )
-from edc_crf.crf_no_manager_model_mixin import CrfNoManagerModelMixin
 from edc_crf.crf_with_action_model_mixin import CrfWithActionModelMixin
-from edc_lab_panel.panels import lipids_panel
 from edc_model import models as edc_models
-from respond_models.mixins.blood_results import BloodResultsLipidModelMixin
+
+from mocca_labs.panels import lipids_panel
 
 
-# TODO: Review, and verify!
 class BloodResultsLipid(
     CrfWithActionModelMixin,
     HdlModelMixin,
@@ -32,10 +30,3 @@ class BloodResultsLipid(
     class Meta(CrfWithActionModelMixin.Meta, edc_models.BaseUuidModel.Meta):
         verbose_name = "Blood Result: Lipids"
         verbose_name_plural = "Blood Results: Lipids"
-
-
-# class BloodResultsLipid(
-#     BloodResultsLipidModelMixin,
-#     CrfNoManagerModelMixin,
-# ):
-#     reportables_name = "mocca"

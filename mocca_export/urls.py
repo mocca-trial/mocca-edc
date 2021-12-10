@@ -1,11 +1,8 @@
-from django.urls import path
-from django.views.generic.base import RedirectView
-
-from .admin_site import mocca_export_admin
+from django.urls.conf import path
+from django.views.generic import RedirectView
 
 app_name = "mocca_export"
 
 urlpatterns = [
-    path("admin/", mocca_export_admin.urls),
-    path("", RedirectView.as_view(url="admin/"), name="home_url"),
+    path("", RedirectView.as_view(url="/mocca_export/admin/"), name="home_url"),
 ]

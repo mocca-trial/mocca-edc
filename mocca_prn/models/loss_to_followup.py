@@ -26,11 +26,11 @@ class LossToFollowup(
 
     tracking_identifier_prefix = "LF"
 
-    loss_category = models.CharField(
-        verbose_name="Category of loss to follow up",
-        max_length=25,
-        choices=LTFU_CHOICES,
-    )
+    # loss_category = models.CharField(
+    #     verbose_name="Category of loss to follow up",
+    #     max_length=25,
+    #     choices=LTFU_CHOICES,
+    # )
 
     on_site = CurrentSiteManager()
 

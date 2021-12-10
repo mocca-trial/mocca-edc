@@ -1,37 +1,11 @@
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
-from django.urls.conf import include, path
+from django.urls.conf import include, path, re_path
 from django.views.defaults import page_not_found, server_error  # noqa
-from django.views.generic.base import RedirectView
-from edc_action_item.admin_site import edc_action_item_admin
-from edc_adverse_event.admin_site import edc_adverse_event_admin
-from edc_appointment.admin_site import edc_appointment_admin
-from edc_crf.admin_site import edc_crf_admin
+from django.views.generic import RedirectView
 from edc_dashboard.views import AdministrationView
-from edc_data_manager.admin_site import edc_data_manager_admin
-from edc_export.admin_site import edc_export_admin
-from edc_facility.admin_site import edc_facility_admin
-from edc_identifier.admin_site import edc_identifier_admin
-from edc_lab.admin_site import edc_lab_admin
-from edc_locator.admin_site import edc_locator_admin
-from edc_metadata.admin_site import edc_metadata_admin
-from edc_notification.admin_site import edc_notification_admin
-from edc_offstudy.admin_site import edc_offstudy_admin
-from edc_pdutils.admin_site import edc_pdutils_admin
-from edc_pharmacy.admin_site import edc_pharmacy_admin
-from edc_randomization.admin_site import edc_randomization_admin
-from edc_reference.admin_site import edc_reference_admin
-from edc_registration.admin_site import edc_registration_admin
-from edc_visit_schedule.admin_site import edc_visit_schedule_admin
-
-from mocca_ae.admin_site import mocca_ae_admin
-from mocca_consent.admin_site import mocca_consent_admin
-from mocca_export.admin_site import mocca_export_admin
-from mocca_lists.admin_site import mocca_lists_admin
-from mocca_prn.admin_site import mocca_prn_admin
-from mocca_screening.admin_site import mocca_screening_admin
-from mocca_subject.admin_site import mocca_subject_admin
+from edc_utils.paths_for_urlpatterns import paths_for_urlpatterns
 
 from .views import HomeView
 
@@ -51,79 +25,60 @@ else:
 urlpatterns = [
     path("sentry-debug/", trigger_error),
     path("accounts/", include("edc_auth.urls")),
-    path("admin/", include("edc_auth.urls")),
-    path("admin/", admin.site.urls),
-    path("admin/", edc_appointment_admin.urls),
-    path("admin/", edc_adverse_event_admin.urls),
-    path("admin/", edc_crf_admin.urls),
-    path("admin/", edc_randomization_admin.urls),
-    path("admin/", mocca_consent_admin.urls),
-    path("admin/", mocca_subject_admin.urls),
-    path("admin/", mocca_ae_admin.urls),
-    path("admin/", mocca_lists_admin.urls),
-    path("admin/", mocca_export_admin.urls),
-    path("admin/", mocca_prn_admin.urls),
-    path("admin/", mocca_screening_admin.urls),
-    path("admin/", edc_lab_admin.urls),
-    path("admin/", edc_data_manager_admin.urls),
-    path("admin/", edc_export_admin.urls),
-    path("admin/", edc_facility_admin.urls),
-    path("admin/", edc_locator_admin.urls),
-    path("admin/", edc_identifier_admin.urls),
-    path("admin/", edc_metadata_admin.urls),
-    path("admin/", edc_notification_admin.urls),
-    path("admin/", edc_offstudy_admin.urls),
-    path("admin/", edc_registration_admin.urls),
-    path("admin/", edc_reference_admin.urls),
-    path("admin/", edc_action_item_admin.urls),
-    path("admin/", edc_pdutils_admin.urls),
-    path("admin/", edc_pharmacy_admin.urls),
-    path("admin/edc_visit_schedule/", edc_visit_schedule_admin.urls),
     path("administration/", AdministrationView.as_view(), name="administration_url"),
-    path(
-        "admin/mocca_subject/",
-        RedirectView.as_view(url="admin/mocca_subject/"),
-        name="subject_models_url",
-    ),
-    path("mocca_consent/", include("mocca_consent.urls")),
-    path("mocca_subject/", include("mocca_subject.urls")),
-    path("mocca_ae/", include("mocca_ae.urls")),
-    path("mocca_export/", include("mocca_export.urls")),
-    path("mocca_lists/", include("mocca_lists.urls")),
-    path("mocca_prn/", include("mocca_prn.urls")),
-    path("mocca_screening/", include("mocca_screening.urls")),
     path("subject/", include("mocca_dashboard.urls")),
-    path("edc_adverse_event/", include("edc_adverse_event.urls")),
-    path("edc_appointment/", include("edc_appointment.urls")),
-    path("edc_action_item/", include("edc_action_item.urls")),
-    path("edc_crf/", include("edc_crf.urls")),
-    path("edc_randomization/", include("edc_randomization.urls")),
-    path("edc_dashboard/", include("edc_dashboard.urls")),
-    path("edc_consent/", include("edc_consent.urls")),
-    path("edc_data_manager/", include("edc_data_manager.urls")),
-    path("edc_device/", include("edc_device.urls")),
-    path("edc_export/", include("edc_export.urls")),
-    path("edc_facility/", include("edc_facility.urls")),
-    path("edc_pdutils/", include("edc_pdutils.urls")),
-    path("edc_offstudy/", include("edc_offstudy.urls")),
-    path("edc_lab/", include("edc_lab.urls")),
-    path("edc_lab_dashboard/", include("edc_lab_dashboard.urls")),
-    path("edc_locator/", include("edc_locator.urls")),
-    path("edc_label/", include("edc_label.urls")),
-    path("edc_metadata/", include("edc_metadata.urls")),
-    path("edc_notification/", include("edc_notification.urls")),
-    path("edc_protocol/", include("edc_protocol.urls")),
-    path("edc_pharmacy/", include("edc_pharmacy.urls")),
-    path("edc_identifier/", include("edc_identifier.urls")),
-    path("edc_reference/", include("edc_reference.urls")),
-    path("edc_registration/", include("edc_registration.urls")),
-    path("edc_subject_dashboard/", include("edc_subject_dashboard.urls")),
-    path("edc_visit_schedule/", include("edc_visit_schedule.urls")),
+    *paths_for_urlpatterns("edc_action_item"),
+    *paths_for_urlpatterns("edc_adverse_event"),
+    *paths_for_urlpatterns("edc_appointment"),
+    *paths_for_urlpatterns("edc_consent"),
+    *paths_for_urlpatterns("edc_crf"),
+    *paths_for_urlpatterns("edc_dashboard"),
+    *paths_for_urlpatterns("edc_data_manager"),
+    *paths_for_urlpatterns("edc_device"),
+    *paths_for_urlpatterns("edc_export"),
+    *paths_for_urlpatterns("edc_facility"),
+    *paths_for_urlpatterns("edc_identifier"),
+    *paths_for_urlpatterns("edc_lab"),
+    *paths_for_urlpatterns("edc_lab_dashboard"),
+    *paths_for_urlpatterns("edc_label"),
+    *paths_for_urlpatterns("edc_locator"),
+    *paths_for_urlpatterns("edc_ltfu"),
+    *paths_for_urlpatterns("edc_metadata"),
+    *paths_for_urlpatterns("edc_notification"),
+    *paths_for_urlpatterns("edc_offstudy"),
+    *paths_for_urlpatterns("edc_pdutils"),
+    *paths_for_urlpatterns("edc_pharmacy"),
+    *paths_for_urlpatterns("edc_protocol"),
+    *paths_for_urlpatterns("edc_protocol_violation"),
+    *paths_for_urlpatterns("edc_randomization"),
+    *paths_for_urlpatterns("edc_reference"),
+    *paths_for_urlpatterns("edc_refusal"),
+    *paths_for_urlpatterns("edc_registration"),
+    *paths_for_urlpatterns("edc_review_dashboard"),
+    *paths_for_urlpatterns("edc_subject_dashboard"),
+    *paths_for_urlpatterns("edc_visit_schedule"),
+    *paths_for_urlpatterns("mocca_ae"),
+    *paths_for_urlpatterns("mocca_consent"),
+    *paths_for_urlpatterns("mocca_export"),
+    *paths_for_urlpatterns("mocca_lists"),
+    *paths_for_urlpatterns("mocca_prn"),
+    *paths_for_urlpatterns("mocca_screening"),
+    *paths_for_urlpatterns("mocca_subject"),
+]
+
+if settings.DEFENDER_ENABLED:
+    urlpatterns.append(
+        path("defender/", include("defender.urls")),  # defender admin
+    )
+
+urlpatterns += [
+    path("admin/", admin.site.urls),
     path(
         "switch_sites/",
         LogoutView.as_view(next_page=settings.INDEX_PAGE),
         name="switch_sites_url",
     ),
     path("home/", HomeView.as_view(), name="home_url"),
-    path("", HomeView.as_view(), name="home_url"),
+    re_path(".", RedirectView.as_view(url="/"), name="home_url"),
+    re_path("", HomeView.as_view(), name="home_url"),
 ]

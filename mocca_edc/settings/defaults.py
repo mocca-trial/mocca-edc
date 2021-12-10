@@ -22,6 +22,7 @@ env = environ.Env(
     AWS_ENABLED=(bool, False),
     CDN_ENABLED=(bool, False),
     DATABASE_SQLITE_ENABLED=(bool, False),
+    DEFENDER_ENABLED=(bool, False),
     DJANGO_AUTO_CREATE_KEYS=(bool, False),
     DJANGO_CRYPTO_FIELDS_TEMP_PATH=(bool, False),
     DJANGO_CSRF_COOKIE_SECURE=(bool, True),
@@ -67,6 +68,7 @@ TEST_DIR = os.path.join(BASE_DIR, APP_NAME, "tests")
 LOGIN_REDIRECT_URL = env.str("DJANGO_LOGIN_REDIRECT_URL")
 
 SENTRY_ENABLED = env("SENTRY_ENABLED")
+DEFENDER_ENABLED = env("DEFENDER_ENABLED")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -127,6 +129,7 @@ INSTALLED_APPS = [
     "edc_timepoint.apps.AppConfig",
     "edc_visit_tracking.apps.AppConfig",
     "edc_form_describer.apps.AppConfig",
+    "edc_ltfu.apps.AppConfig",
     "mocca_consent.apps.AppConfig",
     "mocca_lists.apps.AppConfig",
     "mocca_dashboard.apps.AppConfig",
@@ -135,7 +138,6 @@ INSTALLED_APPS = [
     "mocca_form_validators.apps.AppConfig",
     "mocca_visit_schedule.apps.AppConfig",
     "mocca_ae.apps.AppConfig",
-    "mocca_auth.apps.AppConfig",
     "mocca_prn.apps.AppConfig",
     "mocca_export.apps.AppConfig",
     "mocca_screening.apps.AppConfig",
@@ -143,6 +145,10 @@ INSTALLED_APPS = [
     "mocca_edc.apps.EdcFacilityAppConfig",
     "mocca_edc.apps.AppConfig",
 ]
+
+if not DEFENDER_ENABLED:
+    INSTALLED_APPS.pop(INSTALLED_APPS.index("defender"))
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -166,6 +172,10 @@ MIDDLEWARE.extend(
         # 'simple_history.middleware.HistoryRequestMiddleware'
     ]
 )
+
+if not DEFENDER_ENABLED:
+    MIDDLEWARE.pop(MIDDLEWARE.index("defender.middleware.FailedLoginMiddleware"))
+
 
 ROOT_URLCONF = f"{APP_NAME}.urls"
 

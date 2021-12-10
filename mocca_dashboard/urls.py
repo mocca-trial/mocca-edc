@@ -1,6 +1,4 @@
-from django.apps import apps as django_apps
 from edc_protocol import Protocol
-from edc_review_dashboard.views import SubjectReviewListboardView
 
 from .patterns import screening_identifier
 from .views import (
@@ -12,10 +10,6 @@ from .views import (
 )
 
 app_name = "mocca_dashboard"
-
-
-# make sure subject_identifier_pattern is correct to avoid
-# ModelAdminNextUrlRedirectError at /admin/mocca_consent/subjectconsent/add/
 
 urlpatterns = SubjectListboardView.urls(
     namespace=app_name,
@@ -34,11 +28,6 @@ urlpatterns += SubjectDashboardView.urls(
     identifier_pattern=Protocol().subject_identifier_pattern,
 )
 
-urlpatterns += SubjectReviewListboardView.urls(
-    namespace=app_name,
-    label="subject_review_listboard",
-    identifier_pattern=Protocol().subject_identifier_pattern,
-)
 urlpatterns += AeListboardView.urls(
     namespace=app_name,
     label="ae_listboard",

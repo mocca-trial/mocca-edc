@@ -1,1 +1,0 @@
-from .blood_results_lipid_admin import BloodResultsLipidAdmin

@@ -1,11 +1,10 @@
 from edc_lab import RequisitionPanel
+from edc_lab_panel.processing_profiles import lipids_processing
 
-# TODO: Verify
-from .processing_profiles import chemistry_processing
-
-chemistry_lipids_panel = RequisitionPanel(
+lipids_panel = RequisitionPanel(
     name="chemistry",
-    verbose_name="Chemistry: Lipids Profile",
-    abbreviation="CHEM",
-    processing_profile=chemistry_processing,
+    verbose_name="Chemistry: Lipids",
+    abbreviation="LIPIDS",
+    processing_profile=lipids_processing,
+    utest_ids=["ldl", "hdl", "trig", "chol"],
 )
