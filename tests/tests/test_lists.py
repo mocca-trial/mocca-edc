@@ -1,4 +1,4 @@
-from django.test import TestCase, tag
+from django.test import TestCase
 from edc_list_data.site_list_data import site_list_data
 
 

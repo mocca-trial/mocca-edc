@@ -101,6 +101,8 @@ INSTALLED_APPS = [
     "edc_dashboard.apps.AppConfig",
     "edc_data_manager.apps.AppConfig",
     "edc_device.apps.AppConfig",
+    "edc_dx.apps.AppConfig",
+    # "edc_dx_review.apps.AppConfig",
     "edc_export.apps.AppConfig",
     "edc_facility.apps.AppConfig",
     "edc_fieldsets.apps.AppConfig",
@@ -404,6 +406,9 @@ DATA_DICTIONARY_APP_LABELS = [
     "edc_appointment",
 ]
 
+EDC_DX_LABELS = dict(hiv="HIV", dm="Diabetes", htn="Hypertension", chol="High Cholesterol")
+EDC_DX_REVIEW_APP_LABEL = "mocca_subject"
+
 # edc_protocol
 EDC_PROTOCOL = env.str("EDC_PROTOCOL")
 EDC_PROTOCOL_INSTITUTION_NAME = env.str("EDC_PROTOCOL_INSTITUTION_NAME")
@@ -429,7 +434,7 @@ EDC_RANDOMIZATION_SKIP_VERIFY_CHECKS = True
 EDC_VISIT_TRACKING_ALLOW_MISSED_UNSCHEDULED = True
 
 # respond
-RESPOND_DIAGNOSIS_LABELS = env.dict("RESPOND_DIAGNOSIS_LABELS")
+EDC_DX_LABELS = env.dict("EDC_DX_LABELS")
 
 # django-simple-history
 SIMPLE_HISTORY_REVERT_ENABLED = False

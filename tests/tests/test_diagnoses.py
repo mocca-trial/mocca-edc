@@ -1,15 +1,15 @@
 from django.test import TestCase, tag
 from edc_appointment.constants import INCOMPLETE_APPT
 from edc_constants.constants import CHOL, DM, HIV, HTN, NOT_APPLICABLE, POS, YES
-from edc_utils import get_utcnow
-from edc_visit_tracking.constants import UNSCHEDULED
-from model_bakery import baker
-from respond_models.diagnoses import (
+from edc_dx.diagnoses import (
     ClinicalReviewBaselineRequired,
     Diagnoses,
     InitialReviewRequired,
     MultipleInitialReviewsExist,
 )
+from edc_utils import get_utcnow
+from edc_visit_tracking.constants import UNSCHEDULED
+from model_bakery import baker
 
 from mocca_screening.constants import HIV_CLINIC
 
@@ -55,9 +55,9 @@ class TestDiagnoses(MoccaTestCaseMixin, TestCase):
         except ClinicalReviewBaselineRequired:
             self.fail("DiagnosesError unexpectedly raised")
 
-        self.assertEqual(YES, diagnoses.hiv_dx)
-        self.assertIsNone(diagnoses.htn_dx)
-        self.assertIsNone(diagnoses.dm_dx)
+        self.assertEqual(YES, diagnoses.get_dx(HIV))
+        self.assertIsNone(diagnoses.get_dx(HTN))
+        self.assertIsNone(diagnoses.get_dx(DM))
 
         clinical_review_baseline.htn_test = YES
         clinical_review_baseline.htn_test_ago = "1y"
@@ -67,9 +67,9 @@ class TestDiagnoses(MoccaTestCaseMixin, TestCase):
         diagnoses = Diagnoses(
             subject_identifier=subject_visit_baseline.subject_identifier,
         )
-        self.assertEqual(YES, diagnoses.hiv_dx)
-        self.assertEqual(YES, diagnoses.htn_dx)
-        self.assertIsNone(diagnoses.dm_dx)
+        self.assertEqual(YES, diagnoses.get_dx(HIV))
+        self.assertEqual(YES, diagnoses.get_dx(HTN))
+        self.assertIsNone(diagnoses.get_dx(DM))
 
         clinical_review_baseline.dm_test = YES
         clinical_review_baseline.dm_test_ago = "1y"
@@ -79,9 +79,9 @@ class TestDiagnoses(MoccaTestCaseMixin, TestCase):
         diagnoses = Diagnoses(
             subject_identifier=subject_visit_baseline.subject_identifier,
         )
-        self.assertEqual(YES, diagnoses.hiv_dx)
-        self.assertEqual(YES, diagnoses.htn_dx)
-        self.assertEqual(YES, diagnoses.dm_dx)
+        self.assertEqual(YES, diagnoses.get_dx(HIV))
+        self.assertEqual(YES, diagnoses.get_dx(HTN))
+        self.assertEqual(YES, diagnoses.get_dx(DM))
 
     @tag("dx")
     def test_diagnoses_does_not_raise_for_subject_visit(self):

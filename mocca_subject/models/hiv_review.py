@@ -2,9 +2,9 @@ from django.db import models
 from edc_constants.choices import YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
-from respond_models.mixins import ReviewModelMixin
 
 from ..model_mixins import CrfModelMixin
+from .model_mixins import ReviewModelMixin
 
 
 class HivReview(ReviewModelMixin, CrfModelMixin, edc_models.BaseUuidModel):

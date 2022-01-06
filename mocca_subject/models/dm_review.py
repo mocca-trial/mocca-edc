@@ -1,11 +1,11 @@
 from django.db import models
 from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
-from respond_models.mixins import ReviewModelMixin
 
 from mocca_subject.choices import DM_MANAGEMENT
 
 from ..model_mixins import CrfModelMixin
+from .model_mixins import ReviewModelMixin
 
 
 class DmReview(ReviewModelMixin, CrfModelMixin, edc_models.BaseUuidModel):

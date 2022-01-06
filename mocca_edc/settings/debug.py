@@ -15,6 +15,7 @@ ALLOWED_HOSTS = [
     # "kisugu.ug.mocca.clinicedc.org",  # 119
     # "kiswa.ug.mocca.clinicedc.org",  # 120
     "localhost",
+    "127.0.0.1",
 ]
 # comment: comment out if using runserver and folders read from .env
 # ETC_DIR = os.path.join(BASE_DIR, "tests", "etc")  # noqa

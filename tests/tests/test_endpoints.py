@@ -22,7 +22,6 @@ from edc_utils import get_utcnow
 from model_bakery import baker
 
 from mocca_screening.models.subject_screening import SubjectScreening
-from mocca_sites.sites import fqdn
 
 from ..mocca_test_case_mixin import MoccaTestCaseMixin
 
@@ -208,9 +207,7 @@ class AdminSiteTest(MoccaTestCaseMixin, TestCase):
         self.assertEqual(add_subjectconsent_page.status_code, 200)
 
     def test_to_subject_dashboard(self):
-        add_or_update_django_sites(
-            apps=django_apps, sites=get_sites_by_country("uganda"), fqdn=fqdn
-        )
+        add_or_update_django_sites(apps=django_apps, sites=get_sites_by_country("uganda"))
         self.login(superuser=False, groups=[EVERYONE, CLINIC, PII])
         subject_screening = self.get_subject_screening()
         home_page = self.client.get(reverse("home_url"))

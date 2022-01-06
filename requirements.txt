@@ -4,3 +4,4 @@ django-collect-offline
 git+https://github.com/respond-africa/respond-africa.git@develop
 git+https://github.com/erikvw/django-import-export.git@get_export_admin_action
 beautifulsoup4
+edc-phq9

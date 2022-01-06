@@ -1,5 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.test import TestCase, tag
+from django.test import TestCase
 from edc_action_item.models import ActionItem
 from edc_adverse_event.constants import (
     AE_FOLLOWUP_ACTION,

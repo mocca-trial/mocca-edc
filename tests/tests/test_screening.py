@@ -254,9 +254,6 @@ class TestScreening(MoccaTestCaseMixin, WebTest):
     )
     def test_mocca_register_changelist(self):
         import_module("mocca_auth.auths")
-        import pdb
-
-        # pdb.set_trace()
         AuthUpdater(verbose=True)
 
         make_recipe("mocca_screening.moccaregistercontact", mocca_register=self.mocca_register)

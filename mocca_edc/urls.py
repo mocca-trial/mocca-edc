@@ -66,7 +66,7 @@ urlpatterns = [
     *paths_for_urlpatterns("mocca_subject"),
 ]
 
-if settings.DEFENDER_ENABLED:
+if getattr(settings, "DEFENDER_ENABLED", False):
     urlpatterns.append(
         path("defender/", include("defender.urls")),  # defender admin
     )

@@ -1,12 +1,10 @@
 from django import forms
 from edc_constants.constants import NO, YES
+from edc_crf.forms import CrfFormValidatorMixin
 from edc_crf.modelform_mixins import CrfModelFormMixin
+from edc_dx.form_validators import DiagnosisFormValidatorMixin
+from edc_dx_review.utils import requires_clinical_review_at_baseline
 from edc_form_validators.form_validator import FormValidator
-from respond_forms.form_validator_mixins import (
-    CrfFormValidatorMixin,
-    DiagnosisFormValidatorMixin,
-)
-from respond_forms.utils import requires_clinical_review_at_baseline
 
 from ..models import ClinicalReview
 
@@ -27,7 +25,6 @@ class ClinicalReviewFormValidator(
         ]:
             self.applicable_if_not_diagnosed(
                 diagnoses=diagnoses,
-                field_dx=f"{cond}_dx",
                 field_applicable=f"{cond}_test",
                 label=label,
             )

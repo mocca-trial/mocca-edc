@@ -1,7 +1,7 @@
 from edc_model import models as edc_models
-from respond_models.mixins import ComplicationsFollowupMixin
 
 from ..model_mixins import CrfModelMixin
+from .model_mixins import ComplicationsFollowupMixin
 
 
 class ComplicationsFollowup(

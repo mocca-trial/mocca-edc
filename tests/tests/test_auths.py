@@ -1,4 +1,4 @@
-from django.test import TestCase, override_settings, tag
+from django.test import TestCase, override_settings
 from edc_auth.auth_updater import AuthUpdater
 from edc_auth.site_auths import site_auths
 

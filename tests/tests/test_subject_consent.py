@@ -1,8 +1,6 @@
-import pdb
-
 from dateutil.relativedelta import relativedelta
 from django import forms
-from django.test import TestCase, tag
+from django.test import TestCase
 from edc_constants.constants import FEMALE, MOBILE_NUMBER, NO, YES
 from edc_utils import get_utcnow
 from pytz import timezone
