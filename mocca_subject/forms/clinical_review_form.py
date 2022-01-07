@@ -25,6 +25,7 @@ class ClinicalReviewFormValidator(
         ]:
             self.applicable_if_not_diagnosed(
                 diagnoses=diagnoses,
+                prefix=cond,
                 field_applicable=f"{cond}_test",
                 label=label,
             )

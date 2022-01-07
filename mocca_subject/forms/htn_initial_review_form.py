@@ -19,9 +19,7 @@ class HtnInitialReviewFormValidator(
 ):
     def clean(self):
         raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
-        raise_if_both_ago_and_actual_date(
-            dx_ago=self.cleaned_data.get("dx_ago"), dx_date=self.cleaned_data.get("dx_date")
-        )
+        raise_if_both_ago_and_actual_date(cleaned_data=self.cleaned_data)
         self.required_if(DRUGS, field="managed_by", field_required="med_start_ago")
         if self.cleaned_data.get("med_start_ago") and self.cleaned_data.get("dx_ago"):
             if estimated_date_from_ago(

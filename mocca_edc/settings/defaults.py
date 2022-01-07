@@ -102,7 +102,7 @@ INSTALLED_APPS = [
     "edc_data_manager.apps.AppConfig",
     "edc_device.apps.AppConfig",
     "edc_dx.apps.AppConfig",
-    # "edc_dx_review.apps.AppConfig",
+    "edc_dx_review.apps.AppConfig",
     "edc_export.apps.AppConfig",
     "edc_facility.apps.AppConfig",
     "edc_fieldsets.apps.AppConfig",

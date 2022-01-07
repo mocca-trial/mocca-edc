@@ -44,7 +44,7 @@ class MedicationsFormValidator(CrfFormValidatorMixin, FormValidator):
             raise forms.ValidationError(e)
 
         options = []
-        for prefix, label in settings.RESPOND_DIAGNOSIS_LABELS.items():
+        for prefix, label in settings.EDC_DX_LABELS.items():
             options.append(
                 (
                     f"refill_{prefix}",

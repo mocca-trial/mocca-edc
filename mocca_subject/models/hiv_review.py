@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from edc_constants.choices import YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
@@ -8,6 +9,12 @@ from .model_mixins import ReviewModelMixin
 
 
 class HivReview(ReviewModelMixin, CrfModelMixin, edc_models.BaseUuidModel):
+
+    subject_visit = models.OneToOneField(
+        settings.SUBJECT_VISIT_MODEL,
+        on_delete=models.PROTECT,
+        related_name="+",
+    )
 
     test_date = models.DateField(
         verbose_name="Date tested for HIV",

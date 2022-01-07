@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.utils.html import format_html
 from edc_constants.choices import YES_NO
@@ -21,6 +22,12 @@ class HivInitialReview(
     CrfModelMixin,
     edc_models.BaseUuidModel,
 ):
+
+    subject_visit = models.OneToOneField(
+        settings.SUBJECT_VISIT_MODEL,
+        on_delete=models.PROTECT,
+        related_name="+",
+    )
 
     receives_care = models.CharField(
         verbose_name="Is the patient receiving care for HIV?",

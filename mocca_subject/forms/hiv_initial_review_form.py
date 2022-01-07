@@ -21,9 +21,7 @@ class HivInitialReviewFormValidator(
         super().clean()
         raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
 
-        raise_if_both_ago_and_actual_date(
-            dx_ago=self.cleaned_data.get("dx_ago"), dx_date=self.cleaned_data.get("dx_date")
-        )
+        raise_if_both_ago_and_actual_date(cleaned_data=self.cleaned_data)
 
         self.applicable_if(YES, field="receives_care", field_applicable="clinic")
 
