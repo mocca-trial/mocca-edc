@@ -1,11 +1,9 @@
 from django import forms
+from edc_adherence.form_validator_mixin import MedicationAdherenceFormValidatorMixin
+from edc_crf.forms import CrfFormValidatorMixin
 from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_form_validators.form_validator import FormValidator
 from edc_model.widgets import SliderWidget
-from respond_forms.form_validator_mixins import (
-    CrfFormValidatorMixin,
-    MedicationAdherenceFormValidatorMixin,
-)
 
 from ..models import HivMedicationAdherence
 

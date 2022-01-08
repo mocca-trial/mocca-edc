@@ -1,9 +1,11 @@
 from edc_lab import RequisitionPanel
-from respond_labs.processing_profiles import chemistry_processing
+from edc_lab_panel.processing_profiles import lipids_processing
 
-chemistry_lipids_panel = RequisitionPanel(
+lipids_panel = RequisitionPanel(
     name="chemistry",
-    verbose_name="Chemistry: Lipids Profile",
-    abbreviation="CHEM",
-    processing_profile=chemistry_processing,
+    verbose_name="Chemistry: Lipids",
+    abbreviation="LIPIDS",
+    processing_profile=lipids_processing,
+    utest_ids=["ldl", "hdl", "trig", "chol"],
+    reference_range_collection_name="mocca",
 )

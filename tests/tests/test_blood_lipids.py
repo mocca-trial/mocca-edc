@@ -2,12 +2,12 @@ from django import forms
 from django.test import TestCase, tag
 from edc_appointment.constants import INCOMPLETE_APPT
 from edc_constants.constants import INCOMPLETE, NO, NOT_APPLICABLE, YES
-from edc_reportable import GRADE3, GRADE4, MILLIMOLES_PER_LITER
+from edc_dx_review.constants import HIV_CLINIC
+from edc_reportable import GRADE3, MILLIMOLES_PER_LITER
 from edc_utils import get_utcnow
 from model_bakery import baker
 
-from mocca_form_validators.form_validators import BloodResultsLipidFormValidator
-from mocca_screening.constants import HIV_CLINIC
+from mocca_subject.forms import BloodResultsLipidFormValidator
 from mocca_subject.forms.indicators_form import IndicatorsFormValidator
 
 from ..mocca_test_case_mixin import MoccaTestCaseMixin

@@ -4,7 +4,8 @@ from django.utils.html import format_html
 from edc_model import models as edc_models
 
 from mocca_lists.models import NonAdherenceReasons
-from mocca_subject.choices import MISSED_PILLS
+
+from ..choices import MISSED_PILLS
 
 
 class MedicationAdherenceModelMixin(models.Model):

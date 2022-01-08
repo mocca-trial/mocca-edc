@@ -22,7 +22,7 @@ class TestClinicalReview(MoccaTestCaseMixin, TestCase):
             subject_screening=self.subject_screening, clinic_type=HIV_CLINIC
         )
 
-    @tag("cr1")
+    @tag("cr")
     def test_clinical_review_requires_baseline_and_initial(self):
         subject_visit_baseline = self.get_subject_visit(
             subject_screening=self.subject_screening,

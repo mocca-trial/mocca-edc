@@ -1,4 +1,4 @@
-from django.test import TestCase, tag  # noqa
+from django.test import TestCase, tag
 from edc_constants.constants import COMPLETE, NO, NONSMOKER, NOT_APPLICABLE, SMOKER
 from model_bakery import baker
 

@@ -3,7 +3,7 @@ from edc_visit_schedule import Crf, FormsCollection
 crfs_prn = FormsCollection(
     Crf(show_order=212, model="mocca_subject.bloodresultslipid"),
     Crf(show_order=214, model="mocca_subject.cd4result"),
-    Crf(show_order=215, model="mocca_subject.glucose"),
+    Crf(show_order=215, model="mocca_subject.glucosefollowup"),
     Crf(show_order=216, model="mocca_subject.viralloadresult"),
     name="prn",
 )

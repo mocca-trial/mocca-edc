@@ -1,12 +1,12 @@
 from edc_model import models as edc_models
-from respond_models.mixins.medication import (
+
+from ..model_mixins import CrfModelMixin
+from .model_mixins import (
     CholMedicationsModelMixin,
     DmMedicationsModelMixin,
     HivMedicationsModelMixin,
     HtnMedicationsModelMixin,
 )
-
-from ..model_mixins import CrfModelMixin
 
 
 class Medications(

@@ -1,7 +1,7 @@
 from unittest import skip
 
 from django.contrib.auth.models import User
-from django.test import TestCase, tag
+from django.test import TestCase
 from django.test.client import RequestFactory
 from edc_adverse_event.models import AeClassification
 from model_bakery import baker

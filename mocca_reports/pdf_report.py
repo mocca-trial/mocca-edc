@@ -1,12 +1,13 @@
 from textwrap import fill
 
-from edc_auth import RANDO
+from edc_randomization.auth_objects import RANDO_UNBLINDED
 from edc_randomization.models import RandomizationList
 from edc_registration.models import RegisteredSubject
 from edc_reports.crf_pdf_report import CrfPdfReport
 from reportlab.lib.units import cm
 from reportlab.platypus import Table
 
+# TODO: Resolve???
 from mocca_subject.models import Followup
 
 
@@ -45,7 +46,7 @@ class MetaCrfPdfReport(CrfPdfReport):
             reference_dt=model_obj.report_datetime,
         )
         assignment = "*****************"
-        if self.request.user.groups.filter(name=RANDO).exists():
+        if self.request.user.groups.filter(name=RANDO_UNBLINDED).exists():
             assignment = fill(self.drug_assignment, width=80)
         rows = [
             ["Subject:", self.subject_identifier],

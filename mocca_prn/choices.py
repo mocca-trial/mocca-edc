@@ -1,5 +1,5 @@
 from edc_constants.constants import NOT_APPLICABLE, OTHER
-from edc_prn.constants import DEVIATION, VIOLATION
+from edc_protocol_violation.constants import DEVIATION, VIOLATION
 
 LOSS_CHOICES = (
     ("unknown_address", "Changed to an unknown address"),

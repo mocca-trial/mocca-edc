@@ -1,18 +1,17 @@
 from django import forms
+from edc_crf.forms import CrfFormValidatorMixin
 from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_form_validators.form_validator import FormValidator
-from respond_forms.form_validator_mixins import (
-    CrfFormValidatorMixin,
-    DrugRefillFormValidatorMixin,
-)
 
 from ..models import DrugRefillHtn
+from .drug_refill_mixins import DrugRefillFormValidatorMixin
 
 
 class DrugRefillHtnFormValidator(
     DrugRefillFormValidatorMixin, CrfFormValidatorMixin, FormValidator
 ):
-    pass
+    def clean(self) -> None:
+        self.drug_refill_clean()
 
 
 class DrugRefillHtnForm(CrfModelFormMixin, forms.ModelForm):

@@ -1,13 +1,14 @@
+from django.conf import settings
 from django.db import models
 from django.utils.html import format_html
 from edc_constants.choices import YES_NO
 from edc_constants.constants import NOT_APPLICABLE
-from edc_model import models as edc_models
-from respond_models.mixins import (
+from edc_dx_review.model_mixins import (
     HivArvInitiationModelMixin,
     HivArvMonitoringModelMixin,
     InitialReviewModelMixin,
 )
+from edc_model import models as edc_models
 
 from ..choices import CARE_ACCESS
 from ..model_mixins import CrfModelMixin, DiagnosisLocationModelMixin
@@ -21,6 +22,12 @@ class HivInitialReview(
     CrfModelMixin,
     edc_models.BaseUuidModel,
 ):
+
+    subject_visit = models.OneToOneField(
+        settings.SUBJECT_VISIT_MODEL,
+        on_delete=models.PROTECT,
+        related_name="+",
+    )
 
     receives_care = models.CharField(
         verbose_name="Is the patient receiving care for HIV?",

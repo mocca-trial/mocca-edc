@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 from django.contrib.sites.models import Site
-from edc_constants.constants import MOBILE_NUMBER, NO, NOT_APPLICABLE, POS, YES
+from edc_constants.constants import MOBILE_NUMBER, NO, NOT_APPLICABLE, YES
 from edc_lab.constants import LT
 from edc_utils import get_utcnow
 from edc_visit_tracking.constants import SCHEDULED
@@ -9,10 +9,9 @@ from model_bakery.recipe import Recipe, seq
 
 from mocca_consent.models import SubjectConsent, SubjectReconsent
 from mocca_subject.constants import THIS_CLINIC
-from mocca_subject.models import (
+from mocca_subject.models import (  # TODO: Confirm removal of HealthEconomicsRevised recipe
     ClinicalReview,
     ClinicalReviewBaseline,
-    HealthEconomicsRevised,
     HivInitialReview,
     HtnInitialReview,
 )
@@ -59,11 +58,6 @@ subjectreconsent = Recipe(
     consent_copy=YES,
     action_identifier=None,
     tracking_identifier=None,
-)
-
-healtheconomicsrevised = Recipe(
-    HealthEconomicsRevised,
-    site=Site.objects.get_current(),
 )
 
 clinicalreviewbaseline = Recipe(

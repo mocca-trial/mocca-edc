@@ -15,7 +15,8 @@ from .drug_refill_dm import DrugRefillDm
 from .drug_refill_hiv import DrugRefillHiv
 from .drug_refill_htn import DrugRefillHtn
 from .family_history import FamilyHistory
-from .glucose import Glucose, GlucoseBaseline
+from .glucose_baseline import GlucoseBaseline
+from .glucose_followup import GlucoseFollowup
 from .hiv_initial_review import HivInitialReview
 from .hiv_medication_adherence import HivMedicationAdherence
 from .hiv_review import HivReview

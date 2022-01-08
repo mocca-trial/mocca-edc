@@ -1,10 +1,10 @@
 from django.db import models
 from edc_model import models as edc_models
-from respond_models.mixins import DrugRefillModelMixin
 
 from mocca_lists.models import ArvRegimens
 
 from ..model_mixins import CrfModelMixin
+from .model_mixins import DrugRefillModelMixin
 
 
 class DrugRefillHiv(DrugRefillModelMixin, CrfModelMixin, edc_models.BaseUuidModel):

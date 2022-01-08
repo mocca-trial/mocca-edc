@@ -1,9 +1,10 @@
+from django.conf import settings
 from django.db import models
 from django.utils.safestring import mark_safe
 from edc_constants.choices import YES_NO, YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
+from edc_dx_review.model_mixins import ClinicalReviewModelMixin
 from edc_model import models as edc_models
-from respond_models.mixins import ClinicalReviewModelMixin
 
 from mocca_lists.models import ReasonsForTesting
 
@@ -15,6 +16,12 @@ class ClinicalReview(
     CrfModelMixin,
     edc_models.BaseUuidModel,
 ):
+
+    subject_visit = models.OneToOneField(
+        settings.SUBJECT_VISIT_MODEL,
+        on_delete=models.PROTECT,
+        related_name="+",
+    )
 
     hiv_test = models.CharField(
         verbose_name="Since last seen, was the patient tested for HIV infection?",

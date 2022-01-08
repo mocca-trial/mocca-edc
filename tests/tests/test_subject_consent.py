@@ -27,7 +27,8 @@ class TestSubjectConsent(MoccaTestCaseMixin, TestCase):
         consent_datetime = get_now()
         cleaned_data = dict(
             screening_identifier=subject_screening.screening_identifier,
-            dob=subject_screening.report_datetime.date() - relativedelta(years=25),
+            dob=subject_screening.report_datetime.date()
+            - relativedelta(years=subject_screening.age_in_years),
             consent_datetime=consent_datetime,
             identity_type=MOBILE_NUMBER,
             identity="77777777",
@@ -48,7 +49,8 @@ class TestSubjectConsent(MoccaTestCaseMixin, TestCase):
         consent_datetime = consent_datetime.astimezone(timezone("Africa/Kampala"))
         cleaned_data = dict(
             screening_identifier=subject_screening.screening_identifier,
-            dob=subject_screening.report_datetime.date() - relativedelta(years=25),
+            dob=subject_screening.report_datetime.date()
+            - relativedelta(years=subject_screening.age_in_years),
             consent_datetime=consent_datetime,
             identity_type=MOBILE_NUMBER,
             identity="77777777",
@@ -72,7 +74,8 @@ class TestSubjectConsent(MoccaTestCaseMixin, TestCase):
         consent_datetime = consent_datetime.astimezone(timezone("Africa/Kampala"))
         cleaned_data = dict(
             screening_identifier=subject_screening.screening_identifier,
-            dob=subject_screening.report_datetime.date() - relativedelta(years=25),
+            dob=subject_screening.report_datetime.date()
+            - relativedelta(years=subject_screening.age_in_years),
             consent_datetime=consent_datetime,
             identity_type=MOBILE_NUMBER,
             identity="77777777",
@@ -101,7 +104,8 @@ class TestSubjectConsent(MoccaTestCaseMixin, TestCase):
         subject_screening = self.get_subject_screening()
         data = dict(
             screening_identifier=subject_screening.screening_identifier,
-            dob=subject_screening.report_datetime.date() - relativedelta(years=25),
+            dob=subject_screening.report_datetime.date()
+            - relativedelta(years=subject_screening.age_in_years),
             consent_datetime=get_now(),
             identity_type=MOBILE_NUMBER,
             identity="77777777",

@@ -1,13 +1,14 @@
 from django import forms
 from django.conf import settings
 from edc_constants.constants import NOT_APPLICABLE
+from edc_crf.forms import CrfFormValidatorMixin
 from edc_crf.modelform_mixins import CrfModelFormMixin
+from edc_dx import Diagnoses
+from edc_dx.diagnoses import InitialReviewRequired
 from edc_form_validators.form_validator import FormValidator
+from edc_model import model_exists_or_raise
 from edc_utils import convert_php_dateformat
-from respond_forms.form_validator_mixins import CrfFormValidatorMixin
-from respond_forms.utils import model_exists_or_raise
-from respond_models.diagnoses import Diagnoses, InitialReviewRequired
-from respond_models.utils import is_baseline
+from edc_visit_schedule.utils import is_baseline
 
 from ..models import ClinicalReview, ClinicalReviewBaseline, Medications
 
@@ -43,7 +44,7 @@ class MedicationsFormValidator(CrfFormValidatorMixin, FormValidator):
             raise forms.ValidationError(e)
 
         options = []
-        for prefix, label in settings.RESPOND_DIAGNOSIS_LABELS.items():
+        for prefix, label in settings.EDC_DX_LABELS.items():
             options.append(
                 (
                     f"refill_{prefix}",
