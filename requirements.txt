@@ -1,7 +1,5 @@
-edc==0.3.58
+edc==0.3.59
 django-collect-offline
-#respond-africa==0.1.9
-git+https://github.com/respond-africa/respond-africa.git@develop
 git+https://github.com/erikvw/django-import-export.git@get_export_admin_action
 beautifulsoup4
 edc-phq9
