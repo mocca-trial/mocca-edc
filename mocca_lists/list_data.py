@@ -224,5 +224,3 @@ list_data = {
         (OTHER, "Other, please specify ..."),
     ],
 }
-
-# preload_data = PreloadData(list_data=list_data)
