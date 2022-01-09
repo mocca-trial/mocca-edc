@@ -1,6 +1,13 @@
 Changes
 =======
 
+0.1.30
+------
+- decouple from respond-africa
+
+0.1.29
+------
+
 0.1.28
 ------
 - add missing migration in mocca_ae
