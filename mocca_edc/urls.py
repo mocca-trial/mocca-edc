@@ -48,6 +48,7 @@ urlpatterns = [
     *paths_for_urlpatterns("edc_offstudy"),
     *paths_for_urlpatterns("edc_pdutils"),
     *paths_for_urlpatterns("edc_pharmacy"),
+    *paths_for_urlpatterns("edc_phq9"),
     *paths_for_urlpatterns("edc_protocol"),
     *paths_for_urlpatterns("edc_protocol_violation"),
     *paths_for_urlpatterns("edc_randomization"),

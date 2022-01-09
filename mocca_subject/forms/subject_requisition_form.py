@@ -19,9 +19,13 @@ class SubjectRequisitionForm(RequisitionFormMixin, CrfModelFormMixin, forms.Mode
         cleaned_data = super().clean()
         if cleaned_data.get("reason_not_drawn") == NOT_REQUIRED:
             raise forms.ValidationError(
-                {"reason_not_drawn": "Invalid choice. Not expected " "for this panel"}
+                {"reason_not_drawn": "Invalid choice. Not expected for this panel"}
             )
         return cleaned_data
+
+    @property
+    def report_datetime(self):
+        return self.cleaned_data.get("requisition_datetime")
 
     class Meta:
         model = SubjectRequisition

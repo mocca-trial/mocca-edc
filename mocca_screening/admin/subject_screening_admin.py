@@ -104,7 +104,9 @@ class SubjectScreeningAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin)
     def get_readonly_fields(self, request, obj=None):
         fields = super().get_readonly_fields(request, obj=obj)
         if obj and "mocca_register" not in fields:
+            fields = list(fields)
             fields.append("mocca_register")
+            fields = tuple(fields)
         return fields
 
     def post_url_on_delete_kwargs(self, request, obj):

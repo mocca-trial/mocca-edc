@@ -28,7 +28,6 @@ class Glucose(GlucoseModelMixin, CrfModelMixin, edc_models.BaseUuidModel):
         blank=True,
     )
 
-    # TODO: Renamed fasting to glucose_fasted
     glucose_fasted = models.CharField(
         verbose_name="Has the participant fasted?",
         max_length=15,

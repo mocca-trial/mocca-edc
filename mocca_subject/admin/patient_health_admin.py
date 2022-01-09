@@ -13,7 +13,7 @@ from ..models import PatientHealth
 from .modeladmin_mixins import CrfModelAdminMixin
 
 radio_fields = get_phq9_radio_fields()
-radio_fields.update({"crf_status": admin.VERTICAL})
+radio_fields.update({"crf_status": admin.VERTICAL, "ph9_performed": admin.VERTICAL})
 
 
 @admin.register(PatientHealth, site=mocca_subject_admin)
@@ -21,7 +21,17 @@ class PatientHealthAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHis
     form = PatientHealthForm
 
     fieldsets = (
-        (None, {"fields": ("subject_visit", "report_datetime")}),
+        (
+            None,
+            {
+                "fields": (
+                    "subject_visit",
+                    "report_datetime",
+                    "ph9_performed",
+                    "ph9_not_performed_reason",
+                )
+            },
+        ),
         get_phq9_fieldsets(),
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,
