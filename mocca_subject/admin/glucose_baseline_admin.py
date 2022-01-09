@@ -5,8 +5,7 @@ from edc_model_admin import SimpleHistoryAdmin
 from ..admin_site import mocca_subject_admin
 from ..forms import GlucoseBaselineForm
 from ..models import GlucoseBaseline
-from .glucose_admin import GlucoseModelAdminMixin
-from .modeladmin_mixins import CrfModelAdminMixin
+from .modeladmin_mixins import CrfModelAdminMixin, GlucoseModelAdminMixin
 
 
 @admin.register(GlucoseBaseline, site=mocca_subject_admin)

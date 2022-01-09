@@ -1,8 +1,8 @@
 from edc_constants.constants import YES
 from edc_form_validators.form_validator import FormValidator
 from edc_lab.form_validators import CrfRequisitionFormValidatorMixin
+from edc_reportable import ReportablesFormValidatorMixin
 from edc_reportable.constants import GRADE3, GRADE4
-from edc_reportable.form_validator_mixin import ReportablesFormValidatorMixin
 
 
 class BloodResultsFormValidatorMixin(
@@ -43,5 +43,5 @@ class BloodResultsFormValidatorMixin(
         #     # self.validate_reportable_field(field_name)
 
         self.validate_reportable_fields(
-            reference_list_name=self.reference_list_name, **self.extra_options
+            reference_range_collection_name=self.reference_list_name, **self.extra_options
         )

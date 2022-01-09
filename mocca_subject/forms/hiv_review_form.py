@@ -1,18 +1,17 @@
 from django import forms
-from edc_constants.constants import YES
+from edc_constants.constants import NO, YES
+from edc_crf.forms import CrfFormValidatorMixin
 from edc_crf.modelform_mixins import CrfModelFormMixin
-from edc_form_validators.form_validator import FormValidator
-from respond_forms.form_validator_mixins import (
-    CrfFormValidatorMixin,
-    ReviewFormValidatorMixin,
+from edc_dx_review.utils import (
+    art_initiation_date,
+    raise_if_clinical_review_does_not_exist,
 )
-from respond_forms.utils import raise_if_clinical_review_does_not_exist
-from respond_models.utils import art_initiation_date
+from edc_form_validators.form_validator import FormValidator
 
 from ..models import HivReview
 
 
-class HivReviewFormValidator(ReviewFormValidatorMixin, CrfFormValidatorMixin, FormValidator):
+class HivReviewFormValidator(CrfFormValidatorMixin, FormValidator):
     def clean(self):
         raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
         self.validate_care_delivery()
@@ -29,6 +28,9 @@ class HivReviewFormValidator(ReviewFormValidatorMixin, CrfFormValidatorMixin, Fo
         self.required_if(
             YES, field="arv_initiated", field_required="arv_initiation_actual_date"
         )
+
+    def validate_care_delivery(self) -> None:
+        self.required_if(NO, field="care_delivery", field_required="care_delivery_other")
 
 
 class HivReviewForm(CrfModelFormMixin, forms.ModelForm):

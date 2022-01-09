@@ -29,11 +29,13 @@ class SubjectVisitFormValidator(VisitFormValidator):
         selections = self.get_m2m_selected("clinic_services")
         if (
             self.cleaned_data.get("appointment").visit_code_sequence == 0
+            and self.cleaned_data.get("reason") != MISSED_VISIT
             and STUDY_DEFINED_TIMEPOINT not in selections
         ):
             raise forms.ValidationError({"clinic_services": "This is scheduled study visit."})
         elif (
             self.cleaned_data.get("appointment").visit_code_sequence != 0
+            and self.cleaned_data.get("reason") != MISSED_VISIT
             and STUDY_DEFINED_TIMEPOINT in selections
         ):
             raise forms.ValidationError(

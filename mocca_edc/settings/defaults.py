@@ -22,6 +22,7 @@ env = environ.Env(
     AWS_ENABLED=(bool, False),
     CDN_ENABLED=(bool, False),
     DATABASE_SQLITE_ENABLED=(bool, False),
+    DEFENDER_ENABLED=(bool, False),
     DJANGO_AUTO_CREATE_KEYS=(bool, False),
     DJANGO_CRYPTO_FIELDS_TEMP_PATH=(bool, False),
     DJANGO_CSRF_COOKIE_SECURE=(bool, True),
@@ -67,25 +68,26 @@ TEST_DIR = os.path.join(BASE_DIR, APP_NAME, "tests")
 LOGIN_REDIRECT_URL = env.str("DJANGO_LOGIN_REDIRECT_URL")
 
 SENTRY_ENABLED = env("SENTRY_ENABLED")
+DEFENDER_ENABLED = env("DEFENDER_ENABLED")
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
+    "mocca_edc.apps.AdminConfig",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
+    "import_export",
+    "defender",
     "multisite",
     "django_crypto_fields.apps.AppConfig",
-    "django_audit_fields.apps.AppConfig",
     "django_revision.apps.AppConfig",
     "django_extensions",
     "django_celery_results",
     "django_celery_beat",
     "logentry_admin",
     "simple_history",
-    "defender",
     "storages",
     "edc_action_item.apps.AppConfig",
     "edc_appointment.apps.AppConfig",
@@ -93,12 +95,16 @@ INSTALLED_APPS = [
     "edc_auth.apps.AppConfig",
     "edc_crf.apps.AppConfig",
     "edc_consent.apps.AppConfig",
+    "edc_reportable.apps.AppConfig",
     "edc_lab.apps.AppConfig",
     "edc_visit_schedule.apps.AppConfig",
     "edc_dashboard.apps.AppConfig",
     "edc_data_manager.apps.AppConfig",
     "edc_device.apps.AppConfig",
+    "edc_dx.apps.AppConfig",
+    "edc_dx_review.apps.AppConfig",
     "edc_export.apps.AppConfig",
+    "edc_facility.apps.AppConfig",
     "edc_fieldsets.apps.AppConfig",
     "edc_form_validators.apps.AppConfig",
     "edc_identifier.apps.AppConfig",
@@ -114,12 +120,12 @@ INSTALLED_APPS = [
     "edc_notification.apps.AppConfig",
     "edc_offstudy.apps.AppConfig",
     "edc_pharmacy.apps.AppConfig",
+    "edc_phq9.apps.AppConfig",
     "edc_pdutils.apps.AppConfig",
     "edc_protocol.apps.AppConfig",
     "edc_prn.apps.AppConfig",
     "edc_randomization.apps.AppConfig",
     "edc_registration.apps.AppConfig",
-    "edc_reportable.apps.AppConfig",
     "edc_reports.apps.AppConfig",
     "edc_review_dashboard.apps.AppConfig",
     "edc_sites.apps.AppConfig",
@@ -127,6 +133,7 @@ INSTALLED_APPS = [
     "edc_timepoint.apps.AppConfig",
     "edc_visit_tracking.apps.AppConfig",
     "edc_form_describer.apps.AppConfig",
+    "edc_ltfu.apps.AppConfig",
     "mocca_consent.apps.AppConfig",
     "mocca_lists.apps.AppConfig",
     "mocca_dashboard.apps.AppConfig",
@@ -135,14 +142,16 @@ INSTALLED_APPS = [
     "mocca_form_validators.apps.AppConfig",
     "mocca_visit_schedule.apps.AppConfig",
     "mocca_ae.apps.AppConfig",
-    "mocca_auth.apps.AppConfig",
     "mocca_prn.apps.AppConfig",
     "mocca_export.apps.AppConfig",
     "mocca_screening.apps.AppConfig",
     "mocca_sites.apps.AppConfig",
-    "mocca_edc.apps.EdcFacilityAppConfig",
     "mocca_edc.apps.AppConfig",
 ]
+
+if not DEFENDER_ENABLED:
+    INSTALLED_APPS.pop(INSTALLED_APPS.index("defender"))
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -166,6 +175,10 @@ MIDDLEWARE.extend(
         # 'simple_history.middleware.HistoryRequestMiddleware'
     ]
 )
+
+if not DEFENDER_ENABLED:
+    MIDDLEWARE.pop(MIDDLEWARE.index("defender.middleware.FailedLoginMiddleware"))
+
 
 ROOT_URLCONF = f"{APP_NAME}.urls"
 
@@ -394,6 +407,9 @@ DATA_DICTIONARY_APP_LABELS = [
     "edc_appointment",
 ]
 
+EDC_DX_LABELS = dict(hiv="HIV", dm="Diabetes", htn="Hypertension", chol="High Cholesterol")
+EDC_DX_REVIEW_APP_LABEL = "mocca_subject"
+
 # edc_protocol
 EDC_PROTOCOL = env.str("EDC_PROTOCOL")
 EDC_PROTOCOL_INSTITUTION_NAME = env.str("EDC_PROTOCOL_INSTITUTION_NAME")
@@ -419,7 +435,7 @@ EDC_RANDOMIZATION_SKIP_VERIFY_CHECKS = True
 EDC_VISIT_TRACKING_ALLOW_MISSED_UNSCHEDULED = True
 
 # respond
-RESPOND_DIAGNOSIS_LABELS = env.dict("RESPOND_DIAGNOSIS_LABELS")
+EDC_DX_LABELS = env.dict("EDC_DX_LABELS")
 
 # django-simple-history
 SIMPLE_HISTORY_REVERT_ENABLED = False
@@ -466,9 +482,9 @@ if SENTRY_ENABLED and SENTRY_DSN:
     from sentry_sdk.integrations.django import DjangoIntegration
 
     sentry_sdk.init(dsn=SENTRY_DSN, integrations=[DjangoIntegration()], send_default_pii=True)
-# else:
-#     if env("DJANGO_LOGGING_ENABLED"):
-#         from .logging.standard import LOGGING  # noqa
+
+if env("DJANGO_LOGGING_ENABLED"):
+    from .logging import LOGGING  # noqa
 
 MOCCA_REGISTER_FILE = os.path.join(ETC_DIR, "mocca_register.csv")
 

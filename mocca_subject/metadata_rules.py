@@ -1,7 +1,9 @@
 from edc_constants.constants import NO, NOT_APPLICABLE, YES
 from edc_metadata import NOT_REQUIRED, REQUIRED
 from edc_metadata.metadata_rules import CrfRule, CrfRuleGroup, P, register
-from respond_models.utils import is_baseline
+from edc_visit_tracking.constants import MISSED_VISIT
+
+from mocca_subject.action_items import is_baseline
 
 
 def func_glucose_baseline_required(visit=None, **kwargs):
@@ -9,7 +11,7 @@ def func_glucose_baseline_required(visit=None, **kwargs):
 
 
 def func_glucose_required(visit=None, **kwargs):
-    return not is_baseline(visit)
+    return not is_baseline(visit) and visit.reason != MISSED_VISIT
 
 
 @register()
@@ -129,11 +131,11 @@ class GlucoseRuleGroup(CrfRuleGroup):
         target_models=["glucosebaseline"],
     )
 
-    gluc = CrfRule(
+    gluc_followup = CrfRule(
         predicate=func_glucose_required,
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
-        target_models=["glucose"],
+        target_models=["glucosefollowup"],
     )
 
     class Meta:

@@ -1,15 +1,15 @@
-from django.test import TestCase, tag
+from django.test import TestCase
 from edc_appointment.constants import INCOMPLETE_APPT
 from edc_constants.constants import CHOL, DM, HIV, HTN, NOT_APPLICABLE, POS, YES
-from edc_utils import get_utcnow
-from edc_visit_tracking.constants import UNSCHEDULED
-from model_bakery import baker
-from respond_models.diagnoses import (
+from edc_dx.diagnoses import (
     ClinicalReviewBaselineRequired,
     Diagnoses,
     InitialReviewRequired,
     MultipleInitialReviewsExist,
 )
+from edc_utils import get_utcnow
+from edc_visit_tracking.constants import UNSCHEDULED
+from model_bakery import baker
 
 from mocca_screening.constants import HIV_CLINIC
 
@@ -26,7 +26,6 @@ class TestDiagnoses(MoccaTestCaseMixin, TestCase):
             subject_screening=self.subject_screening, clinic_type=HIV_CLINIC
         )
 
-    @tag("dx")
     def test_diagnoses(self):
         subject_visit_baseline = self.get_subject_visit(
             subject_screening=self.subject_screening,
@@ -55,9 +54,9 @@ class TestDiagnoses(MoccaTestCaseMixin, TestCase):
         except ClinicalReviewBaselineRequired:
             self.fail("DiagnosesError unexpectedly raised")
 
-        self.assertEqual(YES, diagnoses.hiv_dx)
-        self.assertIsNone(diagnoses.htn_dx)
-        self.assertIsNone(diagnoses.dm_dx)
+        self.assertEqual(YES, diagnoses.get_dx(HIV))
+        self.assertIsNone(diagnoses.get_dx(HTN))
+        self.assertIsNone(diagnoses.get_dx(DM))
 
         clinical_review_baseline.htn_test = YES
         clinical_review_baseline.htn_test_ago = "1y"
@@ -67,9 +66,9 @@ class TestDiagnoses(MoccaTestCaseMixin, TestCase):
         diagnoses = Diagnoses(
             subject_identifier=subject_visit_baseline.subject_identifier,
         )
-        self.assertEqual(YES, diagnoses.hiv_dx)
-        self.assertEqual(YES, diagnoses.htn_dx)
-        self.assertIsNone(diagnoses.dm_dx)
+        self.assertEqual(YES, diagnoses.get_dx(HIV))
+        self.assertEqual(YES, diagnoses.get_dx(HTN))
+        self.assertIsNone(diagnoses.get_dx(DM))
 
         clinical_review_baseline.dm_test = YES
         clinical_review_baseline.dm_test_ago = "1y"
@@ -79,11 +78,10 @@ class TestDiagnoses(MoccaTestCaseMixin, TestCase):
         diagnoses = Diagnoses(
             subject_identifier=subject_visit_baseline.subject_identifier,
         )
-        self.assertEqual(YES, diagnoses.hiv_dx)
-        self.assertEqual(YES, diagnoses.htn_dx)
-        self.assertEqual(YES, diagnoses.dm_dx)
+        self.assertEqual(YES, diagnoses.get_dx(HIV))
+        self.assertEqual(YES, diagnoses.get_dx(HTN))
+        self.assertEqual(YES, diagnoses.get_dx(DM))
 
-    @tag("dx")
     def test_diagnoses_does_not_raise_for_subject_visit(self):
         """ "Note: Source of the exception will be in
         the metadata rule
@@ -101,7 +99,6 @@ class TestDiagnoses(MoccaTestCaseMixin, TestCase):
         except ClinicalReviewBaselineRequired:
             self.fail("DiagnosesError unexpectedly raised")
 
-    @tag("dx")
     def test_diagnoses_dates_baseline_raises(self):
         subject_visit_baseline = self.get_subject_visit(
             subject_screening=self.subject_screening,
@@ -115,12 +112,12 @@ class TestDiagnoses(MoccaTestCaseMixin, TestCase):
             hiv_dx=YES,
             hiv_test_ago="5y",
         )
+
         diagnoses = Diagnoses(
             subject_identifier=subject_visit_baseline.subject_identifier,
         )
         self.assertRaises(InitialReviewRequired, getattr(diagnoses, "get_dx_date"), "hiv")
 
-    @tag("dx2")
     def test_diagnoses_dates_baseline(self):
         subject_visit_baseline = self.get_subject_visit(
             subject_screening=self.subject_screening,
@@ -192,7 +189,6 @@ class TestDiagnoses(MoccaTestCaseMixin, TestCase):
         self.assertIsNone(diagnoses.get_dx_date(HTN))
         self.assertIsNone(diagnoses.get_dx_date(CHOL))
 
-    @tag("dx1")
     def test_diagnoses_dates(self):
         subject_visit_baseline = self.get_subject_visit(
             subject_screening=self.subject_screening,
@@ -258,7 +254,6 @@ class TestDiagnoses(MoccaTestCaseMixin, TestCase):
         )
         self.assertIsNotNone(diagnoses.get_dx_date("htn"))
 
-    @tag("dx2")
     def test_diagnoses_dates_baseline2(self):
         subject_visit_baseline = self.get_subject_visit(
             subject_screening=self.subject_screening,

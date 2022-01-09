@@ -1,15 +1,23 @@
+from django.conf import settings
 from django.db import models
 from edc_constants.choices import YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
-from respond_models.mixins import ReviewModelMixin
+from edc_vitals import models as edc_vitals_models
 
 from mocca_subject.choices import HTN_MANAGEMENT
 
 from ..model_mixins import CrfModelMixin
+from .model_mixins import ReviewModelMixin
 
 
 class HtnReview(ReviewModelMixin, CrfModelMixin, edc_models.BaseUuidModel):
+
+    subject_visit = models.OneToOneField(
+        settings.SUBJECT_VISIT_MODEL,
+        on_delete=models.PROTECT,
+        related_name="+",
+    )
 
     test_date = models.DateField(
         verbose_name="Date tested for Hypertension",
@@ -26,9 +34,9 @@ class HtnReview(ReviewModelMixin, CrfModelMixin, edc_models.BaseUuidModel):
         default=NOT_APPLICABLE,
     )
 
-    sys_blood_pressure = edc_models.SystolicPressureField(null=True, blank=True)
+    sys_blood_pressure = edc_vitals_models.SystolicPressureField(null=True, blank=True)
 
-    dia_blood_pressure = edc_models.DiastolicPressureField(null=True, blank=True)
+    dia_blood_pressure = edc_vitals_models.DiastolicPressureField(null=True, blank=True)
 
     managed_by = models.CharField(
         verbose_name="How will the patient's hypertension be managed going forward?",

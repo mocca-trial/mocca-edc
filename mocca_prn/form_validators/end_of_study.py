@@ -1,12 +1,17 @@
-from edc_adverse_event.form_validators import ValidateDeathReportMixin
+from edc_adverse_event.form_validator_mixins import (
+    RequiresDeathReportFormValidatorMixin,
+)
 from edc_consent.constants import CONSENT_WITHDRAWAL
-from edc_constants.constants import DEAD, LOST_TO_FOLLOWUP, OTHER
+from edc_constants.constants import DEAD, OTHER
 from edc_form_validators import FormValidator
-from edc_ltfu.modelform_mixins import LtfuFormValidatorMixin
+from edc_ltfu.constants import LOST_TO_FOLLOWUP
+from edc_ltfu.forms import LtfuFormValidatorMixin
 from edc_offstudy.constants import OTHER_RX_DISCONTINUATION
 
 
-class EndOfStudyFormValidator(LtfuFormValidatorMixin, ValidateDeathReportMixin, FormValidator):
+class EndOfStudyFormValidator(
+    LtfuFormValidatorMixin, RequiresDeathReportFormValidatorMixin, FormValidator
+):
 
     offschedule_reason_field = "offschedule_reason"
     loss_to_followup_model = "mocca_prn.losstofollowup"

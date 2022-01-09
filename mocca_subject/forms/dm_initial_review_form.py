@@ -1,15 +1,13 @@
 from django import forms
+from edc_crf.forms import CrfFormValidatorMixin
 from edc_crf.modelform_mixins import CrfModelFormMixin
-from edc_form_validators.form_validator import FormValidator
-from edc_model.models import estimated_date_from_ago
-from respond_forms.form_validator_mixins import (
-    CrfFormValidatorMixin,
-    GlucoseFormValidatorMixin,
-)
-from respond_forms.utils import (
+from edc_dx_review.utils import (
     raise_if_both_ago_and_actual_date,
     raise_if_clinical_review_does_not_exist,
 )
+from edc_form_validators.form_validator import FormValidator
+from edc_glucose.form_validators import GlucoseFormValidatorMixin
+from edc_model.utils import estimated_date_from_ago
 
 from ..constants import DRUGS, INSULIN
 from ..models import DmInitialReview
@@ -22,9 +20,7 @@ class DmInitialReviewFormValidator(
 ):
     def clean(self):
         raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
-        raise_if_both_ago_and_actual_date(
-            dx_ago=self.cleaned_data.get("dx_ago"), dx_date=self.cleaned_data.get("dx_date")
-        )
+        raise_if_both_ago_and_actual_date(cleaned_data=self.cleaned_data)
         self.required_if(
             DRUGS,
             INSULIN,

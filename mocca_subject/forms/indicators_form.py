@@ -1,21 +1,16 @@
 from django import forms
 from django.core.exceptions import ObjectDoesNotExist
 from edc_constants.constants import NO, NOT_REQUIRED, YES
+from edc_crf.forms import CrfFormValidatorMixin
 from edc_crf.modelform_mixins import CrfModelFormMixin
+from edc_dx_review.utils import raise_if_clinical_review_does_not_exist
 from edc_form_validators.form_validator import FormValidator
-from respond_forms.form_validator_mixins import (
-    BPFormValidatorMixin,
-    CrfFormValidatorMixin,
-)
-from respond_forms.utils import raise_if_clinical_review_does_not_exist
-from respond_models.utils import is_baseline
 
-from mocca_subject.models import HtnInitialReview
-
-from ..models import Indicators
+from ..action_items import is_baseline
+from ..models import HtnInitialReview, Indicators
 
 
-class IndicatorsFormValidator(BPFormValidatorMixin, CrfFormValidatorMixin, FormValidator):
+class IndicatorsFormValidator(CrfFormValidatorMixin, FormValidator):
     def clean(self):
 
         raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
@@ -59,6 +54,13 @@ class IndicatorsFormValidator(BPFormValidatorMixin, CrfFormValidatorMixin, FormV
             )
         except ObjectDoesNotExist:
             return None
+
+    def validate_bp_reading(self, sys_field, dia_field):
+        if self.cleaned_data.get(sys_field) and self.cleaned_data.get(dia_field):
+            if self.cleaned_data.get(sys_field) < self.cleaned_data.get(dia_field):
+                raise forms.ValidationError(
+                    {dia_field: "Systolic must be greater than diastolic."}
+                )
 
 
 class IndicatorsForm(CrfModelFormMixin, forms.ModelForm):

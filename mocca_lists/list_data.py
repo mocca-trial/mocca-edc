@@ -5,7 +5,6 @@ from edc_constants.constants import (
     HIV,
     HOSPITALIZED,
     HYPERTENSION,
-    LOST_TO_FOLLOWUP,
     NOT_APPLICABLE,
     OTHER,
     REFILL,
@@ -14,6 +13,7 @@ from edc_constants.constants import (
     UNKNOWN,
     UNWELL_VISIT,
 )
+from edc_ltfu.constants import LOST_TO_FOLLOWUP
 from edc_offstudy.constants import LATE_EXCLUSION, WITHDRAWAL
 from edc_transfer.constants import TRANSFERRED
 
@@ -224,5 +224,3 @@ list_data = {
         (OTHER, "Other, please specify ..."),
     ],
 }
-
-# preload_data = PreloadData(list_data=list_data)

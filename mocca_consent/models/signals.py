@@ -4,7 +4,7 @@ from django.dispatch import receiver
 from edc_randomization.site_randomizers import site_randomizers
 from edc_screening.utils import get_subject_screening_model_cls
 from edc_visit_schedule.site_visit_schedules import site_visit_schedules
-from edc_visit_tracking.models import get_subject_visit_model
+from edc_visit_tracking.utils import get_subject_visit_model
 
 from .subject_consent import SubjectConsent
 
