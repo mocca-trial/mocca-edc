@@ -6,7 +6,7 @@ import environ
 env = environ.Env()
 env.read_env(".env")
 
-LOG_FOLDER = env.str("DJANGO_LOG_FOLDER")
+DJANGO_LOG_FOLDER = env.str("DJANGO_LOG_FOLDER")
 LOGGING_FILE_LEVEL = env.str("DJANGO_LOGGING_FILE_LEVEL")
 LOGGING_SYSLOG_LEVEL = env.str("DJANGO_LOGGING_SYSLOG_LEVEL")
 
@@ -34,7 +34,7 @@ LOGGING = {
         "file": {
             "level": LOGGING_FILE_LEVEL,
             "class": "logging.FileHandler",
-            "filename": os.path.join(LOG_FOLDER, "edc.log"),
+            "filename": os.path.join(DJANGO_LOG_FOLDER, "edc.log"),
             "formatter": "verbose",
         },
         "syslog": {

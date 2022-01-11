@@ -483,7 +483,8 @@ if SENTRY_ENABLED and SENTRY_DSN:
 
     sentry_sdk.init(dsn=SENTRY_DSN, integrations=[DjangoIntegration()], send_default_pii=True)
 
-if env("DJANGO_LOGGING_ENABLED"):
+DJANGO_LOGGING_ENABLED = env("DJANGO_LOGGING_ENABLED")
+if DJANGO_LOGGING_ENABLED:
     from .logging import LOGGING  # noqa
 
 MOCCA_REGISTER_FILE = os.path.join(ETC_DIR, "mocca_register.csv")
