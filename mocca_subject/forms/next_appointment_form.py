@@ -31,7 +31,10 @@ class NextAppointmentValidator(CrfFormValidatorMixin, FormValidator):
             elif appointment.next.next:
                 if appt_date and appointment.next.next.appt_datetime.date():
                     if appt_date > appointment.next.next.appt_datetime.date():
-                        msg = f"Invalid. Cannot be after {appointment.next.next.appt_datetime.date()} "
+                        msg = (
+                            "Invalid. Cannot be after "
+                            f"{appointment.next.next.appt_datetime.date()} "
+                        )
             if msg:
                 raise forms.ValidationError({"appt_date": f"{msg}"})
 
