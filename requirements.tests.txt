@@ -3,3 +3,4 @@ model-bakery
 faker
 django-environ
 django-webtest
+edc-phq9>=0.1.4
