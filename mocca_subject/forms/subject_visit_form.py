@@ -42,12 +42,21 @@ class SubjectVisitFormValidator(VisitFormValidator):
                 {"clinic_services": "This is not a scheduled study visit."}
             )
 
+        if self.cleaned_data.get("reason") == MISSED_VISIT:
+            self.m2m_single_selection_if(NOT_APPLICABLE, m2m_field="clinic_services")
+
+            self.m2m_selection_expected(
+                m2m_field="clinic_services",
+                response=NOT_APPLICABLE,
+                error_msg=(
+                    "Expected 'Not applicable' response (if this is a missed visit report)."
+                ),
+            )
+
         self.m2m_applicable_if_true(
             self.cleaned_data.get("reason") != MISSED_VISIT,
             m2m_field="clinic_services",
         )
-
-        self.m2m_single_selection_if(NOT_APPLICABLE, m2m_field="clinic_services")
 
 
 class SubjectVisitForm(SiteModelFormMixin, FormValidatorMixin, forms.ModelForm):
