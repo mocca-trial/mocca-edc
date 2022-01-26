@@ -387,7 +387,6 @@ SIMPLE_HISTORY_REVERT_DISABLED = env.str("SIMPLE_HISTORY_REVERT_DISABLED")
 FQDN = env.str("DJANGO_FQDN")
 INDEX_PAGE = env.str("DJANGO_INDEX_PAGE")
 INDEX_PAGE_LABEL = env.str("DJANGO_INDEX_PAGE_LABEL")
-DJANGO_LOG_FOLDER = env.str("DJANGO_LOG_FOLDER")
 
 # edc_adverse_event
 ADVERSE_EVENT_ADMIN_SITE = env.str("EDC_ADVERSE_EVENT_ADMIN_SITE")
@@ -409,6 +408,9 @@ DATA_DICTIONARY_APP_LABELS = [
 
 EDC_DX_LABELS = dict(hiv="HIV", dm="Diabetes", htn="Hypertension", chol="High Cholesterol")
 EDC_DX_REVIEW_APP_LABEL = "mocca_subject"
+
+# edc_ltfu
+EDC_LTFU_MODEL_NAME = env.str("EDC_LTFU_MODEL_NAME")
 
 # edc_protocol
 EDC_PROTOCOL = env.str("EDC_PROTOCOL")
@@ -483,7 +485,9 @@ if SENTRY_ENABLED and SENTRY_DSN:
 
     sentry_sdk.init(dsn=SENTRY_DSN, integrations=[DjangoIntegration()], send_default_pii=True)
 
-if env("DJANGO_LOGGING_ENABLED"):
+DJANGO_LOG_FOLDER = env.str("DJANGO_LOG_FOLDER")
+DJANGO_LOGGING_ENABLED = env("DJANGO_LOGGING_ENABLED")
+if DJANGO_LOGGING_ENABLED:
     from .logging import LOGGING  # noqa
 
 MOCCA_REGISTER_FILE = os.path.join(ETC_DIR, "mocca_register.csv")
