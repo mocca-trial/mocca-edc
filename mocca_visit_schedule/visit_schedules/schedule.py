@@ -1,4 +1,5 @@
 from dateutil.relativedelta import relativedelta
+from edc_ltfu.utils import get_ltfu_model_name
 from edc_visit_schedule import Schedule
 from edc_visit_schedule import Visit as BaseVisit
 from edc_visit_schedule.constants import DAY1
@@ -41,7 +42,7 @@ schedule = Schedule(
     offschedule_model="mocca_prn.offschedule",
     consent_model="mocca_consent.subjectconsent",
     appointment_model="edc_appointment.appointment",
-    loss_to_followup_model="mocca_prn.losstofollowup",
+    loss_to_followup_model=get_ltfu_model_name(),
 )
 
 visit00 = Visit(

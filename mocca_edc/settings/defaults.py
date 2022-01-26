@@ -410,6 +410,9 @@ DATA_DICTIONARY_APP_LABELS = [
 EDC_DX_LABELS = dict(hiv="HIV", dm="Diabetes", htn="Hypertension", chol="High Cholesterol")
 EDC_DX_REVIEW_APP_LABEL = "mocca_subject"
 
+# edc_ltfu
+EDC_LTFU_MODEL_NAME = env.str("EDC_LTFU_MODEL_NAME")
+
 # edc_protocol
 EDC_PROTOCOL = env.str("EDC_PROTOCOL")
 EDC_PROTOCOL_INSTITUTION_NAME = env.str("EDC_PROTOCOL_INSTITUTION_NAME")

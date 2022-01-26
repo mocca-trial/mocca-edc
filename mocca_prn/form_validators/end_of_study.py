@@ -6,6 +6,7 @@ from edc_constants.constants import DEAD, OTHER
 from edc_form_validators import FormValidator
 from edc_ltfu.constants import LOST_TO_FOLLOWUP
 from edc_ltfu.forms import LtfuFormValidatorMixin
+from edc_ltfu.utils import get_ltfu_model_name
 from edc_offstudy.constants import OTHER_RX_DISCONTINUATION
 
 
@@ -14,13 +15,13 @@ class EndOfStudyFormValidator(
 ):
 
     offschedule_reason_field = "offschedule_reason"
-    loss_to_followup_model = "mocca_prn.losstofollowup"
+    loss_to_followup_model = get_ltfu_model_name()
     loss_to_followup_date_field = "ltfu_date"
     loss_to_followup_reason = LOST_TO_FOLLOWUP
 
     def clean(self):
 
-        self.validate_loss_to_followup()
+        self.validate_ltfu()
 
         self.validate_death_report_if_deceased()
 
