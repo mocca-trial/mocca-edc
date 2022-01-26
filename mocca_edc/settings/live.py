@@ -20,3 +20,4 @@ ALLOWED_HOSTS = [
     "wakiso.ug.mocca.clinicedc.org",
     "localhost",
 ]
+AUTO_CREATE_KEYS = False

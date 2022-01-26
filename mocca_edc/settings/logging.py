@@ -53,7 +53,7 @@ LOGGING = {
         },
         # root logger
         "": {"handlers": ["syslog"], "level": LOGGING_SYSLOG_LEVEL, "disabled": False},
-        "inte-trial": {
+        "mocca-trial": {
             "handlers": ["syslog"],
             "level": LOGGING_SYSLOG_LEVEL,
             "propagate": False,
