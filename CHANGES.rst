@@ -1,6 +1,17 @@
 Changes
 =======
 
+0.1.32
+------
+- Remove a bad validation message on missed visits
+- Fix issues with LTFU validation
+- Fix issue with saving of the EoS report
+- bump to edc 0.3.61
+
+0.1.31
+------
+- unreleased
+
 0.1.30
 ------
 - decouple from respond-africa
