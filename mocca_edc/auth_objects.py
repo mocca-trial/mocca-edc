@@ -6,6 +6,7 @@ MOCCA_CLINIC_SUPER = "MOCCA_CLINIC_SUPER"
 MOCCA_EXPORT = "MOCCA_EXPORT"
 
 clinic_codenames = []
+autocomplete_models = ["mocca_subject.arvregimens"]
 
 for app_config in django_apps.get_app_configs():
     if app_config.name in [
@@ -26,6 +27,8 @@ for app_config in django_apps.get_app_configs():
     ]:
         for model_cls in app_config.get_models():
             if "historical" in model_cls._meta.label_lower:
+                clinic_codenames.append(f"{app_config.name}.view_{model_cls._meta.model_name}")
+            elif model_cls._meta.label_lower in autocomplete_models:
                 clinic_codenames.append(f"{app_config.name}.view_{model_cls._meta.model_name}")
             else:
                 for prefix in ["add_", "change_", "view_", "delete_"]:
