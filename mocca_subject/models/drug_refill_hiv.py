@@ -1,9 +1,8 @@
 from django.db import models
 from edc_model import models as edc_models
 
-from mocca_lists.models import ArvRegimens
-
 from ..model_mixins import CrfModelMixin
+from .autocomplete_models import ArvRegimens
 from .model_mixins import DrugRefillModelMixin
 
 

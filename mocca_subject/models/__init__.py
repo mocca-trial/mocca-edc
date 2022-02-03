@@ -1,3 +1,4 @@
+from .autocomplete_models import ArvRegimens
 from .blood_results_lipid import BloodResultsLipid
 from .cd4_result import Cd4Result
 from .chol_initial_review import CholInitialReview
