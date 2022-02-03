@@ -22,7 +22,6 @@ class ProtocolDeviationViolationAction(BaseProtocolDeviationViolationAction):
     admin_site_name = "mocca_prn_admin"
 
 
-site_action_items.unregister(LtfuAction.name)
 site_action_items.register(EndOfStudyAction)
 site_action_items.register(LossToFollowupAction)
 site_action_items.register(ProtocolDeviationViolationAction)
