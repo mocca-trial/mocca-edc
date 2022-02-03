@@ -1,4 +1,4 @@
-from .autocomplete_admin import ArvRegimensAdmin
+from .autocomplete_admin import RxAdmin
 from .blood_results_lipid_admin import BloodResultsLipidAdmin
 from .cd4_result_admin import Cd4ResultAdmin
 from .chol_initial_review_admin import CholInitialReviewAdmin

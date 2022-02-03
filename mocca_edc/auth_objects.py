@@ -6,7 +6,7 @@ MOCCA_CLINIC_SUPER = "MOCCA_CLINIC_SUPER"
 MOCCA_EXPORT = "MOCCA_EXPORT"
 
 clinic_codenames = []
-autocomplete_models = ["mocca_subject.arvregimens"]
+autocomplete_models = ["mocca_subject.rx"]
 
 for app_config in django_apps.get_app_configs():
     if app_config.name in [

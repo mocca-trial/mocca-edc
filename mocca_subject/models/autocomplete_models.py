@@ -1,7 +1,7 @@
-from mocca_lists.models import ArvRegimens as BaseArvRegimens
+from mocca_lists.models import ArvRegimens
 
 
-class ArvRegimens(BaseArvRegimens):
+class Rx(ArvRegimens):
     class Meta:
         proxy = True
         verbose_name = "ARV Regimens"
