@@ -4,7 +4,7 @@ from mocca_lists.models import ArvRegimens
 class Rx(ArvRegimens):
     """Declared as a proxy model for the autocomplete.
 
-    not necessary.
+    turns out this was not necessary.
     """
 
     class Meta:
