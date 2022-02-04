@@ -1,4 +1,4 @@
-edc==0.3.61
+edc==0.3.63
 django-collect-offline
 git+https://github.com/erikvw/django-import-export.git@get_export_admin_action
 beautifulsoup4
