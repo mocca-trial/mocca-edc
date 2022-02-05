@@ -2,6 +2,7 @@ from django.conf import settings
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.utils.safestring import mark_safe
 from edc_action_item import ActionWithNotification, site_action_items
+from edc_action_item.utils import register_actions
 from edc_adverse_event.action_items import DeathReportAction as BaseDeathReportAction
 from edc_adverse_event.constants import (
     AE_FOLLOWUP_ACTION,
@@ -244,9 +245,11 @@ class DeathReportTmgAction(ActionWithNotification):
         return next_actions
 
 
-site_action_items.register(DeathReportAction)
-site_action_items.register(DeathReportTmgAction)
-site_action_items.register(AeFollowupAction)
-site_action_items.register(AeInitialAction)
-site_action_items.register(AeSusarAction)
-site_action_items.register(AeTmgAction)
+register_actions(
+    DeathReportAction,
+    DeathReportTmgAction,
+    AeFollowupAction,
+    AeInitialAction,
+    AeSusarAction,
+    AeTmgAction,
+)
