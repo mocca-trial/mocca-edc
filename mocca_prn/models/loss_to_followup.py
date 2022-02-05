@@ -4,7 +4,6 @@ from edc_identifier.model_mixins import (
     NonUniqueSubjectIdentifierFieldMixin,
     TrackingModelMixin,
 )
-from edc_ltfu.choices import LTFU_CHOICES
 from edc_ltfu.constants import LTFU_ACTION
 from edc_ltfu.model_mixins import LtfuModelMixin
 from edc_model.models.base_uuid_model import BaseUuidModel
@@ -25,12 +24,6 @@ class LossToFollowup(
     action_name = LTFU_ACTION
 
     tracking_identifier_prefix = "LF"
-
-    # loss_category = models.CharField(
-    #     verbose_name="Category of loss to follow up",
-    #     max_length=25,
-    #     choices=LTFU_CHOICES,
-    # )
 
     on_site = CurrentSiteManager()
 

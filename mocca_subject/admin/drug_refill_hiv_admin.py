@@ -48,3 +48,5 @@ class DrugRefillHivAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHis
         "crf_status": admin.VERTICAL,
         "rx_modified": admin.VERTICAL,
     }
+
+    search_fields = ["rx__name"]

@@ -6,6 +6,8 @@ MOCCA_CLINIC_SUPER = "MOCCA_CLINIC_SUPER"
 MOCCA_EXPORT = "MOCCA_EXPORT"
 
 clinic_codenames = []
+autocomplete_models = ["mocca_subject.rx"]
+
 for app_config in django_apps.get_app_configs():
     if app_config.name in [
         "mocca_lists",
@@ -24,8 +26,12 @@ for app_config in django_apps.get_app_configs():
         "mocca_consent",
     ]:
         for model_cls in app_config.get_models():
-            if "historical" not in model_cls._meta.label_lower:
-                for prefix in ["add_", "change_", "view_", "delete_", "view_historical"]:
+            if "historical" in model_cls._meta.label_lower:
+                clinic_codenames.append(f"{app_config.name}.view_{model_cls._meta.model_name}")
+            elif model_cls._meta.label_lower in autocomplete_models:
+                clinic_codenames.append(f"{app_config.name}.view_{model_cls._meta.model_name}")
+            else:
+                for prefix in ["add_", "change_", "view_", "delete_"]:
                     clinic_codenames.append(
                         f"{app_config.name}.{prefix}{model_cls._meta.model_name}"
                     )

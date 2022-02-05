@@ -1,5 +1,6 @@
 from django.core.exceptions import ImproperlyConfigured
-from edc_action_item import Action, site_action_items
+from edc_action_item import Action
+from edc_action_item.utils import register_actions
 from edc_adverse_event.constants import AE_INITIAL_ACTION
 from edc_blood_results import BLOOD_RESULTS_LIPID_ACTION
 from edc_constants.constants import HIGH_PRIORITY, YES
@@ -55,5 +56,4 @@ class BloodResultsLipidAction(BaseBloodResultsAction):
     reference_model = "mocca_subject.bloodresultslipid"
 
 
-site_action_items.register(BloodResultsLipidAction)
-site_action_items.register(SubjectVisitMissedAction)
+register_actions(BloodResultsLipidAction, SubjectVisitMissedAction)
