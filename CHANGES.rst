@@ -1,6 +1,12 @@
 Changes
 =======
 
+0.1.33
+------
+- register actions with func
+- fix setup.py
+- bump to edc 0.3.64
+
 0.1.32
 ------
 - Remove a bad validation message on missed visits
